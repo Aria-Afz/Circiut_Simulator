@@ -57,7 +57,26 @@ public class Main {
 	static double unitPrefix(String a) {
 		if (a.charAt(0) == '-')
 			return -1;
-		//todo not complete yet
+		if (a.contains("[^\\d]")) {
+			double x = Double.parseDouble(a.substring(0, a.length() - 1));
+			switch (a.charAt(a.length() - 1)) {
+				case 'p':
+					return x * Math.pow(10, -12);
+				case 'n':
+					return x * Math.pow(10, -9);
+				case 'u':
+					return x * Math.pow(10, -6);
+				case 'm':
+					return x * Math.pow(10, -3);
+				case 'k':
+					return x * Math.pow(10, 3);
+				case 'M':
+					return x * Math.pow(10, 6);
+				case 'G':
+					return x * Math.pow(10, 9);
+			}
+		} else
+			return Double.parseDouble(a);
 		return 0;
 	}
 }
