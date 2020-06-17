@@ -57,7 +57,7 @@ public class Main {
 	static double unitPrefix(String a) {
 		if (a.charAt(0) == '-')
 			return -1;
-		if (a.contains("[^\\d]")) {
+		if (a.contains("[^\\d][^.]")) { //todo check prefix
 			double x = Double.parseDouble(a.substring(0, a.length() - 1));
 			switch (a.charAt(a.length() - 1)) {
 				case 'p':
