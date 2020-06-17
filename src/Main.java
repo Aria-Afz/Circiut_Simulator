@@ -5,16 +5,16 @@ import java.util.Scanner;
 public class Main {
 	
 	public static void main (String[] args) throws FileNotFoundException {
-		Circuit c = new Circuit();
+		Circuit cir = new Circuit();
 		File inputFile = new File("Circuit.txt");
-		int k = readFile(inputFile, c);
+		int k = readFile(inputFile, cir);
 		if (k == 0)
-			c.run();
+			cir.run();
 		else
 			System.out.println("Invalid Input in line " + k);
 	}
 
-	static int readFile(File circuit, Circuit c) throws FileNotFoundException {
+	static int readFile(File circuit, Circuit cir) throws FileNotFoundException {
 		Scanner sc = new Scanner(circuit);
 		int numLine = 1;
 		while(true) {
@@ -24,32 +24,28 @@ public class Main {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else {
-					c.time = unitPrefix(arr[1]);
+					cir.time = unitPrefix(arr[1]);
 					return 0;
-				}
-			} else if (arr[0].charAt(0) == 'R') {
-				if (unitPrefix(arr[3]) == -1)
-					return numLine;
-				else {
-					Element newR = new Element(arr[0].substring(1), arr[1], arr[2], unitPrefix(arr[3]));
 				}
 			} else if (arr[0].equals("dv")) {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else
-					c.dv = unitPrefix(arr[1]);
+					cir.dv = unitPrefix(arr[1]);
 			} else if (arr[0].equals("dt")) {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else
-					c.dv = unitPrefix(arr[1]);
+					cir.dv = unitPrefix(arr[1]);
 			} else if (arr[0].equals("di")) {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else
-					c.di = unitPrefix(arr[1]);
+					cir.di = unitPrefix(arr[1]);
 			} else if (arr[0].charAt(0) != '*')
 				return numLine;
+			else
+				addElement(data, cir);
 			numLine++;
 		}
 	}
@@ -78,5 +74,14 @@ public class Main {
 		} else
 			return Double.parseDouble(a);
 		return 0;
+	}
+
+	static void addElement(String input, Circuit cir) {
+		String[] arr = input.trim().split(" ");
+		Node p = new Node(arr[1]);
+		Node n = new Node(arr[2]);
+		cir.allNodes.add(p);
+		cir.allNodes.add(n);
+		cir.allElements.add(new Element(arr[0], p, n, unitPrefix(arr[3])));
 	}
 }

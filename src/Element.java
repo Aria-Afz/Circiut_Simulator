@@ -9,10 +9,10 @@ class Element {
 	public ArrayList<Double> storedVoltages = new ArrayList<>();
 	public ArrayList<Double> storedCurrents = new ArrayList<>();
 	
-	Element (String name, String positiveNode, String negativeNode, double value) {
+	Element (String name, Node positiveNode, Node negativeNode, double value) {
 		this.name = name;
-		this.positiveNode = new Node(positiveNode);
-		this.negativeNode = new Node(negativeNode);
+		this.positiveNode = positiveNode;
+		this.negativeNode = negativeNode;
 		this.value = value;
 	}
 	

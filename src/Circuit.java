@@ -1,9 +1,8 @@
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Circuit {
-//	HashMap<String, Resistance> allResistances = new HashMap<>();
-//	HashMap<String, CurrentSource> allCurrentSources = new HashMap<>();
-	HashMap<String, Node> allNodes = new HashMap<>();
+	ArrayList<Element> allElements = new ArrayList<>();
+	ArrayList<Node> allNodes = new ArrayList<>();
 	double time;
 	double dt;
 	double dv;
