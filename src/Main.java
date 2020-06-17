@@ -31,7 +31,7 @@ public class Main {
 				if (unitPrefix(arr[3]) == -1)
 					return numLine;
 				else {
-					Resistor newR = new Resistor(arr[0].substring(1), arr[1], arr[2], unitPrefix(arr[3]));
+					Element newR = new Element(arr[0].substring(1), arr[1], arr[2], unitPrefix(arr[3]));
 				}
 			} else if (arr[0].equals("dv")) {
 				if (unitPrefix(arr[1]) == -1)
