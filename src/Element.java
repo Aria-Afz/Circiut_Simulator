@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 class Element {
+
 	public String name;
 	public Node positiveNode;
 	public Node negativeNode;
