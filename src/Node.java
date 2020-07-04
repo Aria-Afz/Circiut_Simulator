@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Node {
 	int azmoooooooooooooooon;
+	int azmooooooooooooooooooooooooooon2;
 	double voltage;
 	String name;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
