@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Node {
+	int azmoooooooooooooooon;
 	double voltage;
 	String name;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
