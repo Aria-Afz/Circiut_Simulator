@@ -24,24 +24,24 @@ public class Main {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else {
-					cir.time = unitPrefix(arr[1]);
+					cir.setTime(unitPrefix(arr[1]));
 					return 0;
 				}
 			} else if (arr[0].equals("dv")) {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else
-					cir.dv = unitPrefix(arr[1]);
+					cir.setDv(unitPrefix(arr[1]));
 			} else if (arr[0].equals("dt")) {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else
-					cir.dv = unitPrefix(arr[1]);
+					cir.setDt(unitPrefix(arr[1]));
 			} else if (arr[0].equals("di")) {
 				if (unitPrefix(arr[1]) == -1)
 					return numLine;
 				else
-					cir.di = unitPrefix(arr[1]);
+					cir.setDi(unitPrefix(arr[1]));
 			} else if (arr[0].charAt(0) != '*')
 				return numLine;
 			else

@@ -1,15 +1,15 @@
 import java.util.ArrayList;
 
 class Element {
-	public String name;
-	public Node positiveNode;
-	public Node negativeNode;
-	public double value;
-	public double current;
-	public ArrayList<Double> storedVoltages = new ArrayList<>();
-	public ArrayList<Double> storedCurrents = new ArrayList<>();
+	private final String name;
+	private final Node positiveNode;
+	private final Node negativeNode;
+	private double value;
+	private double current;
+	private ArrayList<Double> storedVoltages = new ArrayList<>();
+	private ArrayList<Double> storedCurrents = new ArrayList<>();
 	
-	Element (String name, Node positiveNode, Node negativeNode, double value) {
+	Element(String name, Node positiveNode, Node negativeNode, double value) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;

@@ -3,10 +3,10 @@ import java.util.ArrayList;
 public class Circuit {
 	ArrayList<Element> allElements = new ArrayList<>();
 	ArrayList<Node> allNodes = new ArrayList<>();
-	double time;
-	double dt;
-	double dv;
-	double di;
+	private double time;
+	private double dt;
+	private double dv;
+	private double di;
 
 	static boolean aBoolean = true;
 	boolean errorCheck() {
@@ -16,18 +16,28 @@ public class Circuit {
 	}
 
 	void neighbourCheck(Node a) {
-		if(a.neighbours.size() == 0) {
+		if(a.getNeighbours().size() == 0) {
 			aBoolean = false;
 			System.out.println("-5");
 		}
 	}
 
 	void groundCheck(Node a) {
-		if(a.name.equals("0")) {
+		if(a.getName().equals("0")) {
 			aBoolean = false;
 			System.out.println("-4");
 		}
 	}
 
-	void run() {}
+	void run() {
+		
+	}
+
+	public void setTime(double time) { this.time = time; }
+
+	public void setDt(double dt) { this.dt = dt; }
+
+	public void setDv(double dv) { this.dv = dv; }
+
+	public void setDi(double di) { this.di = di; }
 }

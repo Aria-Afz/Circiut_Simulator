@@ -1,13 +1,17 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Node {
-	double voltage;
-	String name;
-	ArrayList<Double> storedVoltages = new ArrayList<>();
-	ArrayList<Node> neighbours = new ArrayList<>();
+	private double voltage;
+	final private String name;
+	private ArrayList<Double> storedVoltages = new ArrayList<>();
+	private HashMap<Node, Element> neighbours = new HashMap<>();
 	
 	Node (String name) {
 		this.name = name;
 	}
-	
+
+	public HashMap<Node, Element> getNeighbours() { return neighbours; }
+
+	public String getName() { return name; }
 }
