@@ -30,7 +30,10 @@ public class Circuit {
 	}
 
 	void run() {
-		
+		double cycle = time/dt;
+		for (int i = 0; i < cycle; i++) {
+			
+		}
 	}
 
 	public void setTime(double time) { this.time = time; }

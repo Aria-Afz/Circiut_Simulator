@@ -5,15 +5,37 @@ class Element {
 	private final Node positiveNode;
 	private final Node negativeNode;
 	private double value;
-	private double current;
 	private ArrayList<Double> storedVoltages = new ArrayList<>();
 	private ArrayList<Double> storedCurrents = new ArrayList<>();
+
+	// for controlled sources
+	private Element ele;
+	private double k;
+	private Node a;
+	private Node b;
 	
 	Element(String name, Node positiveNode, Node negativeNode, double value) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
 		this.value = value;
+	}
+
+	Element(String name, Node positiveNode, Node negativeNode, Element ele, double k) {
+		this.name = name;
+		this.negativeNode = negativeNode;
+		this.positiveNode = positiveNode;
+		this.ele = ele;
+		this.k = k;
+	}
+
+	Element(String name, Node positiveNode, Node negativeNode, Node a, Node b, double k) {
+		this.name = name;
+		this.positiveNode = positiveNode;
+		this.negativeNode = negativeNode;
+		this.a = a;
+		this.b = b;
+		this.k = k;
 	}
 	
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
@@ -24,6 +46,10 @@ class Element {
 				return getVoltage(cycle) / value;
 			case 'I':
 				return value;
+			case 'F':
+				return k * ele.getCurrent(cycle,dt);
+			case 'G':
+				return k * (a.getVoltage() - b.getVoltage());
 			case 'L':
 				double i = 0;
 				for(int j = 0; j < cycle; j++)
@@ -32,9 +58,9 @@ class Element {
 			case 'C':
 				if (cycle == 0)
 					return 0;
-				return (getVoltage(cycle) - getVoltage(cycle - 1)) / dt;
+				return value * (getVoltage(cycle) - getVoltage(cycle - 1)) / dt;
 		}
 		return 0;
 	}
-	
+
 }
