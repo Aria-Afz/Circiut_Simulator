@@ -8,6 +8,7 @@ public class Node {
 	private HashMap<Node, String> neighbours = new HashMap<>();
 	
 	Node (String name) {
+		voltage = 0;
 		this.name = name;
 	}
 

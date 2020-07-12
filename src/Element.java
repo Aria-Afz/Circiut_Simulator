@@ -13,7 +13,14 @@ class Element {
 	private double k;
 	private Node a;
 	private Node b;
-	
+
+	// for ac sources
+	private double v;
+	private double u;
+	private double frequency;
+	private double phase;
+
+	// for RLC, Diode and LTI sources
 	Element(String name, Node positiveNode, Node negativeNode, double value) {
 		this.name = name;
 		this.positiveNode = positiveNode;
@@ -21,6 +28,7 @@ class Element {
 		this.value = value;
 	}
 
+	// for current controlled sources (F)
 	Element(String name, Node positiveNode, Node negativeNode, Element ele, double k) {
 		this.name = name;
 		this.negativeNode = negativeNode;
@@ -29,6 +37,7 @@ class Element {
 		this.k = k;
 	}
 
+	// for voltage controlled sources (G)
 	Element(String name, Node positiveNode, Node negativeNode, Node a, Node b, double k) {
 		this.name = name;
 		this.positiveNode = positiveNode;
@@ -37,7 +46,17 @@ class Element {
 		this.b = b;
 		this.k = k;
 	}
-	
+
+	// for ac sources (H)
+	Element(String name, Node positiveNode, Node negativeNode, double v, double u, double frequency, double phase) {
+		this.name = name;
+		this.positiveNode = positiveNode;
+		this.negativeNode = negativeNode;
+		this.v = v;
+		this.u = u;
+		this.frequency = frequency;
+		this.phase = phase;
+	}
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
 
 	public double getCurrent(int cycle, int dt) {
@@ -50,6 +69,8 @@ class Element {
 				return k * ele.getCurrent(cycle,dt);
 			case 'G':
 				return k * (a.getVoltage() - b.getVoltage());
+			case 'H':
+				return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
 			case 'L':
 				double i = 0;
 				for(int j = 0; j < cycle; j++)
