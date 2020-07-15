@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class Element {
 	private final String name;
-	private final Node positiveNode;
-	private final Node negativeNode;
+	private final String positiveNode;
+	private final String negativeNode;
 	private double value;
 	private ArrayList<Double> storedVoltages = new ArrayList<>();
 	private ArrayList<Double> storedCurrents = new ArrayList<>();
@@ -11,8 +12,8 @@ class Element {
 	// for controlled sources
 	private Element ele;
 	private double k;
-	private Node a;
-	private Node b;
+	private String nodeA;
+	private String nodeB;
 
 	// for ac sources
 	private double v;
@@ -21,7 +22,7 @@ class Element {
 	private double phase;
 
 	// for RLC, Diode and LTI sources
-	Element(String name, Node positiveNode, Node negativeNode, double value) {
+	Element(String name, String positiveNode, String negativeNode, double value) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
@@ -29,7 +30,7 @@ class Element {
 	}
 
 	// for current controlled sources (F)
-	Element(String name, Node positiveNode, Node negativeNode, Element ele, double k) {
+	Element(String name, String positiveNode, String negativeNode, Element ele, double k) {
 		this.name = name;
 		this.negativeNode = negativeNode;
 		this.positiveNode = positiveNode;
@@ -38,17 +39,17 @@ class Element {
 	}
 
 	// for voltage controlled sources (G)
-	Element(String name, Node positiveNode, Node negativeNode, Node a, Node b, double k) {
+	Element(String name, String positiveNode, String negativeNode, String nodeA, String nodeB, double k) { // todo need better way using String instead of Node
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
-		this.a = a;
-		this.b = b;
+		this.nodeA = nodeA;
+		this.nodeB = nodeB;
 		this.k = k;
 	}
 
 	// for ac sources (H)
-	Element(String name, Node positiveNode, Node negativeNode, double v, double u, double frequency, double phase) {
+	Element(String name, String positiveNode, String negativeNode, double v, double u, double frequency, double phase) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
@@ -59,18 +60,13 @@ class Element {
 	}
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
 
-	public double getCurrent(int cycle, int dt) {
+	public double getCurrent(int cycle, int dt, HashMap<String, Node> n) {
 		switch (name.charAt(0)) {
-			case 'R':
-				return getVoltage(cycle) / value;
-			case 'I':
-				return value;
-			case 'F':
-				return k * ele.getCurrent(cycle,dt);
-			case 'G':
-				return k * (a.getVoltage() - b.getVoltage());
-			case 'H':
-				return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
+			case 'R':	return getVoltage(cycle) / value;
+			case 'I':	return value;
+			case 'F': 	return k * ele.getCurrent(cycle, dt, n);
+			case 'G': 	return k * (n.get(nodeA).getVoltage(cycle) - n.get(nodeB).getVoltage(cycle));
+			case 'H': 	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
 			case 'L':
 				double i = 0;
 				for(int j = 0; j < cycle; j++)
@@ -84,4 +80,5 @@ class Element {
 		return 0;
 	}
 
+	public String getName() { return name;}
 }

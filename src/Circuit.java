@@ -1,33 +1,33 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Circuit {
-	ArrayList<Element> allElements = new ArrayList<>();
-	ArrayList<Node> allNodes = new ArrayList<>();
+	HashMap<String, Element> allElements = new HashMap<>();
+	HashMap<String, Node> allNodes = new HashMap<>();
 	private double time;
 	private double dt;
 	private double dv;
 	private double di;
 
-	static boolean aBoolean = true;
-	boolean errorCheck() {
-		allNodes.forEach(this::groundCheck);  // very very nice
-		allNodes.forEach(this::neighbourCheck); // again very very nice
-		return aBoolean; // todo need to be completed
-	}
-
-	void neighbourCheck(Node a) {
-		if(a.getNeighbours().size() == 0) {
-			aBoolean = false;
-			System.out.println("-5");
-		}
-	}
-
-	void groundCheck(Node a) {
-		if(a.getName().equals("0")) {
-			aBoolean = false;
-			System.out.println("-4");
-		}
-	}
+//	static boolean aBoolean = true;
+//	boolean errorCheck() {
+//		allNodes.forEach(this::groundCheck);  // very very nice
+//		allNodes.forEach(this::neighbourCheck); // again very very nice
+//		return aBoolean; // todo need to be completed
+//	}
+//
+//	void neighbourCheck(Node a) {
+//		if(a.getNeighbours().size() == 0) {
+//			aBoolean = false;
+//			System.out.println("-5");
+//		}
+//	}
+//
+//	void groundCheck(Node a) {
+//		if(a.getName().equals("0")) {
+//			aBoolean = false;
+//			System.out.println("-4");
+//		}
+//	}
 
 	void run() {
 		double cycle = time/dt;
@@ -43,4 +43,5 @@ public class Circuit {
 	public void setDv(double dv) { this.dv = dv; }
 
 	public void setDi(double di) { this.di = di; }
+
 }

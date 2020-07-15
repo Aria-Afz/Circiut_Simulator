@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -8,7 +9,7 @@ public class Main {
 		Circuit cir = new Circuit();
 		File inputFile = new File("Circuit.txt");
 		int k = readFile(inputFile, cir);
-		if (k == 0 && cir.errorCheck())
+		if (k == 0 /*&& cir.errorCheck()*/)
 			cir.run();
 		else
 			System.out.println("Invalid Input in line " + k);
@@ -56,20 +57,13 @@ public class Main {
 		if (a.contains("[^\\d][^.]")) { //todo check prefix
 			double x = Double.parseDouble(a.substring(0, a.length() - 1));
 			switch (a.charAt(a.length() - 1)) {
-				case 'p':
-					return x * Math.pow(10, -12);
-				case 'n':
-					return x * Math.pow(10, -9);
-				case 'u':
-					return x * Math.pow(10, -6);
-				case 'm':
-					return x * Math.pow(10, -3);
-				case 'k':
-					return x * Math.pow(10, 3);
-				case 'M':
-					return x * Math.pow(10, 6);
-				case 'G':
-					return x * Math.pow(10, 9);
+				case 'p': 	return x * Math.pow(10, -12);
+				case 'n': 	return x * Math.pow(10, -9);
+				case 'u': 	return x * Math.pow(10, -6);
+				case 'm': 	return x * Math.pow(10, -3);
+				case 'k': 	return x * Math.pow(10, 3);
+				case 'M': 	return x * Math.pow(10, 6);
+				case 'G': 	return x * Math.pow(10, 9);
 			}
 		} else
 			return Double.parseDouble(a);
@@ -78,10 +72,28 @@ public class Main {
 
 	static void addElement(String input, Circuit cir) {
 		String[] arr = input.trim().split(" ");
-		Node p = new Node(arr[1]);
-		Node n = new Node(arr[2]);
-		cir.allNodes.add(p);
-		cir.allNodes.add(n);
-		cir.allElements.add(new Element(arr[0], p, n, unitPrefix(arr[3])));
+		Element e;
+		if (arr.length == 4)
+			e = new Element(arr[0], arr[1], arr[2], unitPrefix(arr[3]));
+		else if (arr.length == 5)
+			e = new Element(arr[0], arr[1], arr[2], cir.allElements.get(arr[3]), unitPrefix(arr[4]));
+		else if (arr.length == 6)
+			e = new Element(arr[0], arr[1], arr[2], arr[3], arr[4], unitPrefix(arr[5]));
+		else
+			e = new Element(arr[0], arr[1], arr[2], unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
+		cir.allElements.put(arr[0], e);
+		if (cir.allNodes.containsKey(arr[1])) {
+			HashMap<String, String> neighbours = cir.allNodes.get(arr[1]).getNeighbours();
+			neighbours.put(arr[2], e.getName());
+			cir.allNodes.get(arr[1]).setNeighbours(neighbours);
+		} else
+			cir.allNodes.put(arr[1], new Node(arr[1]));
+		if (cir.allNodes.containsKey(arr[2])) {
+			HashMap<String, String> neighbours = cir.allNodes.get(arr[2]).getNeighbours();
+			neighbours.put(arr[1], e.getName());
+			cir.allNodes.get(arr[2]).setNeighbours(neighbours);
+		} else
+			cir.allNodes.put(arr[2], new Node(arr[2]));
 	}
+
 }
