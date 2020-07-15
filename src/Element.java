@@ -39,7 +39,7 @@ class Element {
 	}
 
 	// for voltage controlled sources (G)
-	Element(String name, String positiveNode, String negativeNode, String nodeA, String nodeB, double k) { // todo need better way using String instead of Node
+	Element(String name, String positiveNode, String negativeNode, String nodeA, String nodeB, double k) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
