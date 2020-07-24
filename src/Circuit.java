@@ -13,7 +13,7 @@ public class Circuit {
 //	boolean errorCheck() {
 //		allNodes.forEach(this::groundCheck);  // very very nice
 //		allNodes.forEach(this::neighbourCheck); // again very very nice
-//		return aBoolean; // todo need to be completed
+//		return aBoolean;
 //	}
 //
 //	void neighbourCheck(Node a) {
@@ -31,20 +31,47 @@ public class Circuit {
 //	}
 
 	void run() {
-		for (int i = 1; i <= time/dt; i++)
+		for (int i = 1; i <= time / dt; i++) {
 			nodeUpdate(i);
+			for (Map.Entry<String, Element> ele : allElements.entrySet()) {
+				ele.getValue().getStoredVoltages().add(
+						allNodes.get(ele.getValue().getPositiveNode()).getVoltage(i) -
+						allNodes.get(ele.getValue().getNegativeNode()).getVoltage(i));
+				ele.getValue().getStoredCurrents().add(ele.getValue().getCurrent(i, dt, allNodes));
+			}
+		}
 	}
 
 	void nodeUpdate(int cycle) {
-		for(Map.Entry<Byte, Node> e : allNodes.entrySet()) {
-			if (e.getKey() != 0) {
-				double v1 = e.getValue().getVoltage(cycle - 1), v2 = v1 - dv, v3 = v1 + dv;
-				double sum1 = 0, sum2 = 0, sum3 = 0;
-				for (Map.Entry<String, String> n : e.getValue().getNeighbours().entrySet()) {
-					Element ele = allElements.get(n.getValue());
+		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
+			if (e.getKey() != 0)
+				for (Map.Entry<String, String> n : e.getValue().getNeighbours().entrySet())
+					sumCalculate(allElements.get(n.getValue()), cycle);
+		}
+	}
 
-				}
-			}
+	void sumCalculate(Element ele, int cycle) {
+		double sum1 = 0, sum2 = 0, sum3 = 0, v = ele.getVoltage(cycle - 1);
+	}
+
+	void printResult() {
+		System.out.println("Node's Voltages :");
+		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
+			System.out.print(e.getKey() + " : ");
+			e.getValue().getStoredVoltage().forEach(x -> System.out.print(x + " "));
+			System.out.println();
+		}
+		System.out.println("Element's Voltages :");
+		for (Map.Entry<String, Element> ele : allElements.entrySet()) {
+			System.out.print(ele.getKey() + " : ");
+			ele.getValue().getStoredVoltages().forEach(x -> System.out.print(x + " "));
+			System.out.println();
+		}
+		System.out.println("Element's Currents :");
+		for (Map.Entry<String, Element> ele : allElements.entrySet()) {
+			System.out.print(ele.getKey() + " : ");
+			ele.getValue().getStoredCurrents().forEach(x -> System.out.print(x + " "));
+			System.out.println();
 		}
 	}
 

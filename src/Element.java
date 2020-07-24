@@ -69,7 +69,7 @@ class Element {
 
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
 
-	public double getCurrent(int cycle, int dt, HashMap<Byte, Node> n) {
+	public double getCurrent(int cycle, double dt, HashMap<Byte, Node> n) {
 		switch (name.charAt(0)) {
 			case 'R':	return getVoltage(cycle) / value;
 			case 'I':	return value;
@@ -91,4 +91,8 @@ class Element {
 	public Byte getPositiveNode() { return positiveNode; }
 
 	public Byte getNegativeNode() { return negativeNode; }
+
+	public ArrayList<Double> getStoredVoltages() { return storedVoltages; }
+
+	public ArrayList<Double> getStoredCurrents() { return storedCurrents; }
 }

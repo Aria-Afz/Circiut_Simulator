@@ -8,10 +8,12 @@ public class Main {
 		Circuit cir = new Circuit();
 		File inputFile = new File("Circuit.txt");
 		int k = readFile(inputFile, cir);
-		if (k == 0 /*&& cir.errorCheck()*/)
+		if (k == 0 /*&& cir.errorCheck()*/) {
 			cir.run();
-		else
+			cir.printResult();
+		} else
 			System.out.println("Invalid Input in line " + k);
+
 	}
 
 	static int readFile(File circuit, Circuit cir) throws FileNotFoundException {

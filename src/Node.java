@@ -20,6 +20,8 @@ public class Node {
 
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
 
+	public ArrayList<Double> getStoredVoltage() { return storedVoltages; }
+
 //	public boolean getVisited() { return visited; }
 //
 //	public void setVisited(boolean visited) { this.visited = visited; }
