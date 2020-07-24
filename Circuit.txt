@@ -1,0 +1,8 @@
+*salam man be to yar ghadimi
+R1 0 1 100
+I1 0 1 5
+dv 1m
+dt 1m
+di 1m
+.tran 10m
+END

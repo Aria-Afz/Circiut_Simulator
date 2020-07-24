@@ -1,8 +1,9 @@
 import java.util.HashMap;
+import java.util.Map;
 
 public class Circuit {
 	HashMap<String, Element> allElements = new HashMap<>();
-	HashMap<String, Node> allNodes = new HashMap<>();
+	HashMap<Byte, Node> allNodes = new HashMap<>();
 	private double time;
 	private double dt;
 	private double dv;
@@ -30,9 +31,20 @@ public class Circuit {
 //	}
 
 	void run() {
-		double cycle = time/dt;
-		for (int i = 0; i < cycle; i++) {
-			
+		for (int i = 1; i <= time/dt; i++)
+			nodeUpdate(i);
+	}
+
+	void nodeUpdate(int cycle) {
+		for(Map.Entry<Byte, Node> e : allNodes.entrySet()) {
+			if (e.getKey() != 0) {
+				double v1 = e.getValue().getVoltage(cycle - 1), v2 = v1 - dv, v3 = v1 + dv;
+				double sum1 = 0, sum2 = 0, sum3 = 0;
+				for (Map.Entry<String, String> n : e.getValue().getNeighbours().entrySet()) {
+					Element ele = allElements.get(n.getValue());
+
+				}
+			}
 		}
 	}
 
