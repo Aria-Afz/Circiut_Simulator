@@ -6,8 +6,8 @@ class Element {
 	private final byte positiveNode;
 	private final byte negativeNode;
 	private double value;
-	private ArrayList<Double> storedVoltages = new ArrayList<>();
-	private ArrayList<Double> storedCurrents = new ArrayList<>();
+	ArrayList<Double> storedVoltages = new ArrayList<>();
+	ArrayList<Double> storedCurrents = new ArrayList<>();
 
 	// for controlled sources
 	private Element ele;
@@ -92,7 +92,7 @@ class Element {
 
 	public Byte getNegativeNode() { return negativeNode; }
 
-	public ArrayList<Double> getStoredVoltages() { return storedVoltages; }
+	//public ArrayList<Double> getStoredVoltages() { return storedVoltages; }
 
-	public ArrayList<Double> getStoredCurrents() { return storedCurrents; }
+	//public ArrayList<Double> getStoredCurrents() { return storedCurrents; }
 }

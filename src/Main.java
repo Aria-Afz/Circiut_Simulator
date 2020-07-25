@@ -85,17 +85,17 @@ public class Main {
 		cir.allElements.put(arr[0], e);
 		byte a = Byte.parseByte(arr[1]);
 		if (cir.allNodes.containsKey(a)) {
-			HashMap<String, String> neighbours = cir.allNodes.get(a).getNeighbours();
-			neighbours.put(arr[2], e.getName());
+			HashMap<Byte, String> neighbours = cir.allNodes.get(a).getNeighbours();
+			neighbours.put(Byte.parseByte(arr[2]), e.getName());
 			cir.allNodes.get(a).setNeighbours(neighbours);
 		} else
-			cir.allNodes.put(a, new Node(arr[1]));
+			cir.allNodes.put(a, new Node(a));
 		if (cir.allNodes.containsKey(a)) {
-			HashMap<String, String> neighbours = cir.allNodes.get(a).getNeighbours();
-			neighbours.put(arr[1], e.getName());
+			HashMap<Byte, String> neighbours = cir.allNodes.get(a).getNeighbours();
+			neighbours.put(a, e.getName());
 			cir.allNodes.get(a).setNeighbours(neighbours);
 		} else
-			cir.allNodes.put(a, new Node(arr[2]));
+			cir.allNodes.put(a, new Node(a));
 	}
 
 }
