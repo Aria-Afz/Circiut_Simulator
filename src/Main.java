@@ -8,7 +8,7 @@ public class Main {
 		Circuit cir = new Circuit();
 		File inputFile = new File("Circuit.txt");
 		int k = readFile(inputFile, cir);
-		if (k == 0 /*&& cir.errorCheck()*/) {
+		if (k == 0 && cir.errorCheck()) {
 			cir.run();
 			cir.printResult();
 		} else
@@ -56,7 +56,13 @@ public class Main {
 		if (a.charAt(0) == '-')
 			return -1;
 		if (!(a.charAt(a.length() - 1) > 47 && a.charAt(a.length() - 1) < 58)) {
-			double x = Double.parseDouble(a.substring(0, a.length() - 1));
+			double x;
+			try {
+				x = Double.parseDouble(a.substring(0, a.length() - 1));
+			}
+			catch (NumberFormatException e) {
+				return -1;
+			}
 			switch (a.charAt(a.length() - 1)) {
 				case 'p': 	return x * Math.pow(10, -12);
 				case 'n': 	return x * Math.pow(10, -9);
@@ -74,16 +80,22 @@ public class Main {
 	static void addElement(String input, Circuit cir) {
 		String[] arr = input.trim().split(" ");
 		Element e;
+		byte a, b;
+		try {
+			a = Byte.parseByte(arr[1]);
+			b = Byte.parseByte(arr[2]);
+		} catch(NumberFormatException ex) {
+			return;
+		}
 		if (arr.length == 4)
-			e = new Element(arr[0], arr[1], arr[2], unitPrefix(arr[3]));
+			e = new Element(arr[0], a, b, unitPrefix(arr[3]));
 		else if (arr.length == 5)
-			e = new Element(arr[0], arr[1], arr[2], cir.allElements.get(arr[3]), unitPrefix(arr[4]));
+			e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
 		else if (arr.length == 6)
-			e = new Element(arr[0], arr[1], arr[2], arr[3], arr[4], unitPrefix(arr[5]));
+			e = new Element(arr[0], a, b, arr[3], arr[4], unitPrefix(arr[5]));
 		else
-			e = new Element(arr[0], arr[1], arr[2], unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
+			e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
 		cir.allElements.put(arr[0], e);
-		byte a = Byte.parseByte(arr[1]), b = Byte.parseByte(arr[2]);
 		if (cir.allNodes.containsKey(a)) {
 			HashMap<Byte, String> neighbours = cir.allNodes.get(a).getNeighbours();
 			neighbours.put(b, e.getName());

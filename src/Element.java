@@ -22,20 +22,20 @@ class Element {
 	private double phase;
 
 	// for RLC, Diode and LTI sources
-	Element(String name, String positiveNode, String negativeNode, double value) {
+	Element(String name, byte positiveNode, byte negativeNode, double value) {
 		this.name = name;
-		this.positiveNode = Byte.parseByte(positiveNode);
-		this.negativeNode = Byte.parseByte(negativeNode);
+		this.positiveNode = positiveNode;
+		this.negativeNode = negativeNode;
 		this.value = value;
 		storedCurrents.add((double) 0);
 		storedVoltages.add((double) 0);
 	}
 
 	// for current controlled sources (F)
-	Element(String name, String positiveNode, String negativeNode, Element ele, double k) {
+	Element(String name, byte positiveNode, byte negativeNode, Element ele, double k) {
 		this.name = name;
-		this.positiveNode = Byte.parseByte(positiveNode);
-		this.negativeNode = Byte.parseByte(negativeNode);
+		this.positiveNode = positiveNode;
+		this.negativeNode = negativeNode;
 		this.ele = ele;
 		this.k = k;
 		storedCurrents.add((double) 0);
@@ -43,10 +43,10 @@ class Element {
 	}
 
 	// for voltage controlled sources (G)
-	Element(String name, String positiveNode, String negativeNode, String nodeA, String nodeB, double k) {
+	Element(String name, byte positiveNode, byte negativeNode, String nodeA, String nodeB, double k) {
 		this.name = name;
-		this.positiveNode = Byte.parseByte(positiveNode);
-		this.negativeNode = Byte.parseByte(negativeNode);
+		this.positiveNode = positiveNode;
+		this.negativeNode = negativeNode;
 		this.nodeA = Byte.parseByte(nodeA);
 		this.nodeB = Byte.parseByte(nodeB);
 		this.k = k;
@@ -55,10 +55,10 @@ class Element {
 	}
 
 	// for ac sources (H)
-	Element(String name, String positiveNode, String negativeNode, double v, double u, double frequency, double phase) {
+	Element(String name, byte positiveNode, byte negativeNode, double v, double u, double frequency, double phase) {
 		this.name = name;
-		this.positiveNode = Byte.parseByte(positiveNode);
-		this.negativeNode = Byte.parseByte(negativeNode);
+		this.positiveNode = positiveNode;
+		this.negativeNode = negativeNode;
 		this.v = v;
 		this.u = u;
 		this.frequency = frequency;

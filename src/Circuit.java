@@ -9,26 +9,29 @@ public class Circuit {
 	private double dv;
 	private double di;
 
-//	static boolean aBoolean = true;
-//	boolean errorCheck() {
-//		allNodes.forEach(this::groundCheck);  // very very nice
-//		allNodes.forEach(this::neighbourCheck); // again very very nice
-//		return aBoolean;
-//	}
-//
-//	void neighbourCheck(Node a) {
-//		if(a.getNeighbours().size() == 0) {
-//			aBoolean = false;
-//			System.out.println("-5");
-//		}
-//	}
-//
-//	void groundCheck(Node a) {
-//		if(a.getName().equals("0")) {
-//			aBoolean = false;
-//			System.out.println("-4");
-//		}
-//	}
+	static boolean aBoolean = true;
+	boolean errorCheck() {
+		for(Map.Entry<Byte, Node> e : allNodes.entrySet()) {
+			neighbourCheck(e.getValue());
+			groundCheck(e.getValue());
+		}
+		return aBoolean;
+	}
+
+
+	void neighbourCheck(Node a) {
+		if(a.getNeighbours().size() == 1) {
+			aBoolean = false;
+			System.out.println("-5");
+		}
+	}
+
+	private void groundCheck(Node a) {
+		if(a.getName() == 0) {
+			aBoolean = false;
+			System.out.println("-4");
+		}
+	}
 
 	void run() {
 		for (int i = 1; i <= time / dt; i++) {
