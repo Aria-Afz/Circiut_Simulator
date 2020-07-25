@@ -79,7 +79,6 @@ public class Circuit {
 			e.storedVoltages.add(v);
 		else
 			e.storedVoltages.add(v - dv);
-
 	}
 
 	void printResult() {
