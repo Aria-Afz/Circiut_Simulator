@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Circuit {
-	HashMap<String, Element> allElements = new HashMap<>();
+	static HashMap<String, Element> allElements = new HashMap<>();
 	HashMap<Byte, Node> allNodes = new HashMap<>();
 	private double time;
 	private double dt;

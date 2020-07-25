@@ -9,6 +9,10 @@ class Element {
 	ArrayList<Double> storedVoltages = new ArrayList<>();
 	ArrayList<Double> storedCurrents = new ArrayList<>();
 
+	//برای تشخیص نوع المان در گزافیک
+	int isItControlledSource = 0;
+	int isItAcSourse = 0;
+
 	// for controlled sources
 	private Element ele;
 	private double k;
@@ -40,6 +44,7 @@ class Element {
 		this.k = k;
 		storedCurrents.add((double) 0);
 		storedVoltages.add((double) 0);
+		isItControlledSource=1;
 	}
 
 	// for voltage controlled sources (G)
@@ -52,6 +57,7 @@ class Element {
 		this.k = k;
 		storedCurrents.add((double) 0);
 		storedVoltages.add((double) 0);
+		isItControlledSource=1;
 	}
 
 	// for ac sources (H)
@@ -65,6 +71,7 @@ class Element {
 		this.phase = phase;
 		storedCurrents.add((double) 0);
 		storedVoltages.add((double) 0);
+		isItAcSourse=1;
 	}
 
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }

@@ -9,6 +9,9 @@ public class Main {
 		File inputFile = new File("Circuit.txt");
 		int k = readFile(inputFile, cir);
 		if (k == 0 /*&& cir.errorCheck()*/) {
+			//for drawing the circuit
+			//DrawCicuit.drawCircuit();
+
 			cir.run();
 			cir.printResult();
 		} else
@@ -46,8 +49,9 @@ public class Main {
 					cir.setDi(unitPrefix(arr[1]));
 			} else if (arr[0].charAt(0) == '*')
 				continue;
-			else
+			else {
 				addElement(data, cir);
+			}
 			numLine++;
 		}
 	}
