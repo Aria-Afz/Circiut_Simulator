@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -84,46 +83,40 @@ public class Main {
 	static void addElement(String input, Circuit cir) {
 		String[] arr = input.trim().split(" ");
 		Element e;
-		byte a, b;
+		byte A, B;
 		try {
-			a = Byte.parseByte(arr[1]);
-			b = Byte.parseByte(arr[2]);
+			A = Byte.parseByte(arr[1]);
+			B = Byte.parseByte(arr[2]);
 		} catch (NumberFormatException ex) {
 			return;
 		}
-		if (cir.allNodes.)
-
-
-//		String[] arr = input.trim().split(" ");
-//		Element e;
-//		byte a, b;
-//		try {
-//			a = Byte.parseByte(arr[1]);
-//			b = Byte.parseByte(arr[2]);
-//		} catch(NumberFormatException ex) {
-//			return;
-//		}
-//		if (arr.length == 4)
-//			e = new Element(arr[0], a, b, unitPrefix(arr[3]));
-//		else if (arr.length == 5)
-//			e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
-//		else if (arr.length == 6)
-//			e = new Element(arr[0], a, b, arr[3], arr[4], unitPrefix(arr[5]));
-//		else
-//			e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
-//		cir.allElements.put(arr[0], e);
-//		if (cir.allNodes.containsKey(a)) {
-//			HashMap<Byte, String> neighbours = cir.allNodes.get(a).getNeighbours();
-//			neighbours.put(Byte.parseByte(arr[2]), e.getName());
-//			cir.allNodes.get(a).setNeighbours(neighbours);
-//		} else
-//			cir.allNodes.put(a, new Node(a));
-//		if (cir.allNodes.containsKey(a)) {
-//			HashMap<Byte, String> neighbours = cir.allNodes.get(a).getNeighbours();
-//			neighbours.put(a, e.getName());
-//			cir.allNodes.get(a).setNeighbours(neighbours);
-//		} else
-//			cir.allNodes.put(a, new Node(a));
+		Node a = new Node((byte) 0), b = new Node((byte) 1);
+		if (arr.length == 4)
+			e = new Element(arr[0], a, b, unitPrefix(arr[3]));
+		else if (arr.length == 5)
+			e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
+		else if (arr.length == 6) {
+			byte C, D;
+			Node c, d;
+			try {
+				C = Byte.parseByte(arr[3]);
+				D = Byte.parseByte(arr[4]);
+			} catch (NumberFormatException ex) {
+				return;
+			}
+			if (!cir.allNodes.containsKey(C)) {
+				c = new Node(C);
+				cir.allNodes.put(C, c);
+			} else
+				c = cir.allNodes.get(C);
+			if (!cir.allNodes.containsKey(D)) {
+				d = new Node(D);
+				cir.allNodes.put(D, d);
+			} else
+				d = cir.allNodes.get(D);
+			e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5]));
+		} else
+			e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
+		cir.allElements.put(e.getName(), e);
 	}
-
 }

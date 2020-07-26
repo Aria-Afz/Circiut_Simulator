@@ -1,10 +1,10 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Circuit {
-	ArrayList<Element> allElements = new ArrayList<>();
-	LinkedList<Node> allNodes = new LinkedList<>();
+	HashMap<String, Element> allElements = new HashMap<>();
+	HashMap<Byte, Node> allNodes = new HashMap<>();
+
 	private double time;
 	private double dt;
 	private double dv;
@@ -12,8 +12,10 @@ public class Circuit {
 
 	static boolean aBoolean = true;
 	boolean errorCheck() {
-		allNodes.forEach(this::neighbourCheck);
-		allNodes.forEach(this::groundCheck);
+		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
+			neighbourCheck(e.getValue());
+			groundCheck(e.getValue());
+		}
 		return aBoolean;
 	}
 
