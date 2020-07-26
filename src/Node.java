@@ -1,24 +1,23 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Node {
 	final private byte name;
-	//private boolean visited = false;
+	// boolean visited = false;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
-	private HashMap<Byte, String> neighbours = new HashMap<>();
+	ArrayList<Element> neighbours = new ArrayList<>();
 	
 	Node (byte name) {
 		this.name = name;
 		storedVoltages.add((double) 0);
 	}
 
-	public void setNeighbours(HashMap<Byte, String> neighbours) { this.neighbours = neighbours; }
-
-	public HashMap<Byte, String> getNeighbours() { return neighbours; }
-
 	public byte getName() { return name; }
 
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
+
+//	public ArrayList<Element> getNeighbours() { return neighbours; }
+//
+//	public void setNeighbours(ArrayList<Element> neighbours) { this.neighbours = neighbours; }
 
 //	public ArrayList<Double> getStoredVoltage() { return storedVoltages; }
 //

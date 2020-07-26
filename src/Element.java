@@ -1,23 +1,18 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 class Element {
 	private final String name;
-	private final byte positiveNode;
-	private final byte negativeNode;
+	private final Node positiveNode;
+	private final Node negativeNode;
 	private double value;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
 	ArrayList<Double> storedCurrents = new ArrayList<>();
 
-	//برای تشخیص نوع المان در گزافیک
-	int isItControlledSource = 0;
-	int isItAcSourse = 0;
-
 	// for controlled sources
 	private Element ele;
 	private double k;
-	private byte nodeA;
-	private byte nodeB;
+	private Node nodeA;
+	private Node nodeB;
 
 	// for ac sources
 	private double v;
@@ -25,8 +20,8 @@ class Element {
 	private double frequency;
 	private double phase;
 
-	// for RLC, Diode and LTI sources
-	Element(String name, byte positiveNode, byte negativeNode, double value) {
+	// for RLC, Diode and DC sources (I)(V)
+	Element(String name, Node positiveNode, Node negativeNode, double value) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
@@ -35,8 +30,8 @@ class Element {
 		storedVoltages.add((double) 0);
 	}
 
-	// for current controlled sources (F)
-	Element(String name, byte positiveNode, byte negativeNode, Element ele, double k) {
+	// for current controlled sources (F)(W)
+	Element(String name, Node positiveNode, Node negativeNode, Element ele, double k) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
@@ -44,24 +39,22 @@ class Element {
 		this.k = k;
 		storedCurrents.add((double) 0);
 		storedVoltages.add((double) 0);
-		isItControlledSource=1;
 	}
 
-	// for voltage controlled sources (G)
-	Element(String name, byte positiveNode, byte negativeNode, String nodeA, String nodeB, double k) {
+	// for voltage controlled sources (G)(X)
+	Element(String name, Node positiveNode, Node negativeNode, Node nodeA, Node nodeB, double k) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
-		this.nodeA = Byte.parseByte(nodeA);
-		this.nodeB = Byte.parseByte(nodeB);
+		this.nodeA = nodeA;
+		this.nodeB = nodeB;
 		this.k = k;
 		storedCurrents.add((double) 0);
 		storedVoltages.add((double) 0);
-		isItControlledSource=1;
 	}
 
-	// for ac sources (H)
-	Element(String name, byte positiveNode, byte negativeNode, double v, double u, double frequency, double phase) {
+	// for ac sources (H)(Y)
+	Element(String name, Node positiveNode, Node negativeNode, double v, double u, double frequency, double phase) {
 		this.name = name;
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
@@ -71,17 +64,16 @@ class Element {
 		this.phase = phase;
 		storedCurrents.add((double) 0);
 		storedVoltages.add((double) 0);
-		isItAcSourse=1;
 	}
 
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
 
-	public double getCurrent(int cycle, double dt, HashMap<Byte, Node> n) {
+	public double getCurrent(int cycle, double dt) {
 		switch (name.charAt(0)) {
 			case 'R':	return getVoltage(cycle) / value;
 			case 'I':	return value;
-			case 'F': 	return k * ele.getCurrent(cycle, dt, n);
-			case 'G': 	return k * (n.get(nodeA).getVoltage(cycle) - n.get(nodeB).getVoltage(cycle));
+			case 'F': 	return k * ele.getCurrent(cycle, dt);
+			case 'G': 	return k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle));
 			case 'H': 	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
 			case 'C': 	return value * (getVoltage(cycle) - getVoltage(cycle - 1)) / dt;
 			case 'L':
@@ -95,9 +87,9 @@ class Element {
 
 	public String getName() { return name;}
 
-	public Byte getPositiveNode() { return positiveNode; }
+	public Node getPositiveNode() { return positiveNode; }
 
-	public Byte getNegativeNode() { return negativeNode; }
+	public Node getNegativeNode() { return negativeNode; }
 
 	//public ArrayList<Double> getStoredVoltages() { return storedVoltages; }
 
