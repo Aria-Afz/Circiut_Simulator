@@ -26,8 +26,8 @@ class Element {
 		this.positiveNode = positiveNode;
 		this.negativeNode = negativeNode;
 		this.value = value;
-		storedCurrents.add((double) 0);
-		storedVoltages.add((double) 0);
+		storedCurrents.add(0.0d);
+		storedVoltages.add(0.0d);
 	}
 
 	// for current controlled sources (F)(W)
@@ -37,8 +37,8 @@ class Element {
 		this.negativeNode = negativeNode;
 		this.ele = ele;
 		this.k = k;
-		storedCurrents.add((double) 0);
-		storedVoltages.add((double) 0);
+		storedCurrents.add(0.0d);
+		storedVoltages.add(0.0d);
 	}
 
 	// for voltage controlled sources (G)(X)
@@ -49,8 +49,8 @@ class Element {
 		this.nodeA = nodeA;
 		this.nodeB = nodeB;
 		this.k = k;
-		storedCurrents.add((double) 0);
-		storedVoltages.add((double) 0);
+		storedCurrents.add(0.0d);
+		storedVoltages.add(0.0d);
 	}
 
 	// for ac sources (H)(Y)
@@ -62,8 +62,8 @@ class Element {
 		this.u = u;
 		this.frequency = frequency;
 		this.phase = phase;
-		storedCurrents.add((double) 0);
-		storedVoltages.add((double) 0);
+		storedCurrents.add(0.0d);
+		storedVoltages.add(0.0d);
 	}
 
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
@@ -71,7 +71,7 @@ class Element {
 	public double getCurrent(int cycle, double dt) {
 		switch (name.charAt(0)) {
 			case 'R':	return getVoltage(cycle) / value;
-			case 'I':	return value;
+			case 'I':	return -value;
 			case 'F': 	return k * ele.getCurrent(cycle, dt);
 			case 'G': 	return k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle));
 			case 'H': 	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);

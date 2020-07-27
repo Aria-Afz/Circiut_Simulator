@@ -2,13 +2,13 @@ import java.util.ArrayList;
 
 public class Node {
 	final private byte name;
-	// boolean visited = false;
+	boolean visited;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
 	ArrayList<Element> neighbours = new ArrayList<>();
 	
 	Node (byte name) {
 		this.name = name;
-		storedVoltages.add((double) 0);
+		storedVoltages.add(0.0d);
 	}
 
 	public byte getName() { return name; }

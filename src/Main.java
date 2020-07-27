@@ -4,46 +4,54 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main (String[] args) throws FileNotFoundException {
+		Scanner sc = new Scanner(System.in);
 		Circuit cir = new Circuit();
-		File inputFile = new File("Circuit.txt");
-		int k = readFile(inputFile, cir);
-		if (k == 0  && cir.errorCheck()) {
-			//for drawing the circuit
-			//DrawCircuit.drawCircuit();
-
-			cir.run();
-			cir.printResult();
-		} else
-			System.out.println("Invalid Input in line " + k);
-
+		if (readFile(new File("Circuit.txt"), cir)) {
+			String input = sc.nextLine();
+			while (!input.equals("END")) {
+				String[] arr = input.split(" +");
+				Node node1, node2;
+				double t;
+				try {
+					node1 = cir.allNodes.get(Byte.parseByte(arr[0]));
+					node2 = cir.allNodes.get(Byte.parseByte(arr[1]));
+					t = Double.parseDouble(arr[2]);
+				} finally {
+					System.out.print("ERROR");
+				}
+				System.out.println(node1.getVoltage(cir.getCycle(t)) - node2.getVoltage(cir.getCycle(t)));
+				input = sc.nextLine();
+			}
+		}
 	}
 
-	static int readFile(File circuit, Circuit cir) throws FileNotFoundException {
+	static boolean readFile(File circuit, Circuit cir) throws FileNotFoundException {
 		Scanner sc = new Scanner(circuit);
-		int numLine = 1;
+		byte numLine = 1;
 		while(true) {
 			String data = sc.nextLine();
 			String[] arr = data.trim().split(" ");
-			if (arr[0].equals("END"))
-				return 0;
-			else if (arr[0].equals(".tran")) {
+			if (arr[0].equals(".tran")) {
 				if (unitPrefix(arr[1]) == -1)
-					return numLine;
-				else
+					break;
+				else {
 					cir.setTime(unitPrefix(arr[1]));
+					cir.run();
+					return true;
+				}
 			} else if (arr[0].equals("dv")) {
 				if (unitPrefix(arr[1]) == -1)
-					return numLine;
+					break;
 				else
 					cir.setDv(unitPrefix(arr[1]));
 			} else if (arr[0].equals("dt")) {
 				if (unitPrefix(arr[1]) == -1)
-					return numLine;
+					break;
 				else
 					cir.setDt(unitPrefix(arr[1]));
 			} else if (arr[0].equals("di")) {
 				if (unitPrefix(arr[1]) == -1)
-					return numLine;
+					break;
 				else
 					cir.setDi(unitPrefix(arr[1]));
 			} else if (arr[0].charAt(0) == '*')
@@ -53,17 +61,18 @@ public class Main {
 			}
 			numLine++;
 		}
+		System.out.println(numLine);
+		return false;
 	}
 
 	static double unitPrefix(String a) {
 		if (a.charAt(0) == '-')
 			return -1;
+		double x;
 		if (!(a.charAt(a.length() - 1) > 47 && a.charAt(a.length() - 1) < 58)) {
-			double x;
 			try {
 				x = Double.parseDouble(a.substring(0, a.length() - 1));
-			}
-			catch (NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				return -1;
 			}
 			switch (a.charAt(a.length() - 1)) {
@@ -76,12 +85,18 @@ public class Main {
 				case 'G': 	return x * Math.pow(10, 9);
 				default:	return -1;
 			}
-		} else
-			return Double.parseDouble(a);
+		} else {
+			try {
+				x = Double.parseDouble(a);
+			} catch (NumberFormatException ex) {
+				return -1;
+			}
+			return x;
+		}
 	}
 
 	static void addElement(String input, Circuit cir) {
-		String[] arr = input.trim().split(" ");
+		String[] arr = input.trim().split(" +");
 		Element e;
 		byte A, B;
 		try {
