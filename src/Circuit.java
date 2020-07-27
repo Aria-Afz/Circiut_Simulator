@@ -15,26 +15,16 @@ public class Circuit {
 
 	static boolean aBoolean = true;
 	boolean errorCheck() {
+		if (!allNodes.containsKey((byte) 0)) {
+			System.out.print("-4");
+			return false;
+		}
 		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
-			neighbourCheck(e.getValue());
-			groundCheck(e.getValue());
-		}
-		return aBoolean;
-	}
-
-
-	void neighbourCheck(Node a) {
-		if(a.neighbours.size() == 1) {
-			aBoolean = false;
-			System.out.println("-5");
-		}
-	}
-
-	private void groundCheck(Node a) {
-		if(a.getName() == 0) {
-			aBoolean = false;
-			System.out.println("-4");
-		}
+			if (e.getValue().neighbours.size() == 1)
+				System.out.print("-5");
+				return false;
+			}
+		return true;
 	}
 
 	void unionCheck() {
@@ -65,19 +55,19 @@ public class Circuit {
 //			Element ele = allElements.get(n.getValue());
 //			e.storedVoltages.remove(cycle);
 //			e.storedVoltages.add(v - dv);
-//			if (ele.getPositiveNode() == e) //todo
+//			if (ele.getPositiveNode() == e)
 //				sum1 -= ele.getCurrent(cycle, dt);
 //			else
 //				sum1 += ele.getCurrent(cycle, dt);
 //			e.storedVoltages.remove(cycle);
 //			e.storedVoltages.add(v + dv);
-//			if (ele.getPositiveNode() == e) // todo
+//			if (ele.getPositiveNode() == e)
 //				sum2 -= ele.getCurrent(cycle, dt);
 //			else
 //				sum2 += ele.getCurrent(cycle, dt);
 //			e.storedVoltages.remove(cycle);
 //			e.storedVoltages.add(v);
-//			if (ele.getPositiveNode() == e) //todo
+//			if (ele.getPositiveNode() == e)
 //				sum3 -= ele.getCurrent(cycle, dt);
 //			else
 //				sum3 += ele.getCurrent(cycle, dt);

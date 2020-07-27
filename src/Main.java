@@ -6,7 +6,8 @@ public class Main {
 	public static void main (String[] args) throws FileNotFoundException {
 		Scanner sc = new Scanner(System.in);
 		Circuit cir = new Circuit();
-		if (readFile(new File("Circuit.txt"), cir)) {
+		if (readFile(new File("Circuit.txt"), cir) && cir.errorCheck()) {
+			cir.run();
 			String input = sc.nextLine();
 			while (!input.equals("END")) {
 				String[] arr = input.split(" +");
@@ -36,7 +37,6 @@ public class Main {
 					break;
 				else {
 					cir.setTime(unitPrefix(arr[1]));
-					cir.run();
 					return true;
 				}
 			} else if (arr[0].equals("dv")) {
@@ -61,7 +61,7 @@ public class Main {
 			}
 			numLine++;
 		}
-		System.out.println(numLine);
+		System.out.print(numLine);
 		return false;
 	}
 
@@ -98,40 +98,46 @@ public class Main {
 	static void addElement(String input, Circuit cir) {
 		String[] arr = input.trim().split(" +");
 		Element e;
-		byte A, B;
+		Node a, b;
 		try {
-			A = Byte.parseByte(arr[1]);
-			B = Byte.parseByte(arr[2]);
+			a = cir.allNodes.get(Byte.parseByte(arr[1]));
 		} catch (NumberFormatException ex) {
 			return;
+		} catch (NullPointerException ex) {
+			a = new Node(Byte.parseByte(arr[1]));
 		}
-		Node a = new Node((byte) 0), b = new Node((byte) 1);
+		try {
+			b = cir.allNodes.get(Byte.parseByte(arr[2]));
+		} catch (NumberFormatException ex) {
+			return;
+		} catch (NullPointerException ex) {
+			b = new Node(Byte.parseByte(arr[2]));
+		}
 		if (arr.length == 4)
 			e = new Element(arr[0], a, b, unitPrefix(arr[3]));
 		else if (arr.length == 5)
 			e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
 		else if (arr.length == 6) {
-			byte C, D;
 			Node c, d;
 			try {
-				C = Byte.parseByte(arr[3]);
-				D = Byte.parseByte(arr[4]);
+				c = cir.allNodes.get(Byte.parseByte(arr[3]));
 			} catch (NumberFormatException ex) {
 				return;
+			} catch (NullPointerException ex) {
+				c = new Node(Byte.parseByte(arr[3]));
 			}
-			if (!cir.allNodes.containsKey(C)) {
-				c = new Node(C);
-				cir.allNodes.put(C, c);
-			} else
-				c = cir.allNodes.get(C);
-			if (!cir.allNodes.containsKey(D)) {
-				d = new Node(D);
-				cir.allNodes.put(D, d);
-			} else
-				d = cir.allNodes.get(D);
+			try {
+				d = cir.allNodes.get(Byte.parseByte(arr[1]));
+			} catch (NumberFormatException ex) {
+				return;
+			} catch (NullPointerException ex) {
+				d = new Node(Byte.parseByte(arr[1]));
+			}
 			e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5]));
 		} else
 			e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
 		cir.allElements.put(e.getName(), e);
+		a.neighbours.add(e);
+		b.neighbours.add(e);
 	}
 }
