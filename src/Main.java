@@ -141,18 +141,20 @@ public class Main {
 		} catch (NullPointerException ex) {
 			b = new Node(Byte.parseByte(arr[2]));
 		}
-		if (arr.length == 4) {
+		byte len = (byte) arr.length;
+		char k = arr[0].charAt(0);
+		if (len == 4 && (k == 'R' || k == 'L' || k == 'C' || k == 'D')) {
 			if (unitPrefix(arr[3]) != -1)
 				e = new Element(arr[0], a, b, unitPrefix(arr[3]));
 			else
 				return false;
-		} else if (arr.length == 5) {
+		} else if (len == 5 && (k == 'F' || k == 'H')) {
 			if (cir.allElements.containsKey(arr[3]) && unitPrefix(arr[4]) != -1)
 				e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
 			else
 				return false;
 		}
-		else if (arr.length == 6) {
+		else if (len == 6 && (k == 'G' || k == 'E')) {
 			Node c, d;
 			try {
 				c = cir.allNodes.get(Byte.parseByte(arr[3]));
@@ -172,7 +174,7 @@ public class Main {
 				e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5]));
 			else
 				return false;
-		} else if (arr.length == 7) {
+		} else if (len == 7 && (k == 'I' || k == 'V')) {
 			if (unitPrefix(arr[3]) != -1 && unitPrefix(arr[4]) != -1 && unitPrefix(arr[5]) != -1 && unitPrefix(arr[6]) != -1)
 				e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
 			else

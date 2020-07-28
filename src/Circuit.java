@@ -85,20 +85,19 @@ public class Circuit {
 	void printResult() {
 		System.out.println("Node's Voltages :");
 		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
-			System.out.print(e.getKey() + " : ");
-			e.getValue().storedVoltages.forEach(x -> System.out.print(x + " "));
-			System.out.println();
+			if (e.getValue().getName() != 0) {
+				System.out.print(e.getKey() + " : ");
+				e.getValue().storedVoltages.forEach(x -> System.out.print(x + " "));
+				System.out.println();
+			}
 		}
-		System.out.println("Element's Voltages :");
+		System.out.println("Element's (Voltages Currents Powers) :");
 		for (Map.Entry<String, Element> ele : allElements.entrySet()) {
 			System.out.print(ele.getKey() + " : ");
-			ele.getValue().storedVoltages.forEach(x -> System.out.print(x + " "));
-			System.out.println();
-		}
-		System.out.println("Element's Currents :");
-		for (Map.Entry<String, Element> ele : allElements.entrySet()) {
-			System.out.print(ele.getKey() + " : ");
-			ele.getValue().storedCurrents.forEach(x -> System.out.print(x + " "));
+			Element a = ele.getValue();
+			for (int i = 1; i <= time/dt; i++)
+				System.out.print("(" + a.getVoltage(i) + " " + a.getCurrent(i, dt) + " "
+						+ a.getVoltage(i) * a.getCurrent(i, dt) + ") ");
 			System.out.println();
 		}
 	}
