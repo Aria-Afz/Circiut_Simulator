@@ -39,19 +39,19 @@ public class Main {
 					case 'd':
 						switch(arr[0]) {
 							case "dv":
-								if (unitPrefix(arr[1]) == -1)
+								if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0)
 									break Task;
 								else
 									cir.setDv(unitPrefix(arr[1]));
 								break;
 							case "dt":
-								if (unitPrefix(arr[1]) == -1)
+								if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0)
 									break Task;
 								else
 									cir.setDt(unitPrefix(arr[1]));
 								break;
 							case "di":
-								if (unitPrefix(arr[1]) == -1)
+								if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0)
 									break Task;
 								else
 									cir.setDi(unitPrefix(arr[1]));

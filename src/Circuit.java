@@ -12,7 +12,7 @@ public class Circuit {
 	HashMap<Byte, Node> allNodes = new HashMap<>();
 	LinkedList<Union> allUnions = new LinkedList<>();
 
-	boolean errorCheck() {  //todo print error when dt or dv or di equals to 0
+	boolean errorCheck() {
 		if (!allNodes.containsKey((byte) 0)) {
 			System.out.print("-4");
 			return false;
