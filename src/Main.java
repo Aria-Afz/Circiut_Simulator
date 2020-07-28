@@ -29,38 +29,64 @@ public class Main {
 	static boolean readFile(File circuit, Circuit cir) throws FileNotFoundException {
 		Scanner sc = new Scanner(circuit);
 		byte numLine = 1;
-		while(true) {
-			String data = sc.nextLine();
-			String[] arr = data.trim().split(" ");
-			if (arr[0].equals(".tran")) {
-				if (unitPrefix(arr[1]) == -1)
-					break;
-				else {
-					cir.setTime(unitPrefix(arr[1]));
-					return true;
+		Task:
+			while(true) {
+				String data = sc.nextLine();
+				String[] arr = data.trim().split(" ");
+
+				switch(data.charAt(0)) {
+					case '*':	break;
+					case 'd':
+						switch(arr[0]) {
+							case "dv":
+								if (unitPrefix(arr[1]) == -1)
+									break Task;
+								else
+									cir.setDv(unitPrefix(arr[1]));
+								break;
+							case "dt":
+								if (unitPrefix(arr[1]) == -1)
+									break Task;
+								else
+									cir.setDt(unitPrefix(arr[1]));
+								break;
+							case "di":
+								if (unitPrefix(arr[1]) == -1)
+									break Task;
+								else
+									cir.setDi(unitPrefix(arr[1]));
+								break;
+							default:	break Task;
+						}
+						break;
+					case '.':
+						if (arr[0].equals(".tran")) {
+							if (unitPrefix(arr[1]) == -1)
+								break Task;
+							else {
+								cir.setTime(unitPrefix(arr[1]));
+								return true;
+							}
+						} else
+							break Task;
+					case 'R':
+					case 'L':
+					case 'C':
+					case 'I':
+					case 'F':
+					case 'G':
+					case 'H':
+					case 'V':
+					case 'W':
+					case 'X':
+					case 'Y':
+						if (!addElement(data, cir))
+							break Task;
+						break;
+					default:	break Task;
 				}
-			} else if (arr[0].equals("dv")) {
-				if (unitPrefix(arr[1]) == -1)
-					break;
-				else
-					cir.setDv(unitPrefix(arr[1]));
-			} else if (arr[0].equals("dt")) {
-				if (unitPrefix(arr[1]) == -1)
-					break;
-				else
-					cir.setDt(unitPrefix(arr[1]));
-			} else if (arr[0].equals("di")) {
-				if (unitPrefix(arr[1]) == -1)
-					break;
-				else
-					cir.setDi(unitPrefix(arr[1]));
-			} else if (arr[0].charAt(0) == '*')
-				continue;
-			else {
-				addElement(data, cir);
+				numLine++;
 			}
-			numLine++;
-		}
 		System.out.print(numLine);
 		return false;
 	}
@@ -95,49 +121,65 @@ public class Main {
 		}
 	}
 
-	static void addElement(String input, Circuit cir) {
+	static boolean addElement(String input, Circuit cir) {
 		String[] arr = input.trim().split(" +");
 		Element e;
 		Node a, b;
 		try {
 			a = cir.allNodes.get(Byte.parseByte(arr[1]));
 		} catch (NumberFormatException ex) {
-			return;
+			return false;
 		} catch (NullPointerException ex) {
 			a = new Node(Byte.parseByte(arr[1]));
 		}
 		try {
 			b = cir.allNodes.get(Byte.parseByte(arr[2]));
 		} catch (NumberFormatException ex) {
-			return;
+			return false;
 		} catch (NullPointerException ex) {
 			b = new Node(Byte.parseByte(arr[2]));
 		}
-		if (arr.length == 4)
-			e = new Element(arr[0], a, b, unitPrefix(arr[3]));
-		else if (arr.length == 5)
-			e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
+		if (arr.length == 4) {
+			if (unitPrefix(arr[3]) != -1)
+				e = new Element(arr[0], a, b, unitPrefix(arr[3]));
+			else
+				return false;
+		} else if (arr.length == 5) {
+			if (cir.allElements.containsKey(arr[3]) && unitPrefix(arr[4]) != -1)
+				e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
+			else
+				return false;
+		}
 		else if (arr.length == 6) {
 			Node c, d;
 			try {
 				c = cir.allNodes.get(Byte.parseByte(arr[3]));
 			} catch (NumberFormatException ex) {
-				return;
+				return false;
 			} catch (NullPointerException ex) {
 				c = new Node(Byte.parseByte(arr[3]));
 			}
 			try {
 				d = cir.allNodes.get(Byte.parseByte(arr[1]));
 			} catch (NumberFormatException ex) {
-				return;
+				return false;
 			} catch (NullPointerException ex) {
 				d = new Node(Byte.parseByte(arr[1]));
 			}
-			e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5]));
+			if (unitPrefix(arr[5]) != -1)
+				e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5]));
+			else
+				return false;
+		} else if (arr.length == 7) {
+			if (unitPrefix(arr[3]) != -1 && unitPrefix(arr[4]) != -1 && unitPrefix(arr[5]) != -1 && unitPrefix(arr[6]) != -1)
+				e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
+			else
+				return false;
 		} else
-			e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
+			return false;
 		cir.allElements.put(e.getName(), e);
 		a.neighbours.add(e);
 		b.neighbours.add(e);
+		return true;
 	}
 }

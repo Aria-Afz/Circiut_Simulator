@@ -4,17 +4,15 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class Circuit {
-	LinkedHashMap<String, Element> allElements = new LinkedHashMap<>();
-	HashMap<Byte, Node> allNodes = new HashMap<>();
-	LinkedList<Union> allUnions = new LinkedList<>();
-
 	private double time;
 	private double dt;
 	private double dv;
 	private double di;
+	LinkedHashMap<String, Element> allElements = new LinkedHashMap<>();
+	HashMap<Byte, Node> allNodes = new HashMap<>();
+	LinkedList<Union> allUnions = new LinkedList<>();
 
-	static boolean aBoolean = true;
-	boolean errorCheck() {
+	boolean errorCheck() {  //todo print error when dt or dv or di equals to 0
 		if (!allNodes.containsKey((byte) 0)) {
 			System.out.print("-4");
 			return false;
