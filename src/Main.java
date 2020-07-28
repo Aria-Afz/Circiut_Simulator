@@ -123,6 +123,8 @@ public class Main {
 
 	static boolean addElement(String input, Circuit cir) {
 		String[] arr = input.trim().split(" +");
+		if (cir.allElements.containsKey(arr[0]))
+			return false;
 		Element e;
 		Node a, b;
 		try {
