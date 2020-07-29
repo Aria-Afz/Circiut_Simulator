@@ -10,10 +10,10 @@ public class Main {
 		int k = readFile(inputFile, cir);
 		if (k == 0 /*&& cir.errorCheck()*/) {
 			//for drawing the circuit
-			//DrawCicuit.drawCircuit();
+			DrawCicuit.main();
 
-			cir.run();
-			cir.printResult();
+			//cir.run();
+			//cir.printResult();
 		} else
 			System.out.println("Invalid Input in line " + k);
 
