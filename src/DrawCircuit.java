@@ -8,14 +8,20 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
+//////////////////////////////////////up and down///////////////////////////////////////////////////////////
+//////////////////////////////////////up and down///////////////////////////////////////////////////////////
+//////////////////////////////////////up and down///////////////////////////////////////////////////////////
+//////////////////////////////////////up and down///////////////////////////////////////////////////////////
+//////////////////////////////////////up and down///////////////////////////////////////////////////////////
 class UpAndDownElementsPanel extends JPanel {
     private BufferedImage image;
     int length;
     String type;
-    public UpAndDownElementsPanel(int l,String t) {
+    String typeOfParallel;
+    public UpAndDownElementsPanel(int l,String t,String to) {
         type = t;
         length = l;
+        typeOfParallel=to;
         try {
             image = ImageIO.read(new File(type+".jpeg"));
         }
@@ -31,6 +37,7 @@ class UpAndDownElementsPanel extends JPanel {
         int xForLine=18;
         int heigthOfImage = 55;
         int widthOfImage=40;
+        int xOfPhoto=0;
         if (type.equals("up and down resistance")) {
             xForLine = 14;
             widthOfImage = 30;
@@ -53,9 +60,29 @@ class UpAndDownElementsPanel extends JPanel {
             xForLine = 15;
             widthOfImage = 30;
         }
-
-        graphics2D.drawLine(xForLine,0,xForLine,length);
-        g.drawImage(image,0,length/2-heigthOfImage/2,widthOfImage,heigthOfImage,this);
+        if(typeOfParallel.equals("1 in 1"))
+            graphics2D.drawLine(xForLine,0,xForLine,length);
+        if(typeOfParallel.equals("right in 2")){
+            graphics2D.drawLine(xForLine,0,xForLine,length);
+            graphics2D.drawLine(0,0,xForLine,0);
+            graphics2D.drawLine(xForLine,length,0,length);
+        }
+        if(typeOfParallel.equals("left in 2")){
+            graphics2D.drawLine(xForLine,0,xForLine,length);
+            graphics2D.drawLine(40,0,xForLine,0);
+            graphics2D.drawLine(xForLine,length,40,length);
+        }
+        if(typeOfParallel.equals("left in 3")){
+            graphics2D.drawLine(90,0,xForLine,length/2-heigthOfImage/2);
+            graphics2D.drawLine(90,length,xForLine,length/2+heigthOfImage/2);
+        }
+        if(typeOfParallel.equals("right in 3")){
+            xOfPhoto+=51;
+            xForLine+=51;
+            graphics2D.drawLine(0,0,xForLine,length/2-heigthOfImage/2);
+            graphics2D.drawLine(0,length,xForLine,length/2+heigthOfImage/2);
+        }
+        g.drawImage(image,xOfPhoto,length/2-heigthOfImage/2,widthOfImage,heigthOfImage,this);
     }
     /*@Override
     protected void paintComponent(Graphics g) {
@@ -70,13 +97,20 @@ class UpAndDownElementsPanel extends JPanel {
     }*/
 }
 
+////////////////////////////right and left/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////right and left/////////////////////////////////////////
+//////////////////////////////right and left//////////////////////////////////////////
+//////////////////////////////right and left//////////////////////////////////////////////////////////////////
+//////////////////////////////right and left////////////////////////////////////////////////////////////
 class RightAndLeftElementsPanel extends JPanel {
     private BufferedImage image;
     int length;
     String type;
-    public RightAndLeftElementsPanel(int l,String t) {
+    String typeOfParallel;
+    public RightAndLeftElementsPanel(int l,String t,String to) {
         type = t;
         length = l;
+        typeOfParallel = to;
         try {
             image = ImageIO.read(new File(type+".jpg"));
         }
@@ -92,6 +126,7 @@ class RightAndLeftElementsPanel extends JPanel {
         int yForLine=18;
         int widthOfImage = 55;
         int heightOgImage = 40;
+        int yOfPhoto=0;
         if (type.equals("right and left resistance")) {
             yForLine = 14;
             heightOgImage = 30;
@@ -114,13 +149,37 @@ class RightAndLeftElementsPanel extends JPanel {
             yForLine = 15;
             heightOgImage = 30;
         }
-
-        graphics2D.drawLine(0,yForLine,length,yForLine);
-        g.drawImage(image,length/2-widthOfImage/2,0,widthOfImage,heightOgImage,this);
+        if(typeOfParallel.equals("1 in 1"))
+            graphics2D.drawLine(0,yForLine,length,yForLine);
+        if(typeOfParallel.equals("down in 2")){
+            graphics2D.drawLine(0,yForLine,length,yForLine);
+            graphics2D.drawLine(0,0,0,yForLine);
+            graphics2D.drawLine(length,0,length,yForLine);
+        }
+        if(typeOfParallel.equals("up in 2")){
+            graphics2D.drawLine(0,yForLine,length,yForLine);
+            graphics2D.drawLine(0,40,0,yForLine);
+            graphics2D.drawLine(length,40,length,yForLine);
+        }
+        if(typeOfParallel.equals("up in 3")){
+            graphics2D.drawLine(0,90,length/2-widthOfImage/2,yForLine);
+            graphics2D.drawLine(length,90,length/2+widthOfImage/2,yForLine);
+        }
+        if(typeOfParallel.equals("down in 3")){
+            yOfPhoto+=51;
+            yForLine+=51;
+            graphics2D.drawLine(0,0,length/2-widthOfImage/2,yForLine);
+            graphics2D.drawLine(length,0,length/2+widthOfImage/2,yForLine);
+        }
+        g.drawImage(image,length/2-widthOfImage/2,yOfPhoto,widthOfImage,heightOgImage,this);
     }
 }
 
-
+//////////////////////////////////////main//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////main///////////////////////////////////////////////////////////////////////
+/////////////////////////////////////main/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////main/////////////////////////////////////////////////////////////////////
+//////////////////////////////////////main////////////////////////////////////////////////////////////////////
 class MyJPanel extends JPanel{
     @Override
     public void paint(Graphics g) {
@@ -160,17 +219,19 @@ public class DrawCircuit {
         labelJPanel.setBounds(0,0,1060,50);
         labelJPanel.setBackground(Color.gray);
         container.add(labelJPanel);*/
+        paintUpAndDownElements("up voltage dc source",105+170*3,105,170,"D1","30m","right in 2");
+        paintUpAndDownElements("up diode",105+170*3,105,170,"D1","30m","left in 2");
 
-        paintUpAndDownElements("up diode",105,105,170,"D1","30m");
-        paintRightAndLeftElements("right current dc source",105,105,170*2,"D2","50m");
-        paintUpAndDownElements("up and down inductance",105,105+170,170,"D2","50m");
-        paintRightAndLeftElements("right and left resistance",105,105+170,170,"D2","50m");
-        paintRightAndLeftElements("right and left capacitance",105+170,105+170,170,"D2","50m");
-        paintRightAndLeftElements("right and left ac source",105,105+170*2,170,"D2","50m");
-        paintRightAndLeftElements("right controlled voltage source",105+170,105+170*2,170,"D2","50m");
-        paintUpAndDownElements("up and down capacitance",105+170,105+170,170,"D1","30m");
-        paintUpAndDownElements("up voltage dc source",105+170*2,105,170,"D1","30m");
-        paintUpAndDownElements("up controlled current source",105+170*2,105+170,170,"D1","30m");
+        paintRightAndLeftElements("right and left resistance",105,105,170*2,"D2","50m","up in 2");
+        paintRightAndLeftElements("right current dc source",105,105,170*2,"D2","50m","down in 2");
+
+        paintRightAndLeftElements("right and left capacitance",105+170,105+170*2,170*2,"D2","50m","up in 3");
+        paintRightAndLeftElements("right and left ac source",105+170,105+170*2,170*2,"D2","50m","1 in 1");
+        paintRightAndLeftElements("right controlled voltage source",105+170,105+170*2,170*2,"D2","50m","down in 3");
+
+        paintUpAndDownElements("up and down capacitance",105,105+170,170,"D1","30m","left in 3");
+        paintUpAndDownElements("up and down inductance",105,105+170,170,"D2","50m","1 in 1");
+        paintUpAndDownElements("up controlled current source",105,105+170,170,"D1","30m","right in 3");
 
 
 
@@ -178,29 +239,52 @@ public class DrawCircuit {
         frame.setLayout(null);
         frame.setVisible(true);
     }
-    static void paintUpAndDownElements(String typeOfElementInGraphics,int x,int y,int ertefa,String name,String value){
-        UpAndDownElementsPanel r1 = new UpAndDownElementsPanel(ertefa,typeOfElementInGraphics);
-        int xForText = x+40-19;
-        if (typeOfElementInGraphics.equals("up and down resistance")) {
-            x -= 14;
-            xForText -= 5;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void paintUpAndDownElements(String typeOfElementInGraphics,int x,int y,int ertefa,
+                                       String name,String value,String typeOfParallel){
+        UpAndDownElementsPanel r1 = new UpAndDownElementsPanel(ertefa,typeOfElementInGraphics,typeOfParallel);
+        int copyOfX = x;
+        int zekhamatPanel=40;
+        int xForText = x+40;
+        if(typeOfParallel.equals("1 in 1")) {
+            xForText = x+40-19;
+            if (typeOfElementInGraphics.equals("up and down resistance")) {
+                x -= 14;
+                xForText -= 5;
+            }
+            if (typeOfElementInGraphics.equals("up and down capacitance"))
+                x -= 19;
+            if (typeOfElementInGraphics.equals("up and down inductance")) {
+                x -= 4;
+            }
+            if (typeOfElementInGraphics.equals("up voltage dc source") || typeOfElementInGraphics.equals("down voltage dc source")
+                    || typeOfElementInGraphics.equals("up current dc source") || typeOfElementInGraphics.equals("down current dc source")
+                    || typeOfElementInGraphics.equals("up controlled voltage source") || typeOfElementInGraphics.equals("down controlled voltage source")
+                    || typeOfElementInGraphics.equals("up controlled current source") || typeOfElementInGraphics.equals("down controlled current source")
+                    || typeOfElementInGraphics.equals("up and down ac source"))
+                x -= 20;
+            if (typeOfElementInGraphics.equals("up diode") || typeOfElementInGraphics.equals("down diode")) {
+                x -= 15;
+                xForText -= 6;
+            }
         }
-        if(typeOfElementInGraphics.equals("up and down capacitance"))
-            x-=19;
-        if (typeOfElementInGraphics.equals("up and down inductance")) {
-            x -= 4;
+        if(typeOfParallel.equals("right in 2")){ }
+        if(typeOfParallel.equals("left in 2")){
+            x-=40;
+            xForText=x-30;
         }
-            if (typeOfElementInGraphics.equals("up voltage dc source")||typeOfElementInGraphics.equals("down voltage dc source")
-                ||typeOfElementInGraphics.equals("up current dc source")||typeOfElementInGraphics.equals("down current dc source")
-                ||typeOfElementInGraphics.equals("up controlled voltage source")||typeOfElementInGraphics.equals("down controlled voltage source")
-                ||typeOfElementInGraphics.equals("up controlled current source")||typeOfElementInGraphics.equals("down controlled current source")
-                ||typeOfElementInGraphics.equals("up and down ac source"))
-            x-= 20;
-        if (typeOfElementInGraphics.equals("up diode")||typeOfElementInGraphics.equals("down diode")) {
-            x -= 15;
-            xForText -=6;
+        if(typeOfParallel.equals("left in 3")){
+            zekhamatPanel=90;
+            x-=90;
+            xForText = x+40;
         }
-            r1.setBounds(x,y,50,ertefa);
+        if(typeOfParallel.equals("right in 3")){
+            zekhamatPanel=91;
+            xForText = x+91;
+        }
+        r1.setBounds(x,y,zekhamatPanel,ertefa);
         frame.getContentPane().add(r1);
 
         JLabel nameInGraphic = new JLabel(name);
@@ -219,29 +303,51 @@ public class DrawCircuit {
         forValue.setBackground(new Color(247, 247, 247));
         frame.getContentPane().add(forValue);
     }
-    static void paintRightAndLeftElements(String typeOfElementInGraphics,int x,int y,int tool,String name,String value){
-        RightAndLeftElementsPanel r1 = new RightAndLeftElementsPanel(tool,typeOfElementInGraphics);
-        int yForText=y+40-19;
-        if (typeOfElementInGraphics.equals("right and left resistance")) {
-            y -= 14;
-            yForText-=5;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void paintRightAndLeftElements(String typeOfElementInGraphics,int x,int y,int tool,
+                                          String name,String value,String typeOfParallel){
+        RightAndLeftElementsPanel r1 = new RightAndLeftElementsPanel(tool,typeOfElementInGraphics,typeOfParallel);
+        int zekhamatPanel=40;
+        int yForText=y+40;
+        if(typeOfParallel.equals("1 in 1")) {
+            yForText = y + 40 - 19;
+            if (typeOfElementInGraphics.equals("right and left resistance")) {
+                y -= 14;
+                yForText -= 5;
+            }
+            if (typeOfElementInGraphics.equals("right and left capacitance"))
+                y -= 19;
+            if (typeOfElementInGraphics.equals("right and left inductance")) {
+                y -= 4;
+            }
+            if (typeOfElementInGraphics.equals("right voltage dc source") || typeOfElementInGraphics.equals("left voltage dc source")
+                    || typeOfElementInGraphics.equals("right current dc source") || typeOfElementInGraphics.equals("left current dc source")
+                    || typeOfElementInGraphics.equals("right controlled voltage source") || typeOfElementInGraphics.equals("left controlled voltage source")
+                    || typeOfElementInGraphics.equals("right controlled current source") || typeOfElementInGraphics.equals("left controlled current source")
+                    || typeOfElementInGraphics.equals("right and left ac source"))
+                y -= 20;
+            if (typeOfElementInGraphics.equals("right diode") || typeOfElementInGraphics.equals("left diode")) {
+                y -= 15;
+                yForText -= 6;
+            }
         }
-        if(typeOfElementInGraphics.equals("right and left capacitance"))
-            y-=19;
-        if (typeOfElementInGraphics.equals("right and left inductance")) {
-            y -= 4;
+        if(typeOfParallel.equals("down in 2")){ }
+        if(typeOfParallel.equals("up in 2")){
+            y-=40;
+            yForText = y-30;
         }
-        if (typeOfElementInGraphics.equals("right voltage dc source")||typeOfElementInGraphics.equals("left voltage dc source")
-                ||typeOfElementInGraphics.equals("right current dc source")||typeOfElementInGraphics.equals("left current dc source")
-                ||typeOfElementInGraphics.equals("right controlled voltage source")||typeOfElementInGraphics.equals("left controlled voltage source")
-                ||typeOfElementInGraphics.equals("right controlled current source")||typeOfElementInGraphics.equals("left controlled current source")
-                ||typeOfElementInGraphics.equals("right and left ac source"))
-            y-= 20;
-        if (typeOfElementInGraphics.equals("right diode")||typeOfElementInGraphics.equals("left diode")){
-            y-=15;
-            yForText-=6;
+        if(typeOfParallel.equals("up in 3")){
+            zekhamatPanel=90;
+            y-=90;
+            yForText = y+40;
         }
-        r1.setBounds(x,y,tool,40);
+        if(typeOfParallel.equals("down in 3")){
+            zekhamatPanel=91;
+            yForText = y+91;
+        }
+        r1.setBounds(x,y,tool,zekhamatPanel);
         frame.getContentPane().add(r1);
 
         JLabel nameInGraphic = new JLabel(name);
