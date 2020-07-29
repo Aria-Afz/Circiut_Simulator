@@ -143,46 +143,78 @@ public class DrawCircuit {
         labelJPanel.setBackground(Color.gray);
         container.add(labelJPanel);
 
-        paintUpAndDownElements("up diode",120,150,420);
-        paintRightAndLeftElements("right diode",120,150,420);
+        paintUpAndDownElements("up diode",120,150,140,"D1","30m");
+        paintRightAndLeftElements("right diode",120,150,140,"D2","50m");
 
 
 
         frame.setLayout(null);
         frame.setVisible(true);
     }
-    static void paintUpAndDownElements(String type,int x,int y,int ertefa){
-        UpAndDownElementsPanel r1 = new UpAndDownElementsPanel(ertefa,type);
-        if (type.equals("up and down resistance")||type.equals("up and down capacitance"))
+    static void paintUpAndDownElements(String typeOfElementInGraphics,int x,int y,int ertefa,String name,String value){
+        UpAndDownElementsPanel r1 = new UpAndDownElementsPanel(ertefa,typeOfElementInGraphics);
+        if (typeOfElementInGraphics.equals("up and down resistance")||typeOfElementInGraphics.equals("up and down capacitance"))
             x-=18;
-        if (type.equals("up and down inductance"))
+        if (typeOfElementInGraphics.equals("up and down inductance"))
             x-=6;
-        if (type.equals("up voltage dc source")||type.equals("down voltage dc source")
-                ||type.equals("up current dc source")||type.equals("down current dc source")
-                ||type.equals("up controlled voltage source")||type.equals("down controlled voltage source")
-                ||type.equals("up controlled current source")||type.equals("down controlled current source")
-                ||type.equals("up and down ac source"))
+        if (typeOfElementInGraphics.equals("up voltage dc source")||typeOfElementInGraphics.equals("down voltage dc source")
+                ||typeOfElementInGraphics.equals("up current dc source")||typeOfElementInGraphics.equals("down current dc source")
+                ||typeOfElementInGraphics.equals("up controlled voltage source")||typeOfElementInGraphics.equals("down controlled voltage source")
+                ||typeOfElementInGraphics.equals("up controlled current source")||typeOfElementInGraphics.equals("down controlled current source")
+                ||typeOfElementInGraphics.equals("up and down ac source"))
             x-= 19;
-        if (type.equals("up diode")||type.equals("down diode"))
+        if (typeOfElementInGraphics.equals("up diode")||typeOfElementInGraphics.equals("down diode"))
             x-=19;
-        r1.setBounds(x,y,40,ertefa);
+        r1.setBounds(x,y,50,ertefa);
         frame.getContentPane().add(r1);
+
+        JLabel nameInGraphic = new JLabel(name);
+        nameInGraphic.setBackground(new Color(247, 247, 247));
+        JPanel forName  = new JPanel();
+        forName.setBounds(40+x,ertefa/2-20+y,30,30);
+        forName.add(nameInGraphic);
+        forName.setBackground(new Color(247, 247, 247));
+        frame.getContentPane().add(forName);
+
+        JLabel valueInGraphic = new JLabel(value);
+        valueInGraphic.setBackground(new Color(247, 247, 247));
+        JPanel forValue  = new JPanel();
+        forValue.setBounds(40+x,ertefa/2+10+y,30,30);
+        forValue.add(valueInGraphic);
+        forValue.setBackground(new Color(247, 247, 247));
+        frame.getContentPane().add(forValue);
     }
-    static void paintRightAndLeftElements(String type,int x,int y,int tool){
-        RightAndLeftElementsPanel r1 = new RightAndLeftElementsPanel(tool,type);
-        if (type.equals("right and left resistance")||type.equals("right and left capacitance"))
+    static void paintRightAndLeftElements(String typeOfElementInGraphics,int x,int y,int tool,String name,String value){
+        RightAndLeftElementsPanel r1 = new RightAndLeftElementsPanel(tool,typeOfElementInGraphics);
+        if (typeOfElementInGraphics.equals("right and left resistance")||typeOfElementInGraphics.equals("right and left capacitance"))
             y-=18;
-        if (type.equals("right and left inductance"))
+        if (typeOfElementInGraphics.equals("right and left inductance"))
             y-=6;
-        if (type.equals("right voltage dc source")||type.equals("left voltage dc source")
-                ||type.equals("right current dc source")||type.equals("left current dc source")
-                ||type.equals("right controlled voltage source")||type.equals("left controlled voltage source")
-                ||type.equals("right controlled current source")||type.equals("left controlled current source")
-                ||type.equals("right and down ac source"))
+        if (typeOfElementInGraphics.equals("right voltage dc source")||typeOfElementInGraphics.equals("left voltage dc source")
+                ||typeOfElementInGraphics.equals("right current dc source")||typeOfElementInGraphics.equals("left current dc source")
+                ||typeOfElementInGraphics.equals("right controlled voltage source")||typeOfElementInGraphics.equals("left controlled voltage source")
+                ||typeOfElementInGraphics.equals("right controlled current source")||typeOfElementInGraphics.equals("left controlled current source")
+                ||typeOfElementInGraphics.equals("right and down ac source"))
             y-= 19;
-        if (type.equals("right diode")||type.equals("left diode"))
+        if (typeOfElementInGraphics.equals("right diode")||typeOfElementInGraphics.equals("left diode"))
             y-=19;
         r1.setBounds(x,y,tool,40);
         frame.getContentPane().add(r1);
+
+        JLabel nameInGraphic = new JLabel(name);
+        nameInGraphic.setBackground(new Color(247, 247, 247));
+        JPanel forName  = new JPanel();
+        forName.setBounds(tool/2-20+x,40+y,30,30);
+        forName.add(nameInGraphic);
+        forName.setBackground(new Color(247, 247, 247));
+        frame.getContentPane().add(forName);
+
+        JLabel valueInGraphic = new JLabel(value);
+        valueInGraphic.setBackground(new Color(247, 247, 247));
+        JPanel forValue  = new JPanel();
+        forValue.setBounds(tool/2+10+x,40+y,30,30);
+        forValue.add(valueInGraphic);
+        forValue.setBackground(new Color(247, 247, 247));
+        frame.getContentPane().add(forValue);
     }
 }
