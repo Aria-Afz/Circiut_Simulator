@@ -71,9 +71,9 @@ class Element {
 	public double getCurrent(int cycle, double dt) {
 		switch (name.charAt(0)) {
 			case 'R':	return getVoltage(cycle) / value;
-			case 'F': 	return k * ele.getCurrent(cycle, dt);
-			case 'G': 	return k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle));
-			case 'I': 	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
+			case 'F': 	return -(k * ele.getCurrent(cycle, dt));
+			case 'G': 	return -(k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle)));
+			case 'I': 	return -(v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase));
 			case 'C': 	return value * (getVoltage(cycle) - getVoltage(cycle - 1)) / dt;
 			case 'L':
 				double i = 0;

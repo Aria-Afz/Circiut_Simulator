@@ -118,8 +118,8 @@ class MyJPanel extends JPanel{
     }
 }
 
-public class DrawCicuit {
-    ArrayList<Element> elements = new ArrayList<Element>(Circuit.allElements.values());
+public class DrawCircuit {
+    //ArrayList<Element> elements = new ArrayList<Element>(Circuit.allElements.values());
     static JFrame frame = new JFrame();
     public static void main(){
         frame.setTitle("Graphic drawing of the circuit");
