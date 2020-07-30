@@ -196,9 +196,12 @@ class MyJPanel extends JPanel{
 }
 
 public class DrawCircuit {
-    //ArrayList<Element> elements = new ArrayList<Element>(Circuit.allElements.values());
     static JFrame frame = new JFrame();
-    public static void main(){
+    ArrayList<Element> element;
+    public DrawCircuit (ArrayList<Element> elementsForGraphics){
+        element = elementsForGraphics;
+    }
+    public void main(){
         frame.setTitle("Graphic drawing of the circuit");
         frame.setSize(1520,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -211,14 +214,6 @@ public class DrawCircuit {
         container.setBackground(new Color(247, 247, 247));
         container.add(myJPanel);
 
-        /*JPanel labelJPanel =new JPanel();
-        JLabel label = new JLabel("the schematic of circuit");
-        Font font = new Font(Font.SANS_SERIF,Font.BOLD,30);
-        label.setFont(font);
-        labelJPanel.add(label);
-        labelJPanel.setBounds(0,0,1060,50);
-        labelJPanel.setBackground(Color.gray);
-        container.add(labelJPanel);*/
         paintUpAndDownElements("up voltage dc source",105+170*3,105,170*2,"D1","30m","right in 2");
         paintUpAndDownElements("up diode",105+170*3,105,170*2,"D1","30m","left in 2");
 
@@ -236,8 +231,6 @@ public class DrawCircuit {
         paintUpAndDownElements("up and down inductance",105,105,170*1,"D2","50m","1 in 1");
         paintRightAndLeftElements("right and left resistance",105+340,105+340,170,"D2","50m","1 in 1");
         paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");
-
-
 
 
         frame.setLayout(null);

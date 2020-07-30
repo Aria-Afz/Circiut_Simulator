@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -9,7 +10,13 @@ public class Main {
 		readFile(new File("Circuit.txt"), cir);
 		cir.errorCheck();
 		//cir.run();
-		//Draw Circuit
+		///////////////////////////////Drawing the circuit/////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////
+		ArrayList<Element> elementsForGraphics = new ArrayList<Element>(cir.allElements.values());
+		DrawCircuit drawCircuit = new DrawCircuit(elementsForGraphics);
+		drawCircuit.main();
+		///////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////End of drawing the circuit////////////////////////////////////
 		String input = sc.nextLine();
 		while (!input.equals("END")) {
 			String[] arr = input.split(" +");
