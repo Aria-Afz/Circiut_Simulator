@@ -19,7 +19,7 @@ public class Circuit {
 				System.out.print("-5");
 				return false;
 			}
-		ArrayList<Node> connected = new ArrayList<>();
+		HashSet<Node> connected = new HashSet<>();
 		connected.add(allNodes.get((byte) 0));
 		allNodes.get((byte) 0).visited = true;
 		byte k = 0;
@@ -27,7 +27,7 @@ public class Circuit {
 			k = (byte) connected.size();
 			for (Node i : connected)
 				for (Node e : i.nodeNeighbours)
-					if (!e.visited && !connected.contains(e)) {
+					if (!e.visited) {
 						connected.add(e);
 						e.visited = true;
 					}
