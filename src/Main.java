@@ -6,6 +6,7 @@ public class Main {
 	public static void main (String[] args) throws FileNotFoundException {
 		Scanner sc = new Scanner(System.in);
 		Circuit cir = new Circuit();
+		//DrawCircuit.main();
 		if (readFile(new File("Circuit.txt"), cir) && cir.errorCheck()) {
 			cir.run();
 			String input = sc.nextLine();
