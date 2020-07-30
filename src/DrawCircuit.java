@@ -219,19 +219,23 @@ public class DrawCircuit {
         labelJPanel.setBounds(0,0,1060,50);
         labelJPanel.setBackground(Color.gray);
         container.add(labelJPanel);*/
-        paintUpAndDownElements("up voltage dc source",105+170*3,105,170,"D1","30m","right in 2");
-        paintUpAndDownElements("up diode",105+170*3,105,170,"D1","30m","left in 2");
+        paintUpAndDownElements("up voltage dc source",105+170*3,105,170*2,"D1","30m","right in 2");
+        paintUpAndDownElements("up diode",105+170*3,105,170*2,"D1","30m","left in 2");
 
         paintRightAndLeftElements("right and left resistance",105,105,170*2,"D2","50m","up in 2");
         paintRightAndLeftElements("right current dc source",105,105,170*2,"D2","50m","down in 2");
 
-        paintRightAndLeftElements("right and left capacitance",105+170,105+170*2,170*2,"D2","50m","up in 3");
-        paintRightAndLeftElements("right and left ac source",105+170,105+170*2,170*2,"D2","50m","1 in 1");
-        paintRightAndLeftElements("right controlled voltage source",105+170,105+170*2,170*2,"D2","50m","down in 3");
+        paintRightAndLeftElements("right and left capacitance",105+170*0,105+170*2,170*2,"D2","50m","up in 3");
+        paintRightAndLeftElements("right and left ac source",105+170*0,105+170*2,170*2,"D2","50m","1 in 1");
+        paintRightAndLeftElements("right controlled voltage source",105+170*0,105+170*2,170*2,"D2","50m","down in 3");
 
-        paintUpAndDownElements("up and down capacitance",105,105+170,170,"D1","30m","left in 3");
-        paintUpAndDownElements("up and down inductance",105,105+170,170,"D2","50m","1 in 1");
-        paintUpAndDownElements("up controlled current source",105,105+170,170,"D1","30m","right in 3");
+        paintUpAndDownElements("up and down capacitance",105,105+170,170*1,"D1","30m","left in 3");
+        paintUpAndDownElements("up and down inductance",105,105+170,170*1,"D2","50m","1 in 1");
+        paintUpAndDownElements("up controlled current source",105,105+170,170*1,"D1","30m","right in 3");
+
+        paintUpAndDownElements("up and down inductance",105,105,170*1,"D2","50m","1 in 1");
+        paintRightAndLeftElements("right and left resistance",105+340,105+340,170,"D2","50m","1 in 1");
+        paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");
 
 
 
