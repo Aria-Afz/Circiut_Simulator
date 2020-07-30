@@ -161,7 +161,7 @@ public class Main {
 
 	static void consoleInput() {
 		Scanner sc = new Scanner(System.in);
-		Node node1, node2; byte e1 = 0, e2 = 0;
+		Node node1, node2; byte e1, e2;
 		double t;
 		String input = sc.nextLine();
 		while (!input.equals("END")) {
