@@ -9,15 +9,15 @@ public class Circuit {
 	HashMap<Byte, Node> allNodes = new HashMap<>();
 	LinkedList<Union> allUnions = new LinkedList<>();
 
-	boolean errorCheck() {
+	void errorCheck() {
 		if (!allNodes.containsKey((byte) 0)) {
 			System.out.print("-4");
-			return false;
+			System.exit(0);
 		}
-		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
-			if (e.getValue().nodeNeighbours.size() == 1)
+		for (Map.Entry<Byte, Node> e : allNodes.entrySet())
+			if (e.getValue().elementNeighbours.size() == 1) {
 				System.out.print("-5");
-				return false;
+				System.exit(0);
 			}
 		HashSet<Node> connected = new HashSet<>();
 		connected.add(allNodes.get((byte) 0));
@@ -34,9 +34,8 @@ public class Circuit {
 		}
 		if (connected.size() != allNodes.size()) {
 			System.out.print("-4");
-			return false;
-		} else
-			return true;
+			System.exit(0);
+		}
 	}
 
 	void unionCheck() {

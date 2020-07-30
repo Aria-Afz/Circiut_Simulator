@@ -6,90 +6,95 @@ public class Main {
 	public static void main (String[] args) throws FileNotFoundException {
 		Scanner sc = new Scanner(System.in);
 		Circuit cir = new Circuit();
-		//DrawCircuit.main();
-		if (readFile(new File("Circuit.txt"), cir) && cir.errorCheck()) {
-			cir.run();
-			String input = sc.nextLine();
-			while (!input.equals("END")) {
-				String[] arr = input.split(" +");
-				Node node1, node2;
-				double t;
-				try {
-					node1 = cir.allNodes.get(Byte.parseByte(arr[0]));
-					node2 = cir.allNodes.get(Byte.parseByte(arr[1]));
-					t = Double.parseDouble(arr[2]);
-				} finally {
-					System.out.print("ERROR");
-				}
-				System.out.println(node1.getVoltage(cir.getCycle(t)) - node2.getVoltage(cir.getCycle(t)));
-				input = sc.nextLine();
+		readFile(new File("Circuit.txt"), cir);
+		cir.errorCheck();
+		//cir.run();
+		//Draw Circuit
+		String input = sc.nextLine();
+		while (!input.equals("END")) {
+			String[] arr = input.split(" +");
+			Node node1, node2;
+			double t;
+			try {
+				node1 = cir.allNodes.get(Byte.parseByte(arr[0]));
+				node2 = cir.allNodes.get(Byte.parseByte(arr[1]));
+				t = Double.parseDouble(arr[2]);
+			} finally {
+				System.out.print("ERROR");
 			}
+			System.out.println(node1.getVoltage(cir.getCycle(t)) - node2.getVoltage(cir.getCycle(t)));
+			input = sc.nextLine();
 		}
 	}
 
-	static boolean readFile(File circuit, Circuit cir) throws FileNotFoundException {
+	static void readFile(File circuit, Circuit cir) throws FileNotFoundException {
 		Scanner sc = new Scanner(circuit);
 		byte numLine = 1;
-		Task:
-			while(true) {
-				String data = sc.nextLine();
-				String[] arr = data.trim().split(" ");
-
-				switch(data.charAt(0)) {
-					case '*':	break;
-					case 'd':
-						switch(arr[0]) {
-							case "dv":
-								if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0)
-									break Task;
-								else
-									cir.setDv(unitPrefix(arr[1]));
-								break;
-							case "dt":
-								if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0)
-									break Task;
-								else
-									cir.setDt(unitPrefix(arr[1]));
-								break;
-							case "di":
-								if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0)
-									break Task;
-								else
-									cir.setDi(unitPrefix(arr[1]));
-								break;
-							default:	break Task;
+		while(true) {
+			String data = sc.nextLine();
+			String[] arr = data.trim().split(" ");
+			switch(data.charAt(0)) {
+				case '*':	break;
+				case 'd':
+					switch(arr[0]) {
+						case "dv":
+							if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0) {
+								System.out.print(numLine);
+								System.exit(0);
+							} else
+								cir.setDv(unitPrefix(arr[1]));
+							break;
+						case "dt":
+							if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0) {
+								System.out.print(numLine);
+								System.exit(0);
+							} else
+								cir.setDt(unitPrefix(arr[1]));
+							break;
+						case "di":
+							if (unitPrefix(arr[1]) == -1 || unitPrefix(arr[1]) == 0) {
+								System.out.print(numLine);
+								System.exit(0);
+							} else
+								cir.setDi(unitPrefix(arr[1]));
+							break;
+						default:
+							System.out.print(numLine);
+							System.exit(0);
+					}
+					break;
+				case '.':
+					if (arr[0].equals(".tran")) {
+						if (unitPrefix(arr[1]) == -1) {
+							System.out.print(numLine);
+							System.exit(0);
+						} else {
+							cir.setTime(unitPrefix(arr[1]));
+							return;
 						}
-						break;
-					case '.':
-						if (arr[0].equals(".tran")) {
-							if (unitPrefix(arr[1]) == -1)
-								break Task;
-							else {
-								cir.setTime(unitPrefix(arr[1]));
-								return true;
-							}
-						} else
-							break Task;
-					case 'R':
-					case 'L':
-					case 'C':
-					case 'I':
-					case 'F':
-					case 'G':
-					case 'H':
-					case 'V':
-					case 'W':
-					case 'X':
-					case 'Y':
-						if (!addElement(data, cir))
-							break Task;
-						break;
-					default:	break Task;
-				}
-				numLine++;
+					} else {
+						System.out.print(numLine);
+						System.exit(0);
+					}
+				case 'R':
+				case 'L':
+				case 'C':
+				case 'I':
+				case 'F':
+				case 'G':
+				case 'H':
+				case 'V':
+				case 'W':
+				case 'X':
+				case 'Y':
+					addElement(data, cir, numLine);
+					break;
+				default:
+					System.out.print(numLine);
+					return;
 			}
-		System.out.print(numLine);
-		return false;
+			numLine++;
+		}
 	}
 
 	static double unitPrefix(String a) {
@@ -122,71 +127,99 @@ public class Main {
 		}
 	}
 
-	static boolean addElement(String input, Circuit cir) {
+	static void addElement(String input, Circuit cir, int numLine) {
 		String[] arr = input.trim().split(" +");
-		if (cir.allElements.containsKey(arr[0]))
-			return false;
-		Element e;
-		Node a, b;
-		try {
-			a = cir.allNodes.get(Byte.parseByte(arr[1]));
-		} catch (NumberFormatException ex) {
-			return false;
-		} catch (NullPointerException ex) {
-			a = new Node(Byte.parseByte(arr[1]));
+		if (cir.allElements.containsKey(arr[0])) {
+			System.out.print(numLine);
+			System.exit(0);
 		}
+		Element e = null;
+		byte A = 0, B = 0; Node a, b;
 		try {
-			b = cir.allNodes.get(Byte.parseByte(arr[2]));
+			A = Byte.parseByte(arr[1]);
+			B = Byte.parseByte(arr[2]);
 		} catch (NumberFormatException ex) {
-			return false;
-		} catch (NullPointerException ex) {
-			b = new Node(Byte.parseByte(arr[2]));
+			System.out.print(numLine);
+			System.exit(0);
+		}
+		if (A < 0 || B < 0 || A == B) {
+			System.out.print(numLine);
+			System.exit(0);
+		}
+		if (cir.allNodes.containsKey(A))
+			a = cir.allNodes.get(A);
+		else {
+			a = new Node(A);
+			cir.allNodes.put(A, a);
+		} if (cir.allNodes.containsKey(B))
+			b = cir.allNodes.get(B);
+		else {
+			b = new Node(B);
+			cir.allNodes.put(B, b);
 		}
 		byte len = (byte) arr.length;
 		char k = arr[0].charAt(0);
 		if (len == 4 && (k == 'R' || k == 'L' || k == 'C' || k == 'D')) {
 			if (unitPrefix(arr[3]) != -1)
 				e = new Element(arr[0], a, b, unitPrefix(arr[3]));
-			else
-				return false;
+			else {
+				System.out.print(numLine);
+				System.exit(0);
+			}
 		} else if (len == 5 && (k == 'F' || k == 'H')) {
 			if (cir.allElements.containsKey(arr[3]) && unitPrefix(arr[4]) != -1)
 				e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4]));
-			else
-				return false;
+			else {
+				System.out.print(numLine);
+				System.exit(0);
+			}
 		}
 		else if (len == 6 && (k == 'G' || k == 'E')) {
-			Node c, d;
+			byte C = 0, D = 0; Node c, d;
 			try {
-				c = cir.allNodes.get(Byte.parseByte(arr[3]));
+				C = Byte.parseByte(arr[3]);
+				D = Byte.parseByte(arr[4]);
 			} catch (NumberFormatException ex) {
-				return false;
-			} catch (NullPointerException ex) {
-				c = new Node(Byte.parseByte(arr[3]));
+				System.out.print(numLine);
+				System.exit(0);
 			}
-			try {
-				d = cir.allNodes.get(Byte.parseByte(arr[1]));
-			} catch (NumberFormatException ex) {
-				return false;
-			} catch (NullPointerException ex) {
-				d = new Node(Byte.parseByte(arr[1]));
+			if (C < 0 || D < 0 || C == D) {
+				System.out.print(numLine);
+				System.exit(0);
+			}
+			if (cir.allNodes.containsKey(C))
+				c = cir.allNodes.get(C);
+			else {
+				c = new Node(C);
+				cir.allNodes.put(C, c);
+			}
+			if (cir.allNodes.containsKey(D))
+				d = cir.allNodes.get(D);
+			else {
+				d = new Node(D);
+				cir.allNodes.put(D, d);
 			}
 			if (unitPrefix(arr[5]) != -1)
 				e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5]));
-			else
-				return false;
+			else {
+				System.out.print(numLine);
+				System.exit(0);
+			}
 		} else if (len == 7 && (k == 'I' || k == 'V')) {
 			if (unitPrefix(arr[3]) != -1 && unitPrefix(arr[4]) != -1 && unitPrefix(arr[5]) != -1 && unitPrefix(arr[6]) != -1)
 				e = new Element(arr[0], a, b, unitPrefix(arr[3]), unitPrefix(arr[4]), unitPrefix(arr[5]), unitPrefix(arr[6]));
-			else
-				return false;
-		} else
-			return false;
+			else {
+				System.out.print(numLine);
+				System.exit(0);
+			}
+		} else {
+			System.out.print(numLine);
+			System.exit(0);
+		}
 		cir.allElements.put(e.getName(), e);
 		a.nodeNeighbours.add(b);
 		a.elementNeighbours.add(e);
 		b.nodeNeighbours.add(a);
 		b.elementNeighbours.add(e);
-		return true;
 	}
 }
