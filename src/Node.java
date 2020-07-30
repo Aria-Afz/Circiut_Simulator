@@ -4,7 +4,8 @@ public class Node {
 	final private byte name;
 	boolean visited;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
-	ArrayList<Element> neighbours = new ArrayList<>();
+	ArrayList<Node> nodeNeighbours = new ArrayList<>();
+	ArrayList<Element> elementNeighbours = new ArrayList<>();
 	
 	Node (byte name) {
 		this.name = name;

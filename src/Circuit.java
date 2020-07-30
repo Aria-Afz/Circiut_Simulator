@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class Circuit {
 	private double time;
@@ -18,11 +15,28 @@ public class Circuit {
 			return false;
 		}
 		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
-			if (e.getValue().neighbours.size() == 1)
+			if (e.getValue().nodeNeighbours.size() == 1)
 				System.out.print("-5");
 				return false;
 			}
-		return true;
+		ArrayList<Node> connected = new ArrayList<>();
+		connected.add(allNodes.get((byte) 0));
+		allNodes.get((byte) 0).visited = true;
+		byte k = 0;
+		while (connected.size() - k > 0) {
+			k = (byte) connected.size();
+			for (Node i : connected)
+				for (Node e : i.nodeNeighbours)
+					if (!e.visited && !connected.contains(e)) {
+						connected.add(e);
+						e.visited = true;
+					}
+		}
+		if (connected.size() != allNodes.size()) {
+			System.out.print("-4");
+			return false;
+		} else
+			return true;
 	}
 
 	void unionCheck() {
@@ -36,7 +50,7 @@ public class Circuit {
 				e.getValue().storedVoltages.add(e.getValue().storedVoltages.get(i - 1));
 			for (Map.Entry<Byte, Node> e : allNodes.entrySet())
 				if (e.getKey() != 0)
-					sumCalculate(e.getValue(), i);
+					KclCalculate(e.getValue(), i);
 			for (Map.Entry<String, Element> ele : allElements.entrySet()) {
 				ele.getValue().storedVoltages.add(
 						ele.getValue().getPositiveNode().getVoltage(i) -
@@ -47,39 +61,38 @@ public class Circuit {
 		printResult();
 	}
 
-	void sumCalculate(Node e, int cycle) {
-//		double sum1 = 0, sum2 = 0, sum3 = 0, v = e.getVoltage(cycle - 1);
-//		for (Map.Entry<Byte, String> n : e.neighbours.entrySet()) {
-//			Element ele = allElements.get(n.getValue());
-//			e.storedVoltages.remove(cycle);
-//			e.storedVoltages.add(v - dv);
-//			if (ele.getPositiveNode() == e)
-//				sum1 -= ele.getCurrent(cycle, dt);
-//			else
-//				sum1 += ele.getCurrent(cycle, dt);
-//			e.storedVoltages.remove(cycle);
-//			e.storedVoltages.add(v + dv);
-//			if (ele.getPositiveNode() == e)
-//				sum2 -= ele.getCurrent(cycle, dt);
-//			else
-//				sum2 += ele.getCurrent(cycle, dt);
-//			e.storedVoltages.remove(cycle);
-//			e.storedVoltages.add(v);
-//			if (ele.getPositiveNode() == e)
-//				sum3 -= ele.getCurrent(cycle, dt);
-//			else
-//				sum3 += ele.getCurrent(cycle, dt);
-//		}
-//		e.storedVoltages.remove(cycle);
-//		if (Math.abs(sum1) > Math.abs(sum2))
-//			if (Math.abs(sum2) > Math.abs(sum3))
-//				e.storedVoltages.add(v);
-//			else
-//				e.storedVoltages.add(v + dv);
-//		else if (Math.abs(sum1) > Math.abs(sum3))
-//			e.storedVoltages.add(v);
-//		else
-//			e.storedVoltages.add(v - dv);
+	void KclCalculate(Node e, int cycle) {
+		double kcl1 = 0, kcl2 = 0, kcl3 = 0, v = e.getVoltage(cycle - 1);
+		for (Element ele : e.elementNeighbours) {
+			e.storedVoltages.remove(cycle);
+			e.storedVoltages.add(v - dv);
+			if (ele.getPositiveNode() == e)
+				kcl1 -= ele.getCurrent(cycle, dt);
+			else
+				kcl1 += ele.getCurrent(cycle, dt);
+			e.storedVoltages.remove(cycle);
+			e.storedVoltages.add(v + dv);
+			if (ele.getPositiveNode() == e)
+				kcl2 -= ele.getCurrent(cycle, dt);
+			else
+				kcl2 += ele.getCurrent(cycle, dt);
+			e.storedVoltages.remove(cycle);
+			e.storedVoltages.add(v);
+			if (ele.getPositiveNode() == e)
+				kcl3 -= ele.getCurrent(cycle, dt);
+			else
+				kcl3 += ele.getCurrent(cycle, dt);
+		}
+		e.storedVoltages.remove(cycle);
+		if (Math.abs(kcl1) > Math.abs(kcl2))
+			if (Math.abs(kcl2) > Math.abs(kcl3))
+				e.storedVoltages.add(v);
+			else
+				e.storedVoltages.add(v + dv);
+		else if (Math.abs(kcl1) > Math.abs(kcl3))
+			e.storedVoltages.add(v);
+		else
+			e.storedVoltages.add(v - dv);
 	}
 
 	void printResult() {
