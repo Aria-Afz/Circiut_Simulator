@@ -8,9 +8,34 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-//////////////////////////////////////up and down///////////////////////////////////////////////////////////
-//////////////////////////////////////up and down///////////////////////////////////////////////////////////
-//////////////////////////////////////up and down///////////////////////////////////////////////////////////
+class GroundPanel extends JPanel {
+    private BufferedImage image;
+    private BufferedImage image2;
+
+    public GroundPanel() {
+        try {
+            image = ImageIO.read(new File("left ground.jpeg"));
+        } catch (IOException ex) {
+            // handle exception...
+        }
+        try {
+            image2 = ImageIO.read(new File("right ground.jpeg"));
+        } catch (IOException ex) {
+            // handle exception...
+        }
+    }
+
+    public void paint(Graphics g) {
+        g.setColor(Color.BLACK);
+        Graphics2D graphics2D = (Graphics2D) g;
+        Stroke stroke = new BasicStroke(2);
+        graphics2D.setStroke(stroke);
+
+        graphics2D.drawLine(30, 45/2, 1060-30, 45/2);
+        g.drawImage(image, 20, 0, 30, 45, this);
+        g.drawImage(image2,1060-20-30, 0,30, 45, this);
+    }
+}
 //////////////////////////////////////up and down///////////////////////////////////////////////////////////
 //////////////////////////////////////up and down///////////////////////////////////////////////////////////
 class UpAndDownElementsPanel extends JPanel {
@@ -97,9 +122,6 @@ class UpAndDownElementsPanel extends JPanel {
     }*/
 }
 
-//////////////////////////////right and left///////////////////////////////////////////////////////
-//////////////////////////////right and left///////////////////////////////////////////////////////
-//////////////////////////////right and left///////////////////////////////////////////////////////
 //////////////////////////////right and left///////////////////////////////////////////////////////
 //////////////////////////////right and left///////////////////////////////////////////////////////
 class RightAndLeftElementsPanel extends JPanel {
@@ -213,25 +235,28 @@ public class DrawCircuit {
         myJPanel.setBounds(0,0,1070,1000);
         container.setBackground(new Color(247, 247, 247));
         container.add(myJPanel);
+        GroundPanel groundPanel = new GroundPanel();
+        groundPanel.setBounds(0,985-50,1060,50);
+        container.add(groundPanel);
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
-        /*paintUpAndDownElements("up voltage dc source",105+170*3,105,170*2,"D1","30m","right in 2");
+        paintUpAndDownElements("up voltage dc source",105+170*3,105,170*2,"D1","30m","right in 2");
         paintUpAndDownElements("up diode",105+170*3,105,170*2,"D1","30m","left in 2");
 
-        paintRightAndLeftElements("right and left resistance",105,105,170*2,"D2","50m","up in 2");
-        paintRightAndLeftElements("right current dc source",105,105,170*2,"D2","50m","down in 2");
+        paintRightAndLeftElements("right and left resistance",105,105+170*0,170*2,"D2","50m","up in 2");
+        paintRightAndLeftElements("right current dc source",105,105+170*0,170*2,"D2","50m","down in 2");
 
         paintRightAndLeftElements("right and left capacitance",105+170*0,105+170*2,170*2,"D2","50m","up in 3");
         paintRightAndLeftElements("right and left ac source",105+170*0,105+170*2,170*2,"D2","50m","1 in 1");
         paintRightAndLeftElements("right controlled voltage source",105+170*0,105+170*2,170*2,"D2","50m","down in 3");
 
-        paintUpAndDownElements("up and down capacitance",105,105+170,170*1,"D1","30m","left in 3");
-        paintUpAndDownElements("up and down inductance",105,105+170,170*1,"D2","50m","1 in 1");
-        paintUpAndDownElements("up controlled current source",105,105+170,170*1,"D1","30m","right in 3");
+        paintUpAndDownElements("up and down capacitance",105,105+170*4,170,"D1","30m","left in 3");
+        paintUpAndDownElements("up and down inductance",105,105+170*4,170,"D2","50m","1 in 1");
+        paintUpAndDownElements("up controlled current source",105,105+170*4,170,"D1","30m","right in 3");
 
         paintUpAndDownElements("up and down inductance",105,105,170*1,"D2","50m","1 in 1");
         paintRightAndLeftElements("right and left resistance",105+340,105+340,170,"D2","50m","1 in 1");
-        paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");*/
+        paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
 
