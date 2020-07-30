@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Node {
 	final private byte name;
 	boolean visited;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
-	ArrayList<Node> nodeNeighbours = new ArrayList<>();
-	ArrayList<Element> elementNeighbours = new ArrayList<>();
+	HashSet<Node> nodeNeighbours = new HashSet<>();
+	HashSet<Element> elementNeighbours = new HashSet<>();
 	
 	Node (byte name) {
 		this.name = name;

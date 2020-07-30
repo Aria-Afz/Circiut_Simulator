@@ -183,11 +183,9 @@ public class Main {
 		} else
 			return false;
 		cir.allElements.put(e.getName(), e);
-		if (!a.nodeNeighbours.contains(b))
-			a.nodeNeighbours.add(b);
+		a.nodeNeighbours.add(b);
 		a.elementNeighbours.add(e);
-		if (!b.nodeNeighbours.contains(a))
-			b.nodeNeighbours.add(a);
+		b.nodeNeighbours.add(a);
 		b.elementNeighbours.add(e);
 		return true;
 	}
