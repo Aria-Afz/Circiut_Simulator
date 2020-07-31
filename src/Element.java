@@ -5,7 +5,7 @@ class Element {
 	private final Node positiveNode;
 	private final Node negativeNode;
 	private double value;
-	String gValue = "";
+	String gValue = "N.C";
 	ArrayList<Double> storedVoltages = new ArrayList<>();
 	ArrayList<Double> storedCurrents = new ArrayList<>();
 
@@ -16,7 +16,7 @@ class Element {
 	Node nodeB;
 
 	// for ac sources
-	double v;
+	double v=0;
 	double u = 0;
 	double frequency;
 	double phase = 0;
