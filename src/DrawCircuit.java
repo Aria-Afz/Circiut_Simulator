@@ -36,6 +36,28 @@ class GroundPanel extends JPanel {
         g.drawImage(image2,1060-20-30, 0,30, 45, this);
     }
 }
+class Point{
+    int x;
+    int y;
+    Point(int i){
+        int kharejeQesmat = i/6+1;
+        int baqimande = i%6;
+        if(baqimande==0) {
+            kharejeQesmat--;
+            baqimande = 6;
+        }
+        y=105+5*170-170*kharejeQesmat;
+        x=105+(baqimande-1)*170;
+    }
+}
+class Information{
+    String value;
+    String typeOfElementInGraphics;
+    Information (String v,String t){
+        value = v;
+        typeOfElementInGraphics = t;
+    }
+}
 //////////////////////////////////////up and down///////////////////////////////////////////////////////////
 //////////////////////////////////////up and down///////////////////////////////////////////////////////////
 class UpAndDownElementsPanel extends JPanel {
@@ -259,9 +281,143 @@ public class DrawCircuit {
         paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
-
-
-        frame.setLayout(null);
+        ArrayList<ArrayList<Element>> parallelElements = new ArrayList<ArrayList<Element>>();
+        ArrayList<Element> firstArrayList = new ArrayList<Element>();
+        firstArrayList.add(element.get(0));
+        parallelElements.add(firstArrayList);
+        for(int i=1;i<element.size();i++){
+            int neshangar=-1;
+            for(int j=0;j<parallelElements.size()&&neshangar==-1;j++){
+                if((element.get(i).getPositiveNode().getName()==parallelElements.get(j).get(0).getPositiveNode().getName()&&
+                        element.get(i).getNegativeNode().getName()==parallelElements.get(j).get(0).getNegativeNode().getName())
+                        ||
+                        (element.get(i).getNegativeNode().getName()==parallelElements.get(j).get(0).getPositiveNode().getName()&&
+                        element.get(i).getPositiveNode().getName()==parallelElements.get(j).get(0).getNegativeNode().getName()))
+                    neshangar=j;
+            }
+            if(neshangar!=-1)
+                parallelElements.get(neshangar).add(element.get(i));
+            if(neshangar==-1){
+                ArrayList<Element> temporaryArrayList = new ArrayList<Element>();
+                temporaryArrayList.add(element.get(i));
+                parallelElements.add(temporaryArrayList);
+            }
+        }
+        for(int i=0;i<parallelElements.size();i++){
+            int xForDrawing=1;
+            int yForDrawing=1;
+            int numberOfElements = parallelElements.get(i).size();
+            int distanceBetweenTwoPoints=1;
+            String typeOfDrawing="up to down";
+            if(parallelElements.get(i).get(0).getPositiveNode().getName()==0){
+                Point point = new Point(parallelElements.get(i).get(0).getNegativeNode().getName());
+                xForDrawing = point.x;
+                yForDrawing = point.y;
+                distanceBetweenTwoPoints = 105+5*170-point.y;
+                typeOfDrawing = "up to down";
+            }
+            else if(parallelElements.get(i).get(0).getNegativeNode().getName()==0){
+                Point point = new Point(parallelElements.get(i).get(0).getPositiveNode().getName());
+                xForDrawing = point.x;
+                yForDrawing = point.y;
+                distanceBetweenTwoPoints = 105+5*170-point.y;
+                typeOfDrawing = "up to down";
+            }
+            else{
+                Point point1 = new Point(parallelElements.get(i).get(0).getNegativeNode().getName());
+                Point point2 = new Point(parallelElements.get(i).get(0).getPositiveNode().getName());
+                if(point1.x==point2.x){
+                    typeOfDrawing = "up to down";
+                    xForDrawing = point1.x;
+                    if(point1.y>point2.y){
+                        yForDrawing=point2.y;
+                        distanceBetweenTwoPoints=point1.y-point2.y;
+                    }
+                    if(point2.y>point1.y){
+                        yForDrawing=point1.y;
+                        distanceBetweenTwoPoints=point2.y-point1.y;
+                    }
+                }
+                else if(point1.y==point2.y){
+                    typeOfDrawing = "right to left";
+                    yForDrawing = point1.y;
+                    if(point1.x>point2.x){
+                        xForDrawing=point2.x;
+                        distanceBetweenTwoPoints=point1.x-point2.x;
+                    }
+                    if(point2.x>point1.x){
+                        xForDrawing=point1.x;
+                        distanceBetweenTwoPoints=point2.x-point1.x;
+                    }
+                }
+                else
+                    System.out.println("Error Error المان مورب");
+            }
+            if(numberOfElements==1){
+                String name = parallelElements.get(i).get(0).getName();
+                Information info = giveInformationForDrawing (xForDrawing,yForDrawing,
+                        parallelElements.get(i).get(0),typeOfDrawing);
+                if(typeOfDrawing.equals("up to down"))
+                    paintUpAndDownElements(info.typeOfElementInGraphics, xForDrawing,yForDrawing
+                            ,distanceBetweenTwoPoints,name,info.value,"1 in 1");
+                if(typeOfDrawing.equals("right to left"))
+                    paintRightAndLeftElements(info.typeOfElementInGraphics, xForDrawing,yForDrawing
+                            ,distanceBetweenTwoPoints,name,info.value,"1 in 1");
+            }
+            if(numberOfElements==2){
+                for(int j=0;j<=1;j++){
+                    String name = parallelElements.get(i).get(j).getName();
+                    Information info = giveInformationForDrawing (xForDrawing,yForDrawing,
+                            parallelElements.get(i).get(j),typeOfDrawing);
+                    String typeOfParallel="";
+                    if(typeOfDrawing.equals("up to down")) {
+                        if(j==0)
+                            typeOfParallel="left in 2";
+                        if(j==1)
+                            typeOfParallel="right in 2";
+                        paintUpAndDownElements(info.typeOfElementInGraphics, xForDrawing, yForDrawing
+                                , distanceBetweenTwoPoints, name, info.value, typeOfParallel);
+                    }
+                    if(typeOfDrawing.equals("right to left")) {
+                        if(j==0)
+                            typeOfParallel="up in 2";
+                        if(j==1)
+                            typeOfParallel="down in 2";
+                        paintRightAndLeftElements(info.typeOfElementInGraphics, xForDrawing, yForDrawing
+                                , distanceBetweenTwoPoints, name, info.value, typeOfParallel);
+                    }
+                }
+            }
+            if(numberOfElements==3){
+                for(int j=0;j<=2;j++){
+                    String name = parallelElements.get(i).get(j).getName();
+                    Information info = giveInformationForDrawing (xForDrawing,yForDrawing,
+                            parallelElements.get(i).get(j),typeOfDrawing);
+                    String typeOfParallel="";
+                    if(typeOfDrawing.equals("up to down")) {
+                        if(j==0)
+                            typeOfParallel="left in 3";
+                        if(j==1)
+                            typeOfParallel="1 in 1";
+                        if(j==2)
+                            typeOfParallel="right in 3";
+                        paintUpAndDownElements(info.typeOfElementInGraphics, xForDrawing, yForDrawing
+                                , distanceBetweenTwoPoints, name, info.value, typeOfParallel);
+                    }
+                    if(typeOfDrawing.equals("right to left")) {
+                        if(j==0)
+                            typeOfParallel="up in 3";
+                        if(j==1)
+                            typeOfParallel="1 in 1";
+                        if(j==2)
+                            typeOfParallel="down in 3";
+                        paintRightAndLeftElements(info.typeOfElementInGraphics, xForDrawing, yForDrawing
+                                , distanceBetweenTwoPoints, name, info.value, typeOfParallel);
+                    }
+                }
+            }
+        }
+        //frame.setLayout(null);
         frame.setVisible(true);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -390,5 +546,83 @@ public class DrawCircuit {
         forValue.add(valueInGraphic);
         forValue.setBackground(new Color(247, 247, 247));
         frame.getContentPane().add(forValue);
+    }
+    static Information giveInformationForDrawing(int xForDrawing,int yForDrawing,Element element,String typeOfDrawing) {
+    String typeOfElementInGraphics="";
+    String value="";
+    if(typeOfDrawing.equals("right to left")) {
+        String rightToLeftOrLeftToRight;
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (element.getName().charAt(0)=='R'){
+
+        }
+        if (element.getName().charAt(0)=='L'){
+
+        }
+        if (element.getName().charAt(0)=='C'){
+
+        }
+        if (element.getName().charAt(0)=='D'){
+
+        }
+        if (element.getName().charAt(0)=='V'){
+
+        }
+        if (element.getName().charAt(0)=='E'){
+
+        }
+        if (element.getName().charAt(0)=='H'){
+
+        }
+        if (element.getName().charAt(0)=='I'){
+
+        }
+        if (element.getName().charAt(0)=='G'){
+
+        }
+        if (element.getName().charAt(0)=='F'){
+
+        }
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+    if(typeOfDrawing.equals("up to down")) {
+        String upToDownOrDownToUp;
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (element.getName().charAt(0)=='R'){
+
+        }
+        if (element.getName().charAt(0)=='L'){
+
+        }
+        if (element.getName().charAt(0)=='C'){
+
+        }
+        if (element.getName().charAt(0)=='D'){
+
+        }
+        if (element.getName().charAt(0)=='V'){
+
+        }
+        if (element.getName().charAt(0)=='E'){
+
+        }
+        if (element.getName().charAt(0)=='H'){
+
+        }
+        if (element.getName().charAt(0)=='I'){
+
+        }
+        if (element.getName().charAt(0)=='G'){
+
+        }
+        if (element.getName().charAt(0)=='F'){
+
+        }
+        /////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+    Information info = new Information(value,typeOfElementInGraphics);
+    return info;
     }
 }
