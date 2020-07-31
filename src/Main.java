@@ -113,6 +113,7 @@ public class Main {
 		char k = arr[0].charAt(0);
 		if (len == 4 && (k == 'R' || k == 'L' || k == 'C' || k == 'D')) {
 			e = new Element(arr[0], a, b, unitPrefix(arr[3], numLine));
+			e.gValue = arr[3];
 		} else if (len == 5 && (k == 'F' || k == 'H')) {
 			e = new Element(arr[0], a, b, cir.allElements.get(arr[3]), unitPrefix(arr[4], numLine));
 		}  else if (len == 6 && (k == 'G' || k == 'E')) {
