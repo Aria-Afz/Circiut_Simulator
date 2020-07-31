@@ -66,7 +66,7 @@ class Element {
 		storedVoltages.add(0.0d);
 	}
 
-	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
+	public double getVoltage(int cycle) { return positiveNode.getVoltage(cycle) - negativeNode.getVoltage(cycle); }
 
 	public double getCurrent(int cycle, double dt) {
 		switch (name.charAt(0)) {

@@ -12,8 +12,8 @@ public class Circuit {
 	void errorCheck() {
 		if (!allNodes.containsKey((byte) 0))
 			exit(-4);
-		for (Map.Entry<Byte, Node> e : allNodes.entrySet())
-			if (e.getValue().elementNeighbours.size() == 1)
+		for (Node e : allNodes.values())
+			if (e.elementNeighbours.size() == 1)
 				exit(-5);
 		HashSet<Node> connected = new HashSet<>();
 		connected.add(allNodes.get((byte) 0));
@@ -39,71 +39,55 @@ public class Circuit {
 	void run() {
 		unionCheck();
 		for (int i = 1; i <= time / dt; i++) {
-			for (Map.Entry<Byte, Node> e : allNodes.entrySet())
-				e.getValue().storedVoltages.add(e.getValue().storedVoltages.get(i - 1));
-			for (Map.Entry<Byte, Node> e : allNodes.entrySet())
-				if (e.getKey() != 0)
-					KclCalculate(e.getValue(), i);
-			for (Map.Entry<String, Element> ele : allElements.entrySet()) {
-				ele.getValue().storedVoltages.add(
-						ele.getValue().getPositiveNode().getVoltage(i) -
-						ele.getValue().getNegativeNode().getVoltage(i));
-				ele.getValue().storedCurrents.add(ele.getValue().getCurrent(i, dt));
+			for (Node e : allNodes.values())
+				e.storedVoltages.add(e.storedVoltages.get(i - 1));
+			for (Node e : allNodes.values())
+				if (e.getName() != 0)
+					solve(e, i);
+			for (Element ele : allElements.values()) {
+				ele.storedVoltages.add(ele.getVoltage(i));
+				ele.storedCurrents.add(ele.getCurrent(i, dt));
 			}
 		}
 		printResult();
 	}
 
-	void KclCalculate(Node e, int cycle) {
-		double kcl1 = 0, kcl2 = 0, kcl3 = 0, v = e.getVoltage(cycle - 1);
-		for (Element ele : e.elementNeighbours) {
-			e.storedVoltages.remove(cycle);
-			e.storedVoltages.add(v - dv);
-			if (ele.getPositiveNode() == e)
-				kcl1 -= ele.getCurrent(cycle, dt);
-			else
-				kcl1 += ele.getCurrent(cycle, dt);
-			e.storedVoltages.remove(cycle);
-			e.storedVoltages.add(v + dv);
-			if (ele.getPositiveNode() == e)
-				kcl2 -= ele.getCurrent(cycle, dt);
-			else
-				kcl2 += ele.getCurrent(cycle, dt);
-			e.storedVoltages.remove(cycle);
-			e.storedVoltages.add(v);
-			if (ele.getPositiveNode() == e)
-				kcl3 -= ele.getCurrent(cycle, dt);
-			else
-				kcl3 += ele.getCurrent(cycle, dt);
-		}
+	void solve(Node e, int cycle) {
+		double v = e.storedVoltages.get(cycle);
+		double kcl1 = kclCalculate(e, cycle);
 		e.storedVoltages.remove(cycle);
-		if (Math.abs(kcl1) > Math.abs(kcl2))
-			if (Math.abs(kcl2) > Math.abs(kcl3))
-				e.storedVoltages.add(v);
+		e.storedVoltages.add(v + dv);
+		double kcl2 = kclCalculate(e, cycle);
+		System.out.println(kcl1 + " " + kcl2);
+		e.storedVoltages.remove(cycle);
+		e.storedVoltages.add(v + (Math.abs(kcl1) - Math.abs(kcl2)) * dv / di);
+	}
+
+	double kclCalculate(Node e, int cycle) {
+		double sum = 0;
+		for (Element ele : e.elementNeighbours) {
+			if (ele.getPositiveNode() == e)
+				sum -= ele.getCurrent(cycle, dt);
 			else
-				e.storedVoltages.add(v + dv);
-		else if (Math.abs(kcl1) > Math.abs(kcl3))
-			e.storedVoltages.add(v);
-		else
-			e.storedVoltages.add(v - dv);
+				sum += ele.getCurrent(cycle, dt);
+		}
+		return sum;
 	}
 
 	void printResult() {
 		System.out.println("Node's Voltages :");
-		for (Map.Entry<Byte, Node> e : allNodes.entrySet()) {
-			if (e.getValue().getName() != 0) {
-				System.out.print(e.getKey() + " : ");
-				e.getValue().storedVoltages.forEach(x -> System.out.print(x + " "));
+		for (Node e : allNodes.values())
+			if (e.getName() != 0) {
+				System.out.print(e.getName() + " : ");
+				e.storedVoltages.forEach(x -> System.out.print(x + " "));
 				System.out.println();
 			}
-		}
 		System.out.println("Element's (Voltages Currents Powers) :");
-		for (Map.Entry<String, Element> ele : allElements.entrySet()) {
-			System.out.print(ele.getKey() + " : ");
-			Element a = ele.getValue();
+		for (Element ele : allElements.values()) {
+			System.out.print(ele.getName() + " : ");
 			for (int i = 1; i <= time/dt; i++)
-				System.out.print("(" + a.getVoltage(i) + " " + a.getCurrent(i, dt) + " "
-						+ a.getVoltage(i) * a.getCurrent(i, dt) + ") ");
+				System.out.print("(" + ele.getVoltage(i) + " " + ele.getCurrent(i, dt) + " "
+						+ ele.getVoltage(i) * ele.getCurrent(i, dt) + ") ");
 			System.out.println();
 		}
 	}

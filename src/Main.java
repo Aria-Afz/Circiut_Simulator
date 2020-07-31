@@ -9,7 +9,7 @@ public class Main {
 	public static void main (String[] args) throws FileNotFoundException {
 		readFile(new File("Circuit.txt"));
 		cir.errorCheck();
-		//cir.run();
+		cir.run();
 		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
 		consoleInput();
 	}
@@ -152,7 +152,7 @@ public class Main {
 	}
 
 	static void exit(int n) {
-		if (n > 0) {
+		if (n != 0) {
 			System.out.print(n);
 			System.exit(0);
 		} else
