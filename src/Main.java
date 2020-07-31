@@ -56,8 +56,7 @@ public class Main {
 					addElement(arr, numLine);
 					break;
 				default:
-					System.out.print(numLine);
-					return;
+					exit(numLine);
 			}
 			numLine++;
 		}

@@ -1,5 +1,5 @@
 *salam man be to yar ghadimi
-R1 0 1 1
+R1 0l 1 1
 R5 2 8 4
 L1 1 0 6m
 C1 0 1 5m
