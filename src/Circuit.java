@@ -10,15 +10,11 @@ public class Circuit {
 	LinkedList<Union> allUnions = new LinkedList<>();
 
 	void errorCheck() {
-		if (!allNodes.containsKey((byte) 0)) {
-			System.out.print("-4");
-			System.exit(0);
-		}
+		if (!allNodes.containsKey((byte) 0))
+			exit(-4);
 		for (Map.Entry<Byte, Node> e : allNodes.entrySet())
-			if (e.getValue().elementNeighbours.size() == 1) {
-				System.out.print("-5");
-				System.exit(0);
-			}
+			if (e.getValue().elementNeighbours.size() == 1)
+				exit(-5);
 		HashSet<Node> connected = new HashSet<>();
 		connected.add(allNodes.get((byte) 0));
 		allNodes.get((byte) 0).visited = true;
@@ -32,10 +28,8 @@ public class Circuit {
 						e.visited = true;
 					}
 		}
-		if (connected.size() != allNodes.size()) {
-			System.out.print("-4");
-			System.exit(0);
-		}
+		if (connected.size() != allNodes.size())
+			exit(-4);
 	}
 
 	void unionCheck() {
@@ -114,13 +108,35 @@ public class Circuit {
 		}
 	}
 
+	static void exit(int n) {
+		System.out.print(n);
+		System.exit(0);
+	}
+
 	public void setTime(double time) { this.time = time; }
 
-	public void setDt(double dt) { this.dt = dt; }
+	public double getTime() { return time; }
 
-	public void setDv(double dv) { this.dv = dv; }
+	public void setDt(double dt, int n) {
+		if (dt == 0)
+			exit(n);
+		else
+			this.dt = dt;
+	}
 
-	public void setDi(double di) { this.di = di; }
+	public void setDv(double dv, int n) {
+		if (dv == 0)
+			exit(n);
+		else
+			this.dv = dv;
+	}
+
+	public void setDi(double di, int n) {
+		if (di == 0)
+			exit(n);
+		else
+			this.di = di;
+	}
 
 	public int getCycle(double t) { return (int) Math.round(t/dt); }
 }
