@@ -241,11 +241,11 @@ class MyJPanel extends JPanel{
 
 public class DrawCircuit {
     static JFrame frame = new JFrame();
-    ArrayList<Element> element;
+    static ArrayList<Element> element;
     public DrawCircuit (ArrayList<Element> elementsForGraphics){
         element = elementsForGraphics;
     }
-    public void main(){
+    public static void main(){
         frame.setTitle("Graphic drawing of the circuit");
         frame.setSize(1520,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

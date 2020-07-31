@@ -10,7 +10,7 @@ public class Main {
 		readFile(new File("Circuit.txt"));
 		cir.errorCheck();
 		//cir.run();
-		new DrawCircuit(new ArrayList<>(cir.allElements.values()));
+		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
 		consoleInput();
 	}
 
