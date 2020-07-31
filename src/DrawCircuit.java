@@ -31,9 +31,9 @@ class GroundPanel extends JPanel {
         Stroke stroke = new BasicStroke(2);
         graphics2D.setStroke(stroke);
 
-        graphics2D.drawLine(30, 45/2, 1060-30, 45/2);
-        g.drawImage(image, 20, 0, 30, 45, this);
-        g.drawImage(image2,1060-20-30, 0,30, 45, this);
+        graphics2D.drawLine(30, 42/2, 1060-30, 42/2);
+        g.drawImage(image, 20, 0, 30, 42, this);
+        g.drawImage(image2,1060-20-30, 0,30, 42, this);
     }
 }
 class Point{
@@ -262,7 +262,7 @@ public class DrawCircuit {
         container.add(groundPanel);
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
-        paintUpAndDownElements("up voltage dc source",105+170*3,105,170*2,"D1","30m","right in 2");
+        /*paintUpAndDownElements("up voltage dc source",105+170*3,105,170*2,"D1","30m","right in 2");
         paintUpAndDownElements("up diode",105+170*3,105,170*2,"D1","30m","left in 2");
 
         paintRightAndLeftElements("right and left resistance",105,105+170*0,170*2,"D2","50m","up in 2");
@@ -278,7 +278,7 @@ public class DrawCircuit {
 
         paintUpAndDownElements("up and down inductance",105,105,170*1,"D2","50m","1 in 1");
         paintRightAndLeftElements("right and left resistance",105+340,105+340,170,"D2","50m","1 in 1");
-        paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");
+        paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");*/
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
         ////////////////////////////////////////example of drawing///////////////////////////////////////////////
         ArrayList<ArrayList<Element>> parallelElements = new ArrayList<ArrayList<Element>>();
@@ -417,7 +417,7 @@ public class DrawCircuit {
                 }
             }
         }
-        //frame.setLayout(null);
+        frame.setLayout(null);
         frame.setVisible(true);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -547,78 +547,193 @@ public class DrawCircuit {
         forValue.setBackground(new Color(247, 247, 247));
         frame.getContentPane().add(forValue);
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     static Information giveInformationForDrawing(int xForDrawing,int yForDrawing,Element element,String typeOfDrawing) {
     String typeOfElementInGraphics="";
     String value="";
     if(typeOfDrawing.equals("right to left")) {
         String rightToLeftOrLeftToRight;
-
+        Point positiveNode = new Point(element.getPositiveNode().getName());
+        if (positiveNode.x==xForDrawing)
+            rightToLeftOrLeftToRight="+";
+        else
+            rightToLeftOrLeftToRight="-";
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         if (element.getName().charAt(0)=='R'){
-
+            value=element.gValue;
+            typeOfElementInGraphics = "right and left resistance";
         }
         if (element.getName().charAt(0)=='L'){
-
+            value=element.gValue;
+            typeOfElementInGraphics = "right and left inductance";
         }
         if (element.getName().charAt(0)=='C'){
-
+            value=element.gValue;
+            typeOfElementInGraphics = "right and left capacitance";
         }
         if (element.getName().charAt(0)=='D'){
-
+            if(rightToLeftOrLeftToRight.equals("+"))
+                typeOfElementInGraphics = "right diode";
+            if(rightToLeftOrLeftToRight.equals("-"))
+                typeOfElementInGraphics = "left diode";
         }
         if (element.getName().charAt(0)=='V'){
-
+            if(!element.isAC){
+                double d = element.v+element.u*Math.sin(element.phase);
+                int a = (int) (d / 0.01);
+                value = Double.toString(a*0.01);
+                if(rightToLeftOrLeftToRight.equals("+"))
+                    typeOfElementInGraphics = "right voltage dc source";
+                if(rightToLeftOrLeftToRight.equals("-"))
+                    typeOfElementInGraphics = "left voltage dc source";
+            }
+            else{
+                double d = 2*Math.PI*element.frequency;
+                int a = (int) (d / 0.01);
+                String omega = Double.toString(a*0.01);
+                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                typeOfElementInGraphics = "right and left ac source";
+            }
         }
         if (element.getName().charAt(0)=='E'){
-
+            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            if(rightToLeftOrLeftToRight.equals("+"))
+                typeOfElementInGraphics = "right controlled voltage source";
+            if(rightToLeftOrLeftToRight.equals("-"))
+                typeOfElementInGraphics = "left controlled voltage source";
         }
         if (element.getName().charAt(0)=='H'){
-
+            value = element.k+"*I("+element.ele.getName()+")";
+            if(rightToLeftOrLeftToRight.equals("+"))
+                typeOfElementInGraphics = "right controlled voltage source";
+            if(rightToLeftOrLeftToRight.equals("-"))
+                typeOfElementInGraphics = "left controlled voltage source";
         }
         if (element.getName().charAt(0)=='I'){
-
+            if(!element.isAC){
+                double d = element.v+element.u*Math.sin(element.phase);
+                int a = (int) (d / 0.01);
+                value = Double.toString(a*0.01);
+                if(rightToLeftOrLeftToRight.equals("+"))
+                    typeOfElementInGraphics = "right current dc source";
+                if(rightToLeftOrLeftToRight.equals("-"))
+                    typeOfElementInGraphics = "left current dc source";
+            }
+            else{
+                double d = 2*Math.PI*element.frequency;
+                int a = (int) (d / 0.01);
+                String omega = Double.toString(a*0.01);
+                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                typeOfElementInGraphics = "right and left ac source";
+            }
         }
         if (element.getName().charAt(0)=='G'){
-
+            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            if(rightToLeftOrLeftToRight.equals("+"))
+                typeOfElementInGraphics = "right controlled current source";
+            if(rightToLeftOrLeftToRight.equals("-"))
+                typeOfElementInGraphics = "left controlled current source";
         }
         if (element.getName().charAt(0)=='F'){
-
+            value = element.k+"*I("+element.ele.getName()+")";
+            if(rightToLeftOrLeftToRight.equals("+"))
+                typeOfElementInGraphics = "right controlled current source";
+            if(rightToLeftOrLeftToRight.equals("-"))
+                typeOfElementInGraphics = "left controlled current source";
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////
     }
     if(typeOfDrawing.equals("up to down")) {
         String upToDownOrDownToUp;
-
+        Point positivePoint = new Point(element.getPositiveNode().getName());
+        if(positivePoint.y == yForDrawing)
+            upToDownOrDownToUp="+";
+        else
+            upToDownOrDownToUp="-";
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         if (element.getName().charAt(0)=='R'){
-
+            value=element.gValue;
+            typeOfElementInGraphics = "up and down resistance";
         }
         if (element.getName().charAt(0)=='L'){
-
+            value=element.gValue;
+            typeOfElementInGraphics = "up and down inductance";
         }
         if (element.getName().charAt(0)=='C'){
-
+            value=element.gValue;
+            typeOfElementInGraphics = "up and down capacitance";
         }
         if (element.getName().charAt(0)=='D'){
-
+            if(upToDownOrDownToUp.equals("+"))
+                typeOfElementInGraphics = "up diode";
+            if(upToDownOrDownToUp.equals("-"))
+                typeOfElementInGraphics = "down diode";
         }
         if (element.getName().charAt(0)=='V'){
-
+            if(!element.isAC){
+                double d = element.v+element.u*Math.sin(element.phase);
+                int a = (int) (d / 0.01);
+                value = Double.toString(a*0.01);
+                if(upToDownOrDownToUp.equals("+"))
+                    typeOfElementInGraphics = "up voltage dc source";
+                if(upToDownOrDownToUp.equals("-"))
+                    typeOfElementInGraphics = "down voltage dc source";
+            }
+            else{
+                double d = 2*Math.PI*element.frequency;
+                int a = (int) (d / 0.01);
+                String omega = Double.toString(a*0.01);
+                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                typeOfElementInGraphics = "up and down ac source";
+            }
         }
         if (element.getName().charAt(0)=='E'){
-
+            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            if(upToDownOrDownToUp.equals("+"))
+                typeOfElementInGraphics = "up controlled voltage source";
+            if(upToDownOrDownToUp.equals("-"))
+                typeOfElementInGraphics = "down controlled voltage source";
         }
         if (element.getName().charAt(0)=='H'){
-
+            value = element.k+"*I("+element.ele.getName()+")";
+            if(upToDownOrDownToUp.equals("+"))
+                typeOfElementInGraphics = "up controlled voltage source";
+            if(upToDownOrDownToUp.equals("-"))
+                typeOfElementInGraphics = "down controlled voltage source";
         }
         if (element.getName().charAt(0)=='I'){
-
+            if(!element.isAC){
+                double d = element.v+element.u*Math.sin(element.phase);
+                int a = (int) (d / 0.01);
+                value = Double.toString(a*0.01);
+                if(upToDownOrDownToUp.equals("+"))
+                    typeOfElementInGraphics = "up current dc source";
+                if(upToDownOrDownToUp.equals("-"))
+                    typeOfElementInGraphics = "down current dc source";
+            }
+            else{
+                double d = 2*Math.PI*element.frequency;
+                int a = (int) (d / 0.01);
+                String omega = Double.toString(a*0.01);
+                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                typeOfElementInGraphics = "up and down ac source";
+            }
         }
         if (element.getName().charAt(0)=='G'){
-
+            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            if(upToDownOrDownToUp.equals("+"))
+                typeOfElementInGraphics = "up controlled current source";
+            if(upToDownOrDownToUp.equals("-"))
+                typeOfElementInGraphics = "down controlled current source";
         }
         if (element.getName().charAt(0)=='F'){
-
+            value = element.k+"*I("+element.ele.getName()+")";
+            if(upToDownOrDownToUp.equals("+"))
+                typeOfElementInGraphics = "up controlled current source";
+            if(upToDownOrDownToUp.equals("-"))
+                typeOfElementInGraphics = "down controlled current source";
         }
         /////////////////////////////////////////////////////////////////////////////////////////////////////
     }
