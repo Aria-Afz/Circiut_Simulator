@@ -1,6 +1,14 @@
 *salam man be to yar ghadimi
 R1 0 1 1
+R5 2 8 4
+L1 1 0 6m
 C1 0 1 5m
+*V1 1 2 8 0 0 0
+E1 1 7 2 1 6
+R4 7 8 9
+R3 0 2 1
+R2 2 1 6
+*R1 1 2 8
 dv 0.1m
 dt 1m
 di 1m

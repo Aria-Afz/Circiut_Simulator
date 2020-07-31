@@ -9,7 +9,7 @@ public class Main {
 	public static void main (String[] args) throws FileNotFoundException {
 		readFile(new File("Circuit.txt"));
 		cir.errorCheck();
-		cir.run();
+		//cir.run();
 		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
 		consoleInput();
 	}
@@ -46,14 +46,13 @@ public class Main {
 				case 'R':
 				case 'L':
 				case 'C':
-				case 'I':
 				case 'F':
 				case 'G':
+				case 'I':
 				case 'H':
+				case 'E':
 				case 'V':
-				case 'W':
-				case 'X':
-				case 'Y':
+				case 'D':
 					addElement(arr, numLine);
 					break;
 				default:
@@ -102,7 +101,7 @@ public class Main {
 		try {
 			A = Byte.parseByte(arr[1]);
 			B = Byte.parseByte(arr[2]);
-		} catch (NumberFormatException ex) {
+		} catch (NumberFormatException ey) {
 			exit(numLine);
 		}
 		if (A < 0 || B < 0 || A == B)

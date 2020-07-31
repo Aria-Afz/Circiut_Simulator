@@ -9,7 +9,7 @@ public class Circuit {
 	private double di;
 	LinkedHashMap<String, Element> allElements = new LinkedHashMap<>();
 	HashMap<Byte, Node> allNodes = new HashMap<>();
-	HashSet<Union> allUnions = new HashSet<>();
+	HashMap<Byte, Union> allUnions = new HashMap<>();
 
 	void errorCheck() {
 		if (!allNodes.containsKey((byte) 0))
@@ -35,7 +35,30 @@ public class Circuit {
 	}
 
 	void unionCheck() {
-		
+		for (Node e : allNodes.values())
+			e.visited = false;
+		HashSet<Node> visited = new HashSet<>();
+		visited.add(allNodes.get((byte) 0));
+		while (visited.size() != allNodes.size())
+			for (Node i : visited) {
+				for (Node j : i.nodeNeighbours)
+					j.visited = true;
+				for (Element ele : i.elementNeighbours) {
+					char k = ele.getName().charAt(0);
+					if (k == 'V' || k == 'E' || k == 'H') {
+						if (ele.getPositiveNode() == i)
+							ele.getNegativeNode().union = i.union;
+						else
+							ele.getPositiveNode().union = i.union;
+					}
+				}
+			}
+		for (Node e : allNodes.values()) {
+			if (allUnions.containsKey(e.union))
+				allUnions.get(e.union).nodes.add(e);
+			else
+				allUnions.put(e.union, new Union(e));
+		}
 	}
 
 	void run() {
