@@ -5,20 +5,22 @@ class Element {
 	private final Node positiveNode;
 	private final Node negativeNode;
 	private double value;
+	String gValue = "";
 	ArrayList<Double> storedVoltages = new ArrayList<>();
 	ArrayList<Double> storedCurrents = new ArrayList<>();
 
 	// for controlled sources
-	private Element ele;
-	private double k;
-	private Node nodeA;
-	private Node nodeB;
+	Element ele;
+	double k;
+	Node nodeA;
+	Node nodeB;
 
 	// for ac sources
-	private double v;
-	private double u;
-	private double frequency;
-	private double phase;
+	double v;
+	double u = 0;
+	double frequency;
+	double phase = 0;
+	boolean isAC = true;
 
 	// for RLC, Diode
 	Element(String name, Node positiveNode, Node negativeNode, double value) {
@@ -64,6 +66,8 @@ class Element {
 		this.phase = phase;
 		storedCurrents.add(0.0d);
 		storedVoltages.add(0.0d);
+		if (u == 0 || frequency == 0)
+			this.isAC = false;
 	}
 
 	public double getVoltage(int cycle) { return positiveNode.getVoltage(cycle) - negativeNode.getVoltage(cycle); }

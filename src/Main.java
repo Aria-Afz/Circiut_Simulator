@@ -172,6 +172,7 @@ public class Main {
 				t = unitPrefix(arr[2], 0);
 			} catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
 				System.out.println("ERROR");
+				input = sc.nextLine();
 				continue;
 			}
 			if (cir.allNodes.containsKey(e1) && cir.allNodes.containsKey(e2)
@@ -180,6 +181,7 @@ public class Main {
 				node2 = cir.allNodes.get(e2);
 			} else {
 				System.out.println("ERROR");
+				input = sc.nextLine();
 				continue;
 			}
 			System.out.println(node1.getVoltage(cir.getCycle(t)) - node2.getVoltage(cir.getCycle(t)));

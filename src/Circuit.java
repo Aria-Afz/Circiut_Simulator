@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.HashSet;
 
 public class Circuit {
 	private double time;
@@ -7,7 +9,7 @@ public class Circuit {
 	private double di;
 	LinkedHashMap<String, Element> allElements = new LinkedHashMap<>();
 	HashMap<Byte, Node> allNodes = new HashMap<>();
-	LinkedList<Union> allUnions = new LinkedList<>();
+	HashSet<Union> allUnions = new HashSet<>();
 
 	void errorCheck() {
 		if (!allNodes.containsKey((byte) 0))
