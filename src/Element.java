@@ -66,7 +66,7 @@ class Element {
 		this.phase = phase;
 		storedCurrents.add(0.0d);
 		storedVoltages.add(0.0d);
-		if (u == 0)
+		if (u == 0 || frequency == 0)
 			this.isAC = false;
 	}
 

@@ -8,9 +8,9 @@ public class Main {
 
 	public static void main (String[] args) throws FileNotFoundException {
 		readFile(new File("Circuit.txt"));
-		//cir.errorCheck();
+		cir.errorCheck();
 		cir.run();
-		//new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
+		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
 		consoleInput();
 	}
 
@@ -142,7 +142,7 @@ public class Main {
 			e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5], numLine));
 		} else if (len == 7 && (k == 'I' || k == 'V')) {
 			e = new Element(arr[0], a, b, unitPrefix(arr[3], numLine), unitPrefix(arr[4], numLine),
-					nonZero(arr[5], numLine), unitPrefix(arr[6], numLine));
+					unitPrefix(arr[5], numLine), unitPrefix(arr[6], numLine));
 		} else
 			exit(numLine);
 		if (e != null)
