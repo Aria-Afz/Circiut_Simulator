@@ -1,13 +1,11 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 class GroundPanel extends JPanel {
     private BufferedImage image;
     private BufferedImage image2;
@@ -231,7 +229,7 @@ class MyJPanel extends JPanel{
         Graphics2D graphics2D = (Graphics2D) g;
         Stroke stroke = new BasicStroke(2);
         graphics2D.setStroke(stroke);
-        g.drawRect(0,0,1060,985);
+        g.drawRect(0,0,1090,985);
         g.setColor(Color.gray);
         for(int i=0;i<=5;i++)
             for(int j=0;j<=5;j++)
@@ -245,7 +243,7 @@ public class DrawCircuit {
     public DrawCircuit (ArrayList<Element> elementsForGraphics){
         element = elementsForGraphics;
     }
-    public static void main(){
+    public static void main() {
         frame.setTitle("Graphic drawing of the circuit");
         frame.setSize(1520,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -254,7 +252,7 @@ public class DrawCircuit {
         Component glassPane = frame.getGlassPane();
         JRootPane rootPane = frame.getRootPane();
         MyJPanel myJPanel = new MyJPanel();
-        myJPanel.setBounds(0,0,1070,1000);
+        myJPanel.setBounds(0,0,1100,1000);
         container.setBackground(new Color(247, 247, 247));
         container.add(myJPanel);
         GroundPanel groundPanel = new GroundPanel();
@@ -479,7 +477,7 @@ public class DrawCircuit {
         JLabel valueInGraphic = new JLabel(value);
         valueInGraphic.setBackground(new Color(247, 247, 247));
         JPanel forValue  = new JPanel();
-        forValue.setBounds(xForText,ertefa/2+10+y,30,30);
+        forValue.setBounds(xForText,ertefa/2+10+y,20,30);
         forValue.add(valueInGraphic);
         forValue.setBackground(new Color(247, 247, 247));
         frame.getContentPane().add(forValue);
@@ -542,7 +540,7 @@ public class DrawCircuit {
         JLabel valueInGraphic = new JLabel(value);
         valueInGraphic.setBackground(new Color(247, 247, 247));
         JPanel forValue  = new JPanel();
-        forValue.setBounds(tool/2+10+x,yForText,30,30);
+        forValue.setBounds(tool/2+10+x,yForText,20,30);
         forValue.add(valueInGraphic);
         forValue.setBackground(new Color(247, 247, 247));
         frame.getContentPane().add(forValue);
@@ -593,19 +591,25 @@ public class DrawCircuit {
                 double d = 2*Math.PI*element.frequency;
                 int a = (int) (d / 0.01);
                 String omega = Double.toString(a*0.01);
-                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                //value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                if(element.v!=0)
+                    value = (int)element.v+"+"+(int)element.u+"*sin";
+                else
+                    value = (int)element.u+"*sin";
                 typeOfElementInGraphics = "right and left ac source";
             }
         }
         if (element.getName().charAt(0)=='E'){
-            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            value = (int)element.k+"*v";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled voltage source";
             if(rightToLeftOrLeftToRight.equals("-"))
                 typeOfElementInGraphics = "left controlled voltage source";
         }
         if (element.getName().charAt(0)=='H'){
-            value = element.k+"*I("+element.ele.getName()+")";
+            //value = element.k+"*I("+element.ele.getName()+")";
+            value = (int)element.k+"*i";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled voltage source";
             if(rightToLeftOrLeftToRight.equals("-"))
@@ -625,19 +629,25 @@ public class DrawCircuit {
                 double d = 2*Math.PI*element.frequency;
                 int a = (int) (d / 0.01);
                 String omega = Double.toString(a*0.01);
-                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                //value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                if(element.v!=0)
+                    value = (int)element.v+"+"+(int)element.u+"*sin";
+                else
+                    value = (int)element.u+"*sin";
                 typeOfElementInGraphics = "right and left ac source";
             }
         }
         if (element.getName().charAt(0)=='G'){
-            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            value = (int)element.k+"*v";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled current source";
             if(rightToLeftOrLeftToRight.equals("-"))
                 typeOfElementInGraphics = "left controlled current source";
         }
         if (element.getName().charAt(0)=='F'){
-            value = element.k+"*I("+element.ele.getName()+")";
+            //value = element.k+"*I("+element.ele.getName()+")";
+            value = (int)element.k+"*i";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled current source";
             if(rightToLeftOrLeftToRight.equals("-"))
@@ -685,19 +695,25 @@ public class DrawCircuit {
                 double d = 2*Math.PI*element.frequency;
                 int a = (int) (d / 0.01);
                 String omega = Double.toString(a*0.01);
-                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                //value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                if(element.v!=0)
+                    value = (int)element.v+"+"+(int)element.u+"*sin";
+                else
+                    value = (int)element.u+"*sin";
                 typeOfElementInGraphics = "up and down ac source";
             }
         }
         if (element.getName().charAt(0)=='E'){
-            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            value = (int)element.k+"*v";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled voltage source";
             if(upToDownOrDownToUp.equals("-"))
                 typeOfElementInGraphics = "down controlled voltage source";
         }
         if (element.getName().charAt(0)=='H'){
-            value = element.k+"*I("+element.ele.getName()+")";
+            //value = element.k+"*I("+element.ele.getName()+")";
+            value = (int)element.k+"*i";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled voltage source";
             if(upToDownOrDownToUp.equals("-"))
@@ -717,19 +733,25 @@ public class DrawCircuit {
                 double d = 2*Math.PI*element.frequency;
                 int a = (int) (d / 0.01);
                 String omega = Double.toString(a*0.01);
-                value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                //value = element.v+"+"+element.u+"*sin("+omega+"t+"+element.phase+")";
+                if(element.v!=0)
+                    value = (int)element.v+"+"+(int)element.u+"*sin";
+                else
+                    value = (int)element.u+"*sin";
                 typeOfElementInGraphics = "up and down ac source";
             }
         }
         if (element.getName().charAt(0)=='G'){
-            value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+            value = (int)element.k+"*v";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled current source";
             if(upToDownOrDownToUp.equals("-"))
                 typeOfElementInGraphics = "down controlled current source";
         }
         if (element.getName().charAt(0)=='F'){
-            value = element.k+"*I("+element.ele.getName()+")";
+            //value = element.k+"*I("+element.ele.getName()+")";
+            value = (int)element.k+"*i";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled current source";
             if(upToDownOrDownToUp.equals("-"))
