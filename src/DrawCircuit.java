@@ -240,7 +240,7 @@ class MyJPanel extends JPanel{
 }
 
 public class DrawCircuit {
-    static JFrame frame = new JFrame();
+    static JFrame frame = Start.frame;
     static ArrayList<Element> element;
     public DrawCircuit (ArrayList<Element> elementsForGraphics){
         element = elementsForGraphics;
