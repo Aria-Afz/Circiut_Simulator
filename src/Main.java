@@ -9,7 +9,7 @@ public class Main {
 	public static void main (String[] args) throws FileNotFoundException {
 		readFile(new File("Circuit.txt"));
 		//cir.errorCheck();
-		//cir.run();
+		cir.run();
 		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
 		consoleInput();
 	}
@@ -25,13 +25,13 @@ public class Main {
 				case 'd':
 					switch(arr[0]) {
 						case "dv":
-							cir.setDv(unitPrefix(arr[1], numLine), numLine);
+							cir.setDv(nonZero(arr[1], numLine));
 							break;
 						case "dt":
-							cir.setDt(unitPrefix(arr[1], numLine), numLine);
+							cir.setDt(nonZero(arr[1], numLine));
 							break;
 						case "di":
-							cir.setDi(unitPrefix(arr[1], numLine), numLine);
+							cir.setDi(nonZero(arr[1], numLine));
 							break;
 						default:
 							exit(numLine);
@@ -92,6 +92,15 @@ public class Main {
 		}
 	}
 
+	static double nonZero(String a, int b) {
+		double x = unitPrefix(a, b);
+		if (x == 0) {
+			exit(b);
+			return 0;
+		} else
+			return x;
+	}
+
 	static void addElement(String[] arr, int numLine) {
 		if (cir.allElements.containsKey(arr[0]))
 			exit(numLine);
@@ -132,7 +141,8 @@ public class Main {
 			cir.allNodes.put(D, d);
 			e = new Element(arr[0], a, b, c, d, unitPrefix(arr[5], numLine));
 		} else if (len == 7 && (k == 'I' || k == 'V')) {
-			e = new Element(arr[0], a, b, unitPrefix(arr[3], numLine), unitPrefix(arr[4], numLine), unitPrefix(arr[5], numLine), unitPrefix(arr[6], numLine));
+			e = new Element(arr[0], a, b, unitPrefix(arr[3], numLine), unitPrefix(arr[4], numLine),
+					nonZero(arr[5], numLine), unitPrefix(arr[6], numLine));
 		} else
 			exit(numLine);
 		if (e != null)

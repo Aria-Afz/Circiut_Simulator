@@ -66,7 +66,7 @@ class Element {
 		this.phase = phase;
 		storedCurrents.add(0.0d);
 		storedVoltages.add(0.0d);
-		if (u == 0 || frequency == 0)
+		if (u == 0)
 			this.isAC = false;
 	}
 
@@ -86,6 +86,11 @@ class Element {
 				return i / value;
 			default: return 0;
 		}
+	}
+
+	public void update(int i, double dt) {
+		storedVoltages.add(getVoltage(i));
+		storedCurrents.add(getCurrent(i, dt));
 	}
 
 	public String getName() { return name;}
