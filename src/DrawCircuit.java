@@ -226,10 +226,12 @@ class MyJPanel extends JPanel{
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
+        //g.setColor(new Color(247, 247, 247));
         Graphics2D graphics2D = (Graphics2D) g;
         Stroke stroke = new BasicStroke(2);
         graphics2D.setStroke(stroke);
         g.drawRect(0,0,1090,985);
+        g.setColor(Color.BLACK);
         g.setColor(Color.gray);
         for(int i=0;i<=5;i++)
             for(int j=0;j<=5;j++)
@@ -417,6 +419,7 @@ public class DrawCircuit {
         }
         frame.setLayout(null);
         frame.setVisible(true);
+        //container.removeAll();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

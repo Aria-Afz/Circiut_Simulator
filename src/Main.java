@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main (String[] args) throws FileNotFoundException {
 		readFile(new File("Circuit.txt"));
-		cir.errorCheck();
+		//cir.errorCheck();
 		cir.run();
 		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
 		consoleInput();
