@@ -63,80 +63,80 @@ public class Circuit {
 			e.elementCheck();
 	}
 
-	//run with union
-	void run() {
-		unionCheck();
-		for (int i = 1; i <= time / dt; i++) {
-			for (Node e : allNodes.values())
-				e.storedVoltages.add(e.storedVoltages.get(i - 1));
-			for (Union e : allUnions.values())
-				if (e.getName() != 0)
-					solve(e, i);
-			for (Element ele : allElements.values())
-				ele.update(i, dt);
-			for (Union e : allUnions.values())
-				e.update(i, dt);
-		}
-		printResult();
-	}
-
-	void solve(Union e, int cycle) {
-		e.voltage = e.nodes.get(0).getVoltage(cycle);
-		double kcl1 = kclCalculate(e, cycle);
-		e.voltage = e.nodes.get(0).getVoltage(cycle) + dv;
-		double kcl2 = kclCalculate(e, cycle);
-		e.voltage = e.nodes.get(0).getVoltage(cycle) + (Math.abs(kcl1) - Math.abs(kcl2)) * dv / di;
-	}
-
-	double kclCalculate(Union e, int cycle) {
-		double sum = 0;
-		for (Node a : e.nodes)
-			for (Element ele : a.elementNeighbours)
-				if (!e.elements.contains(ele)) {
-					if (ele.getPositiveNode() == a)
-						sum -= ele.getCurrent(cycle, dt);
-					else
-						sum += ele.getCurrent(cycle, dt);
-				}
-		return sum;
-	}
-//	run without union
+//	run with union
 //	void run() {
-//		//unionCheck();
+//		unionCheck();
 //		for (int i = 1; i <= time / dt; i++) {
 //			for (Node e : allNodes.values())
 //				e.storedVoltages.add(e.storedVoltages.get(i - 1));
-//			for (Node e : allNodes.values())
+//			for (Union e : allUnions.values())
 //				if (e.getName() != 0)
 //					solve(e, i);
-//			for (Element ele : allElements.values()) {
-//				ele.storedVoltages.add(ele.getVoltage(i));
-//				ele.storedCurrents.add(ele.getCurrent(i, dt));
-//			}
+//			for (Element ele : allElements.values())
+//				ele.update(i, dt);
+//			for (Union e : allUnions.values())
+//				e.update(i, dt);
 //		}
 //		printResult();
 //	}
 //
-//	void solve(Node e, int cycle) {
-//		double v = e.storedVoltages.get(cycle);
+//	void solve(Union e, int cycle) {
+//		e.voltage = e.nodes.get(0).getVoltage(cycle);
 //		double kcl1 = kclCalculate(e, cycle);
-//		e.storedVoltages.remove(cycle);
-//		e.storedVoltages.add(v + dv);
+//		e.voltage = e.nodes.get(0).getVoltage(cycle) + dv;
 //		double kcl2 = kclCalculate(e, cycle);
-//		e.storedVoltages.remove(cycle);
-//		e.storedVoltages.add(v + (Math.abs(kcl1) - Math.abs(kcl2)) * dv / di);
+//		e.voltage = e.nodes.get(0).getVoltage(cycle) + (Math.abs(kcl1) - Math.abs(kcl2)) * dv / di;
 //	}
 //
-//	double kclCalculate(Node e, int cycle) {
+//	double kclCalculate(Union e, int cycle) {
 //		double sum = 0;
-//		for (Element ele : e.elementNeighbours) {
-//			if (ele.getPositiveNode() == e)
-//				sum -= ele.getCurrent(cycle, dt);
-//			else
-//				sum += ele.getCurrent(cycle, dt);
-//		}
+//		for (Node a : e.nodes)
+//			for (Element ele : a.elementNeighbours)
+//				if (!e.elements.contains(ele)) {
+//					if (ele.getPositiveNode() == a)
+//						sum -= ele.getCurrent(cycle, dt);
+//					else
+//						sum += ele.getCurrent(cycle, dt);
+//				}
 //		return sum;
 //	}
+//	run without union
+	void run() {
+		//unionCheck();
+		for (int i = 1; i <= time / dt; i++) {
+			for (Node e : allNodes.values())
+				e.storedVoltages.add(e.storedVoltages.get(i - 1));
+			for (Node e : allNodes.values())
+				if (e.getName() != 0)
+					solve(e, i);
+			for (Element ele : allElements.values()) {
+				ele.storedVoltages.add(ele.getVoltage(i, dt));
+				ele.storedCurrents.add(ele.getCurrent(i, dt));
+			}
+		}
+		printResult();
+	}
+
+	void solve(Node e, int cycle) {
+		double v = e.storedVoltages.get(cycle);
+		double kcl1 = kclCalculate(e, cycle);
+		e.storedVoltages.remove(cycle);
+		e.storedVoltages.add(v + dv);
+		double kcl2 = kclCalculate(e, cycle);
+		e.storedVoltages.remove(cycle);
+		e.storedVoltages.add(v + (Math.abs(kcl1) - Math.abs(kcl2)) * dv / di);
+	}
+
+	double kclCalculate(Node e, int cycle) {
+		double sum = 0;
+		for (Element ele : e.elementNeighbours) {
+			if (ele.getPositiveNode() == e)
+				sum -= ele.getCurrent(cycle, dt);
+			else
+				sum += ele.getCurrent(cycle, dt);
+		}
+		return sum;
+	}
 
 	void printResult() {
 		System.out.println("Node's Voltages :");
