@@ -4,14 +4,16 @@ import java.util.HashSet;
 
 public class Circuit {
 	private double time;
-	private double dt;
-	private double dv;
-	private double di;
+	private double dt = -1;
+	private double dv = -1;
+	private double di = -1;
 	LinkedHashMap<String, Element> allElements = new LinkedHashMap<>();
 	HashMap<Byte, Node> allNodes = new HashMap<>();
 	HashMap<Byte, Union> allUnions = new HashMap<>();
 
 	void errorCheck() {
+		if (dt == -1 || dv == -1 || di == -1)
+			exit(-6);
 		if (!allNodes.containsKey((byte) 0))
 			exit(-4);
 		for (Node e : allNodes.values())
