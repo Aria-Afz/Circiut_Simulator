@@ -150,8 +150,8 @@ public class Circuit {
 		for (Element ele : allElements.values()) {
 			System.out.print(ele.getName() + " : ");
 			for (int i = 1; i <= time/dt; i++)
-				System.out.print("(" + ele.getVoltage(i) + " " + ele.getCurrent(i, dt) + " "
-						+ ele.getVoltage(i) * ele.getCurrent(i, dt) + ") ");
+				System.out.print("(" + ele.getVoltage(i, dt) + " " + ele.getCurrent(i, dt) + " "
+						+ ele.getVoltage(i, dt) * ele.getCurrent(i, dt) + ") ");
 			System.out.println();
 		}
 	}
@@ -177,5 +177,7 @@ public class Circuit {
 		this.di = di;
 	}
 
-	public int getCycle(double t) { return (int) Math.round(t/dt); }
+	public int getCycle(double t) {
+		return (int) Math.round(t/dt);
+	}
 }

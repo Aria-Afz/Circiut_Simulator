@@ -70,26 +70,33 @@ class Element {
 			this.isAC = false;
 	}
 
-	public double getVoltage(int cycle) { return positiveNode.getVoltage(cycle) - negativeNode.getVoltage(cycle); }
+	public double getVoltage(int cycle, double dt) {
+		switch (name.charAt(0)) {
+			case 'H': 	return k * ele.getCurrent(cycle, dt);
+			case 'E':	return k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle));
+			case 'V':	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
+			default:	return positiveNode.getVoltage(cycle) - negativeNode.getVoltage(cycle);
+		}
+	}
 
 	public double getCurrent(int cycle, double dt) {
 		switch (name.charAt(0)) {
-			case 'R':	return getVoltage(cycle) / value;
+			case 'R':	return getVoltage(cycle, dt) / value;
 			case 'F': 	return -(k * ele.getCurrent(cycle, dt));
 			case 'G': 	return -(k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle)));
 			case 'I': 	return -(v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase));
-			case 'C': 	return value * (getVoltage(cycle) - getVoltage(cycle - 1)) / dt;
+			case 'C': 	return value * (getVoltage(cycle, dt) - getVoltage(cycle - 1, dt)) / dt;
 			case 'L':
 				double i = 0;
 				for(int j = 0; j < cycle; j++)
-					i += getVoltage(j);
+					i += getVoltage(j, dt);
 				return i / value;
 			default: return 0;
 		}
 	}
 
 	public void update(int i, double dt) {
-		storedVoltages.add(getVoltage(i));
+		storedVoltages.add(getVoltage(i, dt));
 		storedCurrents.add(getCurrent(i, dt));
 	}
 

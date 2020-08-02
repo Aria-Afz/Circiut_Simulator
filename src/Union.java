@@ -29,9 +29,31 @@ public class Union {
                 }
     }
 
-    void update(int i, double dt) {
-        for (Node e : nodes) {
-
+    void update(int cycle, double dt) {
+        HashSet<Node> updated = new HashSet<>();
+        for (Node e: nodes)
+            e.visited = false;
+        nodes.get(0).storedVoltages.remove(cycle);
+        nodes.get(0).storedVoltages.add(voltage);
+        updated.add(nodes.get(0));
+        nodes.get(0).visited = true;
+        while (updated.size() != nodes.size()) {
+            for(Node e : updated)
+                for (Element ele : e.elementNeighbours)
+                    if (elements.contains(ele)) {
+                        if (ele.getPositiveNode() == e)
+                            if (!ele.getNegativeNode().visited) {
+                                Node a = ele.getNegativeNode();
+                                a.storedVoltages.remove(cycle);
+                                a.storedVoltages.add(ele.getVoltage(cycle, dt) - e.getVoltage(cycle));
+                            }
+                        else
+                            if (!ele.getPositiveNode().visited) {
+                                Node a = ele.getPositiveNode();
+                                a.storedVoltages.remove(cycle);
+                                a.storedVoltages.add(ele.getVoltage(cycle, dt) + e.getVoltage(cycle));
+                            }
+                    }
         }
     }
 
