@@ -247,10 +247,10 @@ public class DrawCircuit {
     }
     public static void main() {
         frame.setTitle("Graphic drawing of the circuit");
-        frame.setSize(1520,1033);
+        frame.setSize(1700,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setIconImage(new ImageIcon("icon.png").getImage());
-        Container container = frame.getContentPane();
+        Container container = Start.container;
         Component glassPane = frame.getGlassPane();
         JRootPane rootPane = frame.getRootPane();
         MyJPanel myJPanel = new MyJPanel();

@@ -7,7 +7,7 @@ public class Main {
 	static Circuit cir = new Circuit();
 
 	public static void main (String[] args) throws FileNotFoundException {
-		readFile(new File(Start.addressOfTextFile));
+		readFile(Start.addressOfTextFile);
 		//cir.errorCheck();
 		cir.run();
 		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
