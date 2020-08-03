@@ -11,7 +11,7 @@ public class Main {
 		//cir.errorCheck();
 		cir.run();
 		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
-		consoleInput();
+		//consoleInput();
 	}
 
 	static void readFile(File circuit) throws FileNotFoundException {

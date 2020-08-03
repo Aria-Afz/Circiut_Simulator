@@ -8,27 +8,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-class MyPanel extends JPanel{
-    @Override
-    public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        //g.setColor(new Color(247, 247, 247));
-        Graphics2D graphics2D = (Graphics2D) g;
-        Stroke stroke = new BasicStroke(2);
-        graphics2D.setStroke(stroke);
-        g.drawRect(0,0,1090,985);
-        g.setColor(Color.BLACK);
-        g.setColor(Color.gray);
-        for(int i=0;i<=5;i++)
-            for(int j=0;j<=5;j++)
-                graphics2D.fillOval(105+170*i,105+170*j,5,5);
-    }
-}
-
 public class Start {
-    static JFrame frame = new JFrame();
+    static JFrame frame = DrawCircuit.frame;
     static Container container = frame.getContentPane();
     static File addressOfTextFile = new File ("Circuit.txt");
     static JButton run = new JButton("RUN");
@@ -54,7 +38,7 @@ public class Start {
         textArea.setText("\n");
         container.add(textArea);
         primaryThings();
-        Main.main(args);
+        //Main.main(args);
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,6 +63,7 @@ public class Start {
                         text+=line;
                     }
                     catch (FileNotFoundException ex) {
+                        //
                     }
                     textArea.setText(text);
                 }
@@ -94,18 +79,13 @@ public class Start {
                     FileWriter fileWriter = new FileWriter(addressOfTextFile);
                     fileWriter.write(textArea.getText());
                     fileWriter.close();
+                    Main.main(args);
                 }
                 catch (IOException ex) {
                     //ex.printStackTrace();
                 }
-                try {
-                    Main.main(args);
-                } catch (FileNotFoundException ex) {
-                    //ex.printStackTrace();
-                }
             }
         });
-        //Main.main(args);
     }
     static void primaryThings(){
         MyJPanel myJPanel = new MyJPanel();
@@ -116,3 +96,5 @@ public class Start {
         container.add(run);
     }
 }
+
+

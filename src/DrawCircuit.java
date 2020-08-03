@@ -240,7 +240,7 @@ class MyJPanel extends JPanel{
 }
 
 public class DrawCircuit {
-    static JFrame frame = Start.frame;
+    static JFrame frame = new JFrame();
     static ArrayList<Element> element;
     public DrawCircuit (ArrayList<Element> elementsForGraphics){
         element = elementsForGraphics;
@@ -250,7 +250,7 @@ public class DrawCircuit {
         frame.setSize(1700,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setIconImage(new ImageIcon("icon.png").getImage());
-        Container container = Start.container;
+        Container container = frame.getContentPane();
         Component glassPane = frame.getGlassPane();
         JRootPane rootPane = frame.getRootPane();
         MyJPanel myJPanel = new MyJPanel();
@@ -419,7 +419,6 @@ public class DrawCircuit {
         }
         frame.setLayout(null);
         frame.setVisible(true);
-        //container.removeAll();
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
