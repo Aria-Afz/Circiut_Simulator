@@ -1,5 +1,3 @@
-import com.sun.deploy.security.SelectableSecurityManager;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -16,34 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class GroundPanel extends JPanel {
-    private BufferedImage image;
-    private BufferedImage image2;
-
-    public GroundPanel() {
-        try {
-            image = ImageIO.read(new File("left ground.jpeg"));
-        } catch (IOException ex) {
-            // handle exception...
-        }
-        try {
-            image2 = ImageIO.read(new File("right ground.jpeg"));
-        } catch (IOException ex) {
-            // handle exception...
-        }
-    }
-
-    public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        Graphics2D graphics2D = (Graphics2D) g;
-        Stroke stroke = new BasicStroke(2);
-        graphics2D.setStroke(stroke);
-
-        graphics2D.drawLine(30, 42/2, 1060-30, 42/2);
-        g.drawImage(image, 20, 0, 30, 42, this);
-        g.drawImage(image2,1060-20-30, 0,30, 42, this);
-    }
-}
 class Point{
     int x;
     int y;
@@ -58,239 +28,13 @@ class Point{
         x=105+(baqimande-1)*170;
     }
 }
+
 class Information{
     String value;
     String typeOfElementInGraphics;
     Information (String v,String t){
         value = v;
         typeOfElementInGraphics = t;
-    }
-}
-//////////////////////////////////////up and down///////////////////////////////////////////////////////////
-//////////////////////////////////////up and down///////////////////////////////////////////////////////////
-class UpAndDownElementsPanel extends JPanel {
-    private BufferedImage image;
-    int length;
-    String type;
-    String typeOfParallel;
-    public UpAndDownElementsPanel(int l,String t,String to) {
-        type = t;
-        length = l;
-        typeOfParallel=to;
-        try {
-            image = ImageIO.read(new File(type+".jpeg"));
-        }
-        catch (IOException ex) {
-            // handle exception...
-        }
-    }
-    public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        Graphics2D graphics2D = (Graphics2D) g;
-        Stroke stroke = new BasicStroke(2);
-        graphics2D.setStroke(stroke);
-        int xForLine=18;
-        int heigthOfImage = 55;
-        int widthOfImage=40;
-        int xOfPhoto=0;
-        if (type.equals("up and down resistance")) {
-            xForLine = 14;
-            widthOfImage = 30;
-        }
-        if(type.equals("up and down capacitance"))
-            xForLine=19;
-        if (type.equals("up and down inductance")) {
-            xForLine = 4;
-            widthOfImage = 25;
-        }
-        if (type.equals("up voltage dc source")||type.equals("down voltage dc source")
-                ||type.equals("up current dc source")||type.equals("down current dc source")
-                ||type.equals("up controlled voltage source")||type.equals("down controlled voltage source")
-                ||type.equals("up controlled current source")||type.equals("down controlled current source")
-                ||type.equals("up and down ac source")) {
-            xForLine = 20;
-            heigthOfImage = 55;
-        }
-        if (type.equals("up diode")||type.equals("down diode")) {
-            xForLine = 15;
-            widthOfImage = 30;
-        }
-        if(typeOfParallel.equals("1 in 1"))
-            graphics2D.drawLine(xForLine,0,xForLine,length);
-        if(typeOfParallel.equals("right in 2")){
-            graphics2D.drawLine(xForLine,0,xForLine,length);
-            graphics2D.drawLine(0,0,xForLine,0);
-            graphics2D.drawLine(xForLine,length,0,length);
-        }
-        if(typeOfParallel.equals("left in 2")){
-            graphics2D.drawLine(xForLine,0,xForLine,length);
-            graphics2D.drawLine(40,0,xForLine,0);
-            graphics2D.drawLine(xForLine,length,40,length);
-        }
-        if(typeOfParallel.equals("left in 3")){
-            graphics2D.drawLine(90,0,xForLine,length/2-heigthOfImage/2);
-            graphics2D.drawLine(90,length,xForLine,length/2+heigthOfImage/2);
-        }
-        if(typeOfParallel.equals("right in 3")){
-            xOfPhoto+=51;
-            xForLine+=51;
-            graphics2D.drawLine(0,0,xForLine,length/2-heigthOfImage/2);
-            graphics2D.drawLine(0,length,xForLine,length/2+heigthOfImage/2);
-        }
-        g.drawImage(image,xOfPhoto,length/2-heigthOfImage/2,widthOfImage,heigthOfImage,this);
-    }
-    /*@Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        AffineTransform tx = AffineTransform.getRotateInstance(0);
-        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-
-        // Drawing the rotated image at the required drawing locations
-        g.drawImage(op.filter(image, null), 0, 0, 100, 50, null);
-        //////////////////////////////////////////////////////////
-        //g.drawImage(image, 0, 0,150,100, this); // see javadoc for more info on the parameters
-    }*/
-}
-
-//////////////////////////////right and left///////////////////////////////////////////////////////
-//////////////////////////////right and left///////////////////////////////////////////////////////
-class RightAndLeftElementsPanel extends JPanel {
-    private BufferedImage image;
-    int length;
-    String type;
-    String typeOfParallel;
-    public RightAndLeftElementsPanel(int l,String t,String to) {
-        type = t;
-        length = l;
-        typeOfParallel = to;
-        try {
-            image = ImageIO.read(new File(type+".jpg"));
-        }
-        catch (IOException ex) {
-            // handle exception...
-        }
-    }
-    public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        Graphics2D graphics2D = (Graphics2D) g;
-        Stroke stroke = new BasicStroke(2);
-        graphics2D.setStroke(stroke);
-        int yForLine=18;
-        int widthOfImage = 55;
-        int heightOgImage = 40;
-        int yOfPhoto=0;
-        if (type.equals("right and left resistance")) {
-            yForLine = 14;
-            heightOgImage = 30;
-        }
-        if(type.equals("right and left capacitance"))
-            yForLine=19;
-        if (type.equals("right and left inductance")) {
-            yForLine = 4;
-            heightOgImage =25;
-        }
-        if (type.equals("right voltage dc source")||type.equals("left voltage dc source")
-                ||type.equals("right current dc source")||type.equals("left current dc source")
-                ||type.equals("right controlled voltage source")||type.equals("left controlled voltage source")
-                ||type.equals("right controlled current source")||type.equals("left controlled current source")
-                ||type.equals("right and left ac source")) {
-            yForLine = 20;
-            widthOfImage = 55;
-        }
-        if (type.equals("right diode")||type.equals("left diode")) {
-            yForLine = 15;
-            heightOgImage = 30;
-        }
-        if(typeOfParallel.equals("1 in 1"))
-            graphics2D.drawLine(0,yForLine,length,yForLine);
-        if(typeOfParallel.equals("down in 2")){
-            graphics2D.drawLine(0,yForLine,length,yForLine);
-            graphics2D.drawLine(0,0,0,yForLine);
-            graphics2D.drawLine(length,0,length,yForLine);
-        }
-        if(typeOfParallel.equals("up in 2")){
-            graphics2D.drawLine(0,yForLine,length,yForLine);
-            graphics2D.drawLine(0,40,0,yForLine);
-            graphics2D.drawLine(length,40,length,yForLine);
-        }
-        if(typeOfParallel.equals("up in 3")){
-            graphics2D.drawLine(0,90,length/2-widthOfImage/2,yForLine);
-            graphics2D.drawLine(length,90,length/2+widthOfImage/2,yForLine);
-        }
-        if(typeOfParallel.equals("down in 3")){
-            yOfPhoto+=51;
-            yForLine+=51;
-            graphics2D.drawLine(0,0,length/2-widthOfImage/2,yForLine);
-            graphics2D.drawLine(length,0,length/2+widthOfImage/2,yForLine);
-        }
-        g.drawImage(image,length/2-widthOfImage/2,yOfPhoto,widthOfImage,heightOgImage,this);
-    }
-}
-
-//////////////////////////////////////main////////////////////////////////////////////////////////////////////
-//////////////////////////////////////main////////////////////////////////////////////////////////////////////
-//////////////////////////////////////main////////////////////////////////////////////////////////////////////
-//////////////////////////////////////main////////////////////////////////////////////////////////////////////
-//////////////////////////////////////main////////////////////////////////////////////////////////////////////
-class MyJPanel extends JPanel{
-    @Override
-    public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        //g.setColor(new Color(247, 247, 247));
-        Graphics2D graphics2D = (Graphics2D) g;
-        Stroke stroke = new BasicStroke(2);
-        graphics2D.setStroke(stroke);
-        g.drawRect(2,2,1090,982);
-        g.setColor(Color.BLACK);
-        g.setColor(Color.gray);
-        for(int i=0;i<=5;i++)
-            for(int j=0;j<=5;j++)
-                graphics2D.fillOval(105+170*i,105+170*j,5,5);
-    }
-}
-class DiagramBachGroundPanel extends JPanel{
-    private BufferedImage image;
-    DiagramBachGroundPanel (){
-        try {
-            image = ImageIO.read(new File("chart.JPG"));
-        }
-        catch (IOException ex) {
-            // handle exception...
-        }
-    }
-    @Override
-    public void paint(Graphics g) {
-        g.drawImage(image,0,0,850,505,this);
-    }
-}
-class DiagramPanel extends JPanel{
-    ArrayList<Double> amount;
-    Double time = Main.cir.time;
-    Double dt = Main.cir.dt;
-    Double max;
-    Double min;
-    DiagramPanel (ArrayList<Double> a ,Double maximum,Double minimum){
-        amount = a;
-        max = maximum;
-        min = minimum;
-
-    }
-    @Override
-    public void paintComponent(Graphics g) {
-        g.setColor(Color.BLUE);
-        Graphics2D graphics2D = (Graphics2D) g;
-        Stroke stroke = new BasicStroke(2);
-        graphics2D.setStroke(stroke);
-        if((max-min)!=0)
-            for(int i=0;i<amount.size()-1;i++){
-                graphics2D.drawLine((int)(i*dt*850/time),(int)(500-500*(amount.get(i)-min)/(max-min)),
-                        (int)((i+1)*dt*850/time),(int)(500-500*(amount.get(i+1)-min)/(max-min)));
-            }
-        else
-            for(int i=0;i<amount.size()-1;i++){
-                graphics2D.drawLine((int)(i*dt*850/time),5,
-                        (int)((i+1)*dt*850/time),5);
-        }
     }
 }
 
@@ -302,14 +46,8 @@ public class DrawCircuit {
     static JButton run = new JButton("RUN");
     static JButton load = new JButton("LOAD");
     static JButton draw = new JButton("DRAW");
-    //static JTextArea textArea = new JTextArea();
     static MyJPanel myJPanel = new MyJPanel();
     static int isLoadPressed = 0;
-    /*public DrawCircuit (ArrayList<Element> elementsForGraphics){
-        element = elementsForGraphics;
-    }*/
-    //////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
     public static void main (String[] args) throws FileNotFoundException {
         frame.setTitle("Graphic drawing of the circuit");
         frame.setSize(1700,1033);
@@ -337,27 +75,6 @@ public class DrawCircuit {
         container.add(run);
         container.add(draw);
         container.add(textArea);
-
-        /*JPanel drawPanel = new JPanel();
-        drawPanel.setBounds(1115,985-140,1385+260-1115,140);
-        drawPanel.setBorder(border);
-        frame.add(drawPanel);
-        drawPanel.setLayout(null);
-
-        Font font1 = new Font(Font.SANS_SERIF,Font.BOLD,20);
-        JLabel title = new JLabel("Diagram drawing");
-        title.setBounds(180,5,300,30);
-        drawPanel.add(title);
-        title.setFont(font1);
-        Font font2 = new Font(Font.SANS_SERIF,Font.BOLD,15);
-        JLabel e = new JLabel("element:");
-        e.setBounds(10,70,100,20);
-        drawPanel.add(e);
-        e.setFont(font2);
-        JTextField elementField = new JTextField();
-        elementField.setBounds(100,70,40,20);
-        drawPanel.add(elementField);*/
-
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -384,9 +101,7 @@ public class DrawCircuit {
                         }
                         text+=line;
                     }
-                    catch (FileNotFoundException ex) {
-                        //
-                    }
+                    catch (FileNotFoundException ex) { }
                     textArea.setText(text);
                 }
             }
@@ -409,9 +124,7 @@ public class DrawCircuit {
                         fileWriter.close();
                         Main.main(args);
 
-                    } catch (IOException ex) {
-                        //ex.printStackTrace();
-                    }
+                    } catch (IOException ex) { }
                 }
                 else{
                     JOptionPane.showMessageDialog(
@@ -458,8 +171,9 @@ public class DrawCircuit {
             }
         });
     }
-    //////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void diagramDrawing(ArrayList<Double> amount, String name, String unit){
         JFrame diagramFrame = new JFrame(name+" ["+unit+"]");
         diagramFrame.setSize(1000,620);
@@ -497,45 +211,26 @@ public class DrawCircuit {
         timeLabel.setBounds(920,520,80,30);
         timeLabel.setBackground(new Color(254,254, 254));
         container.add(timeLabel);
+        JLabel timeLabel2 = new JLabel("0 [s]");
+        timeLabel2.setBounds(100,520,80,30);
+        timeLabel2.setBackground(new Color(254,254, 254));
+        container.add(timeLabel2);
     }
-    //////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void draw() {
         frame.setTitle("Graphic drawing of the circuit");
         frame.setSize(1700,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setIconImage(new ImageIcon("icon.png").getImage());
         Container container = frame.getContentPane();
-        Component glassPane = frame.getGlassPane();
-        JRootPane rootPane = frame.getRootPane();
         myJPanel.setBounds(0,0,1100,1000);
         container.setBackground(new Color(247, 247, 247));
         container.add(myJPanel);
         GroundPanel groundPanel = new GroundPanel();
         groundPanel.setBounds(0,985-50,1060,50);
         container.add(groundPanel);
-        ////////////////////////////////////////example of drawing///////////////////////////////////////////////
-        ////////////////////////////////////////example of drawing///////////////////////////////////////////////
-        /*paintUpAndDownElements("up voltage dc source",105+170*3,105,170*2,"D1","30m","right in 2");
-        paintUpAndDownElements("up diode",105+170*3,105,170*2,"D1","30m","left in 2");
-
-        paintRightAndLeftElements("right and left resistance",105,105+170*0,170*2,"D2","50m","up in 2");
-        paintRightAndLeftElements("right current dc source",105,105+170*0,170*2,"D2","50m","down in 2");
-
-        paintRightAndLeftElements("right and left capacitance",105+170*0,105+170*2,170*2,"D2","50m","up in 3");
-        paintRightAndLeftElements("right and left ac source",105+170*0,105+170*2,170*2,"D2","50m","1 in 1");
-        paintRightAndLeftElements("right controlled voltage source",105+170*0,105+170*2,170*2,"D2","50m","down in 3");
-
-        paintUpAndDownElements("up and down capacitance",105,105+170*4,170,"D1","30m","left in 3");
-        paintUpAndDownElements("up and down inductance",105,105+170*4,170,"D2","50m","1 in 1");
-        paintUpAndDownElements("up controlled current source",105,105+170*4,170,"D1","30m","right in 3");
-
-        paintUpAndDownElements("up and down inductance",105,105,170*1,"D2","50m","1 in 1");
-        paintRightAndLeftElements("right and left resistance",105+340,105+340,170,"D2","50m","1 in 1");
-        paintRightAndLeftElements("right diode",105+340,105,170,"D2","50m","1 in 1");*/
-        ////////////////////////////////////////example of drawing///////////////////////////////////////////////
-        ////////////////////////////////////////example of drawing///////////////////////////////////////////////
         ArrayList<ArrayList<Element>> parallelElements = new ArrayList<ArrayList<Element>>();
         ArrayList<Element> firstArrayList = new ArrayList<Element>();
         firstArrayList.add(element.get(0));
@@ -815,7 +510,6 @@ public class DrawCircuit {
             rightToLeftOrLeftToRight="+";
         else
             rightToLeftOrLeftToRight="-";
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
         if (element.getName().charAt(0)=='R'){
             value=element.gValue;
             typeOfElementInGraphics = "right and left resistance";
@@ -910,7 +604,6 @@ public class DrawCircuit {
             if(rightToLeftOrLeftToRight.equals("-"))
                 typeOfElementInGraphics = "left controlled current source";
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
     }
     if(typeOfDrawing.equals("up to down")) {
         String upToDownOrDownToUp;
@@ -919,7 +612,6 @@ public class DrawCircuit {
             upToDownOrDownToUp="+";
         else
             upToDownOrDownToUp="-";
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
         if (element.getName().charAt(0)=='R'){
             value=element.gValue;
             typeOfElementInGraphics = "up and down resistance";
@@ -1014,9 +706,7 @@ public class DrawCircuit {
             if(upToDownOrDownToUp.equals("-"))
                 typeOfElementInGraphics = "down controlled current source";
         }
-        /////////////////////////////////////////////////////////////////////////////////////////////////////
     }
-    Information info = new Information(value,typeOfElementInGraphics);
-    return info;
+    return new Information(value,typeOfElementInGraphics);
     }
 }
