@@ -13,7 +13,7 @@ public class Main {
 		cir.run();
 		DrawCircuit.element = new ArrayList<>(cir.allElements.values());
 		DrawCircuit.draw();
-		consoleInput();
+		//consoleInput();
 	}
 
 	static void readFile(File circuit) throws FileNotFoundException {

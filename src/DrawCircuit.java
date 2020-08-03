@@ -446,13 +446,13 @@ public class DrawCircuit {
                         for(int i=0;i<element.size()&&numberOfElement==-1;i++)
                             if(element.get(i).getName().equals(nameOfElement))
                                 numberOfElement=i;
-                        diagramDrawing(element.get(numberOfElement).storedVoltages,"V ("+nameOfElement+")","V");
-                        diagramDrawing(element.get(numberOfElement).storedCurrents,"I ("+nameOfElement+")","A");
+                        diagramDrawing(element.get(numberOfElement).storedVoltages,"V("+nameOfElement+")","V");
+                        diagramDrawing(element.get(numberOfElement).storedCurrents,"I("+nameOfElement+")","A");
                         ArrayList<Double> power = new ArrayList<>();
                         for(int i=0;i<element.get(numberOfElement).storedVoltages.size();i++)
                             power.add(element.get(numberOfElement).storedVoltages.get(i)
                                     *element.get(numberOfElement).storedCurrents.get(i));
-                        diagramDrawing(power,"P ("+nameOfElement+")","W");
+                        diagramDrawing(power,"P("+nameOfElement+")","W");
                     }
                 }
             }
