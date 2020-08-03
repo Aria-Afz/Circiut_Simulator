@@ -36,7 +36,7 @@ public class Circuit {
 		if (connected.size() != allNodes.size())
 			exit(-4);
 	}
-	//run with union
+
 	void unionCheck() {
 		for (Node e : allNodes.values())
 			e.visited = false;
@@ -111,40 +111,6 @@ public class Circuit {
 				}
 		return sum;
 	}
-//	run without union
-//	void run() {
-//		for (int i = 1; i <= time / dt; i++) {
-//			for (Node e : allNodes.values())
-//				e.storedVoltages.add(e.storedVoltages.get(i - 1));
-//			for (Node e : allNodes.values())
-//				if (e.getName() != 0)
-//					solve(e, i);
-//			for (Element ele : allElements.values())
-//				ele.update(i, dt);
-//		}
-//		printResult();
-//	}
-//
-//	void solve(Node e, int cycle) {
-//		double v = e.storedVoltages.get(cycle);
-//		double kcl1 = kclCalculate(e, cycle);
-//		e.storedVoltages.remove(cycle);
-//		e.storedVoltages.add(v + dv);
-//		double kcl2 = kclCalculate(e, cycle);
-//		e.storedVoltages.remove(cycle);
-//		e.storedVoltages.add(v + (Math.abs(kcl1) - Math.abs(kcl2)) * dv / di);
-//	}
-//
-//	double kclCalculate(Node e, int cycle) {
-//		double sum = 0;
-//		for (Element ele : e.elementNeighbours) {
-//			if (ele.getPositiveNode() == e)
-//				sum -= ele.getCurrent(cycle, dt);
-//			else
-//				sum += ele.getCurrent(cycle, dt);
-//		}
-//		return sum;
-//	}
 
 	void printResult() {
 		System.out.println("Node's Voltages :");

@@ -11,9 +11,9 @@ public class Main {
 		readFile(DrawCircuit.addressOfTextFile);
 		cir.errorCheck();
 		cir.run();
-//		DrawCircuit.element = new ArrayList<>(cir.allElements.values());
-//		DrawCircuit.draw();
-		//consoleInput();
+		DrawCircuit.element = new ArrayList<>(cir.allElements.values());
+		DrawCircuit.draw();
+		consoleInput();
 	}
 
 	static void readFile(File circuit) throws FileNotFoundException {
