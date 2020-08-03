@@ -248,11 +248,12 @@ class MyJPanel extends JPanel{
 
 public class DrawCircuit {
     static JFrame frame = new JFrame();
-    static ArrayList<Element> element;
+    static ArrayList<Element> element = new ArrayList<>();
     static Container container = frame.getContentPane();
     static File addressOfTextFile = new File ("Circuit.txt");
     static JButton run = new JButton("RUN");
     static JButton load = new JButton("LOAD");
+    static JButton draw = new JButton("DRAW");
     static JTextArea textArea = new JTextArea();
     static MyJPanel myJPanel = new MyJPanel();
     /*public DrawCircuit (ArrayList<Element> elementsForGraphics){
@@ -269,9 +270,11 @@ public class DrawCircuit {
         frame.setLayout(null);
         frame.setVisible(true);
         load.setBackground(Color.LIGHT_GRAY);
-        load.setBounds(1115,10,260,30);
+        load.setBounds(1115,10,170,30);
         run.setBackground(Color.LIGHT_GRAY);
-        run.setBounds(1385,10,260,30);
+        run.setBounds(1115+180,10,170,30);
+        draw.setBackground(Color.LIGHT_GRAY);
+        draw.setBounds(1115+2*180,10,170,30);
         JTextArea textArea = new JTextArea();
         //textArea.setBackground(new Color(253, 246, 202));
         textArea.setBounds(1115,50,1385+260-1115,985-50);
@@ -283,13 +286,35 @@ public class DrawCircuit {
         container.add(myJPanel);
         container.add(load);
         container.add(run);
+        container.add(draw);
         container.add(textArea);
+
+        /*JPanel drawPanel = new JPanel();
+        drawPanel.setBounds(1115,985-140,1385+260-1115,140);
+        drawPanel.setBorder(border);
+        frame.add(drawPanel);
+        drawPanel.setLayout(null);
+
+        Font font1 = new Font(Font.SANS_SERIF,Font.BOLD,20);
+        JLabel title = new JLabel("Diagram drawing");
+        title.setBounds(180,5,300,30);
+        drawPanel.add(title);
+        title.setFont(font1);
+        Font font2 = new Font(Font.SANS_SERIF,Font.BOLD,15);
+        JLabel e = new JLabel("element:");
+        e.setBounds(10,70,100,20);
+        drawPanel.add(e);
+        e.setFont(font2);
+        JTextField elementField = new JTextField();
+        elementField.setBounds(100,70,40,20);
+        drawPanel.add(elementField);*/
+
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 FileSystemView fsv;
                 fsv = FileSystemView.getFileSystemView();
-                File fileO = new File("C:");
+                File fileO = new File("C:\\Users\\Lenovo\\Desktop");
                 JFileChooser fileChooser = new JFileChooser(fileO,fsv);
                 int response = fileChooser.showOpenDialog(frame);
                 if (response == JFileChooser.APPROVE_OPTION){
@@ -320,6 +345,7 @@ public class DrawCircuit {
                 container.removeAll();
                 container.add(load);
                 container.add(run);
+                container.add(draw);
                 container.add(textArea);
                 container.add(myJPanel);
                 frame.setVisible(false);
@@ -329,9 +355,33 @@ public class DrawCircuit {
                     fileWriter.write(textArea.getText());
                     fileWriter.close();
                     Main.main(args);
+
                 }
                 catch (IOException ex) {
                     //ex.printStackTrace();
+                }
+            }
+        });
+        draw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(element.size()==0){
+                    JOptionPane.showMessageDialog(
+                            frame,
+                            "first you should RUN your circuit!",
+                            "CAUTION",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    String[] strings = new String[element.size()];
+                    for (int i = 0; i < element.size(); i++) {
+                        strings[i] = element.get(i).getName();
+                    }
+                    ImageIcon icon = new ImageIcon("up and down resistance");
+                    String nameOfElement;
+                    nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose one of the elements.", "Drawing Information",
+                            JOptionPane.QUESTION_MESSAGE, icon, strings, "");
+
                 }
             }
         });
