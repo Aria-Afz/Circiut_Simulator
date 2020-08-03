@@ -12,7 +12,6 @@ public class Node {
 	Node (byte name) {
 		this.name = name;
 		union = name;
-		storedVoltages.add(0.0d);
 	}
 
 	public byte getName() { return name; }
