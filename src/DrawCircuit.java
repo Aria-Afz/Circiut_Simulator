@@ -1,3 +1,5 @@
+import com.sun.deploy.security.SelectableSecurityManager;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -246,6 +248,51 @@ class MyJPanel extends JPanel{
                 graphics2D.fillOval(105+170*i,105+170*j,5,5);
     }
 }
+class DiagramBachGroundPanel extends JPanel{
+    private BufferedImage image;
+    DiagramBachGroundPanel (){
+        try {
+            image = ImageIO.read(new File("chart.JPG"));
+        }
+        catch (IOException ex) {
+            // handle exception...
+        }
+    }
+    @Override
+    public void paint(Graphics g) {
+        g.drawImage(image,0,0,850,505,this);
+    }
+}
+class DiagramPanel extends JPanel{
+    ArrayList<Double> amount;
+    Double time = Main.cir.time;
+    Double dt = Main.cir.dt;
+    Double max;
+    Double min;
+    DiagramPanel (ArrayList<Double> a ,Double maximum,Double minimum){
+        amount = a;
+        max = maximum;
+        min = minimum;
+
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        g.setColor(Color.BLUE);
+        Graphics2D graphics2D = (Graphics2D) g;
+        Stroke stroke = new BasicStroke(2);
+        graphics2D.setStroke(stroke);
+        if((max-min)!=0)
+            for(int i=0;i<amount.size()-1;i++){
+                graphics2D.drawLine((int)(i*dt*850/time),(int)(500-500*(amount.get(i)-min)/(max-min)),
+                        (int)((i+1)*dt*850/time),(int)(500-500*(amount.get(i+1)-min)/(max-min)));
+            }
+        else
+            for(int i=0;i<amount.size()-1;i++){
+                graphics2D.drawLine((int)(i*dt*850/time),5,
+                        (int)((i+1)*dt*850/time),5);
+        }
+    }
+}
 
 public class DrawCircuit {
     static JFrame frame = new JFrame();
@@ -255,7 +302,7 @@ public class DrawCircuit {
     static JButton run = new JButton("RUN");
     static JButton load = new JButton("LOAD");
     static JButton draw = new JButton("DRAW");
-    static JTextArea textArea = new JTextArea();
+    //static JTextArea textArea = new JTextArea();
     static MyJPanel myJPanel = new MyJPanel();
     static int isLoadPressed = 0;
     /*public DrawCircuit (ArrayList<Element> elementsForGraphics){
@@ -392,14 +439,64 @@ public class DrawCircuit {
                     }
                     ImageIcon icon = new ImageIcon();
                     String nameOfElement;
-                    nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose one of the elements.", "Drawing Information",
+                    nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose your desired element.", "Drawing Information",
                             JOptionPane.QUESTION_MESSAGE, icon, strings, element.get(0).getName());
-                    if(nameOfElement==null){
-
+                    if(nameOfElement!=null){
+                        int numberOfElement=-1;
+                        for(int i=0;i<element.size()&&numberOfElement==-1;i++)
+                            if(element.get(i).getName().equals(nameOfElement))
+                                numberOfElement=i;
+                        diagramDrawing(element.get(numberOfElement).storedVoltages,"V ("+nameOfElement+")","V");
+                        diagramDrawing(element.get(numberOfElement).storedCurrents,"I ("+nameOfElement+")","A");
+                        ArrayList<Double> power = new ArrayList<>();
+                        for(int i=0;i<element.get(numberOfElement).storedVoltages.size();i++)
+                            power.add(element.get(numberOfElement).storedVoltages.get(i)
+                                    *element.get(numberOfElement).storedCurrents.get(i));
+                        diagramDrawing(power,"P ("+nameOfElement+")","W");
                     }
                 }
             }
         });
+    }
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    public static void diagramDrawing(ArrayList<Double> amount, String name, String unit){
+        JFrame diagramFrame = new JFrame(name+" ["+unit+"]");
+        diagramFrame.setSize(1000,620);
+        diagramFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        diagramFrame.setIconImage(new ImageIcon("icon.png").getImage());
+        Container container = diagramFrame.getContentPane();
+        container.setBackground(new Color(254,254, 254));
+        diagramFrame.setVisible(true);
+        diagramFrame.setLayout(null);
+        Double max=amount.get(0);
+        Double min=amount.get(0);
+        for(int i=1;i<amount.size();i++){
+            if(amount.get(i)>max)
+                max=amount.get(i);
+            if(amount.get(i)<min)
+                min=amount.get(i);
+        }
+        DiagramPanel diagramPanel = new DiagramPanel(amount,max,min);
+        diagramPanel.setBounds(100,20,850,650);
+        container.add(diagramPanel);
+        DiagramBachGroundPanel diagramBachGroundPanel = new DiagramBachGroundPanel();
+        diagramBachGroundPanel.setBounds(100,20,850,650);
+        container.add(diagramBachGroundPanel);
+        JLabel maxLabel = new JLabel(max.toString());
+        maxLabel.setBounds(10,5,80,30);
+        maxLabel.setBackground(new Color(254,254, 254));
+        container.add(maxLabel);
+        JLabel minLabel = new JLabel(min.toString());
+        minLabel.setBounds(10,500,80,30);
+        minLabel.setBackground(new Color(254,254, 254));
+        if(max!=min)
+            container.add(minLabel);
+        Double d = Main.cir.time;
+        JLabel timeLabel = new JLabel(d.toString()+" [s]");
+        timeLabel.setBounds(920,520,80,30);
+        timeLabel.setBackground(new Color(254,254, 254));
+        container.add(timeLabel);
     }
     //////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////

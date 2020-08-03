@@ -3,8 +3,8 @@ import java.util.LinkedHashMap;
 import java.util.HashSet;
 
 public class Circuit {
-	private double time;
-	private double dt = -1;
+	double time;
+	double dt = -1;
 	private double dv = -1;
 	private double di = -1;
 	LinkedHashMap<String, Element> allElements = new LinkedHashMap<>();
