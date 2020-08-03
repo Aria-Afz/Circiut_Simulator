@@ -289,7 +289,7 @@ public class DrawCircuit {
             public void actionPerformed(ActionEvent e) {
                 FileSystemView fsv;
                 fsv = FileSystemView.getFileSystemView();
-                File fileO = new File("C:\\Users\\Lenovo\\Desktop");
+                File fileO = new File("C:");
                 JFileChooser fileChooser = new JFileChooser(fileO,fsv);
                 int response = fileChooser.showOpenDialog(frame);
                 if (response == JFileChooser.APPROVE_OPTION){
