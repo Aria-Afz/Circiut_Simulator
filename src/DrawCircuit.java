@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -237,7 +238,7 @@ class MyJPanel extends JPanel{
         Graphics2D graphics2D = (Graphics2D) g;
         Stroke stroke = new BasicStroke(2);
         graphics2D.setStroke(stroke);
-        g.drawRect(0,0,1090,985);
+        g.drawRect(2,2,1090,982);
         g.setColor(Color.BLACK);
         g.setColor(Color.gray);
         for(int i=0;i<=5;i++)
@@ -256,6 +257,7 @@ public class DrawCircuit {
     static JButton draw = new JButton("DRAW");
     static JTextArea textArea = new JTextArea();
     static MyJPanel myJPanel = new MyJPanel();
+    static int isLoadPressed = 0;
     /*public DrawCircuit (ArrayList<Element> elementsForGraphics){
         element = elementsForGraphics;
     }*/
@@ -312,10 +314,13 @@ public class DrawCircuit {
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                isLoadPressed=1;
                 FileSystemView fsv;
                 fsv = FileSystemView.getFileSystemView();
-                File fileO = new File("C:\\Users\\Lenovo\\Desktop");
+                File fileO = new File("C:");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("text files", "txt");
                 JFileChooser fileChooser = new JFileChooser(fileO,fsv);
+                fileChooser.setFileFilter(filter);
                 int response = fileChooser.showOpenDialog(frame);
                 if (response == JFileChooser.APPROVE_OPTION){
                     addressOfTextFile = fileChooser.getSelectedFile();
@@ -342,23 +347,31 @@ public class DrawCircuit {
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                container.removeAll();
-                container.add(load);
-                container.add(run);
-                container.add(draw);
-                container.add(textArea);
-                container.add(myJPanel);
-                frame.setVisible(false);
-                frame.setVisible(true);
-                try {
-                    FileWriter fileWriter = new FileWriter(addressOfTextFile);
-                    fileWriter.write(textArea.getText());
-                    fileWriter.close();
-                    Main.main(args);
+                if(isLoadPressed == 1) {
+                    container.removeAll();
+                    container.add(load);
+                    container.add(run);
+                    container.add(draw);
+                    container.add(textArea);
+                    container.add(myJPanel);
+                    frame.setVisible(false);
+                    frame.setVisible(true);
+                    try {
+                        FileWriter fileWriter = new FileWriter(addressOfTextFile);
+                        fileWriter.write(textArea.getText());
+                        fileWriter.close();
+                        Main.main(args);
 
+                    } catch (IOException ex) {
+                        //ex.printStackTrace();
+                    }
                 }
-                catch (IOException ex) {
-                    //ex.printStackTrace();
+                else{
+                    JOptionPane.showMessageDialog(
+                            frame,
+                            "first you should LOAD your circuit!",
+                            "CAUTION",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
@@ -377,11 +390,13 @@ public class DrawCircuit {
                     for (int i = 0; i < element.size(); i++) {
                         strings[i] = element.get(i).getName();
                     }
-                    ImageIcon icon = new ImageIcon("up and down resistance");
+                    ImageIcon icon = new ImageIcon();
                     String nameOfElement;
                     nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose one of the elements.", "Drawing Information",
-                            JOptionPane.QUESTION_MESSAGE, icon, strings, "");
+                            JOptionPane.QUESTION_MESSAGE, icon, strings, element.get(0).getName());
+                    if(nameOfElement==null){
 
+                    }
                 }
             }
         });
