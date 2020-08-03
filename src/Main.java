@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-	static Circuit cir = new Circuit();
+	static Circuit cir;
 
-	public static void main (String[] args) throws FileNotFoundException {
-		readFile(Start.addressOfTextFile);
+	public static void main (String[] arg) throws FileNotFoundException {
+		cir = new Circuit();
+		readFile(DrawCircuit.addressOfTextFile);
 		//cir.errorCheck();
 		cir.run();
-		new DrawCircuit(new ArrayList<>(cir.allElements.values())).main();
+		DrawCircuit.element = new ArrayList<>(cir.allElements.values());
+		DrawCircuit.draw();
 		//consoleInput();
 	}
 
