@@ -82,9 +82,9 @@ class Element {
 	public double getCurrent(int cycle, double dt) {
 		switch (name.charAt(0)) {
 			case 'R':	return getVoltage(cycle, dt) / value;
-			case 'F': 	return -(k * ele.getCurrent(cycle, dt));
-			case 'G': 	return -(k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle)));
-			case 'I': 	return -(v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase));
+			case 'F': 	return k * ele.getCurrent(cycle, dt);
+			case 'G': 	return k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle));
+			case 'I': 	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
 			case 'C': 	return value * (getVoltage(cycle, dt) - getVoltage(cycle - 1, dt)) / dt;
 			case 'L':
 				double i = 0;
@@ -95,9 +95,9 @@ class Element {
 		}
 	}
 
-	public void update(int i, double dt) {
-		storedVoltages.add(getVoltage(i, dt));
-		storedCurrents.add(getCurrent(i, dt));
+	public void update(int cycle, double dt) {
+		storedVoltages.add(getVoltage(cycle, dt));
+		storedCurrents.add(getCurrent(cycle, dt));
 	}
 
 	public String getName() { return name;}

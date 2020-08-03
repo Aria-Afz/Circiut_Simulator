@@ -1,1 +1,7 @@
-
+I1 1 0 5m 0 0 0
+R1 0 1 1k
+R2 0 1 1k
+dt 1m
+dv 500m
+di 1m
+.tran 100m

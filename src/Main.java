@@ -9,11 +9,11 @@ public class Main {
 	public static void main (String[] arg) throws FileNotFoundException {
 		cir = new Circuit();
 		readFile(DrawCircuit.addressOfTextFile);
-		//cir.errorCheck();
+		cir.errorCheck();
 		cir.run();
 		DrawCircuit.element = new ArrayList<>(cir.allElements.values());
 		DrawCircuit.draw();
-		//consoleInput();
+		consoleInput();
 	}
 
 	static void readFile(File circuit) throws FileNotFoundException {
