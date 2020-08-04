@@ -8,14 +8,16 @@ import java.util.ArrayList;
 
 public class DiagramPanel extends JPanel {
     ArrayList<Double> amount;
-    Double time = Main.cir.time;
-    Double dt = Main.cir.dt;
     Double max;
     Double min;
-    DiagramPanel (ArrayList<Double> a ,Double maximum,Double minimum){
+    int firstIndex;
+    int lastIndex;
+    DiagramPanel (ArrayList<Double> a ,Double maximum,Double minimum,int firstNum, int lastNum){
         amount = a;
         max = maximum;
         min = minimum;
+        firstIndex = firstNum;
+        lastIndex = lastNum;
     }
     @Override
     public void paintComponent(Graphics g) {
@@ -24,15 +26,12 @@ public class DiagramPanel extends JPanel {
         Stroke stroke = new BasicStroke(2);
         graphics2D.setStroke(stroke);
         if((max-min)!=0)
-            for(int i=0;i<amount.size()-1;i++){
-                graphics2D.drawLine((int)(i*dt*850/time),(int)(500-498*(amount.get(i)-min)/(max-min)),
-                        (int)((i+1)*dt*850/time),(int)(500-498*(amount.get(i+1)-min)/(max-min)));
+            for(int i=firstIndex;i<=lastIndex-1;i++){
+                graphics2D.drawLine((int)(850*(i-firstIndex)/(lastIndex-firstIndex)),(int)(498-496*(amount.get(i)-min)/(max-min)),
+                        (int)(850*(i+1-firstIndex)/(lastIndex-firstIndex)),(int)(498-496*(amount.get(i+1)-min)/(max-min)));
             }
         else
-            for(int i=0;i<amount.size()-1;i++){
-                graphics2D.drawLine((int)(i*dt*850/time),2,
-                        (int)((i+1)*dt*850/time),2);
-            }
+            graphics2D.drawLine(0,2, 850,2);
     }
 }
 

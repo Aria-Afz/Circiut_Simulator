@@ -176,7 +176,7 @@ public class DrawCircuit {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void diagramDrawing(ArrayList<Double> amount, String name, String unit){
         JFrame diagramFrame = new JFrame(name+" ["+unit+"]");
-        diagramFrame.setSize(1000,620);
+        diagramFrame.setSize(1000,650);
         diagramFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         diagramFrame.setIconImage(new ImageIcon("icon.png").getImage());
         Container container = diagramFrame.getContentPane();
@@ -191,7 +191,7 @@ public class DrawCircuit {
             if(amount.get(i)<min)
                 min=amount.get(i);
         }
-        DiagramPanel diagramPanel = new DiagramPanel(amount,max,min);
+        DiagramPanel diagramPanel = new DiagramPanel(amount,max,min,0,amount.size()-1);
         diagramPanel.setBounds(100,20,850,650);
         container.add(diagramPanel);
         DiagramBachGroundPanel diagramBachGroundPanel = new DiagramBachGroundPanel();
@@ -206,15 +206,139 @@ public class DrawCircuit {
         minLabel.setBackground(new Color(254,254, 254));
         if(max!=min)
             container.add(minLabel);
+        else {
+            if (max > 0) {
+                minLabel.setText("0.0");
+                container.add(minLabel);
+            }
+        }
         Double d = Main.cir.time;
         JLabel timeLabel = new JLabel(d.toString()+" [s]");
         timeLabel.setBounds(920,520,80,30);
         timeLabel.setBackground(new Color(254,254, 254));
         container.add(timeLabel);
         JLabel timeLabel2 = new JLabel("0 [s]");
-        timeLabel2.setBounds(100,520,80,30);
+        timeLabel2.setBounds(100,520,85,30);
         timeLabel2.setBackground(new Color(254,254, 254));
         container.add(timeLabel2);
+        JLabel info1 = new JLabel("Draw from:");
+        info1.setBounds(10,555,65,30);
+        info1.setBackground(new Color(254,254, 254));
+        container.add(info1);
+        JTextField from = new JTextField("");
+        from.setBounds(75,558,60,24);
+        from.setBackground(new Color(254,254, 254));
+        container.add(from);
+        JLabel info2 = new JLabel("(s) to:");
+        info2.setBounds(135,555,40,30);
+        info2.setBackground(new Color(254,254, 254));
+        container.add(info2);
+        JTextField to = new JTextField("");
+        to.setBounds(170,558,60,24);
+        to.setBackground(new Color(254,254, 254));
+        container.add(to);
+        JLabel info3 = new JLabel("(s).");
+        info3.setBounds(230,555,40,30);
+        info3.setBackground(new Color(254,254, 254));
+        container.add(info3);
+        JButton set = new JButton("SET");
+        set.setBounds(270,558,80,24);
+        set.setBackground(Color.LIGHT_GRAY);
+        container.add(set);
+        set.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (Double.parseDouble(from.getText()) >= 0 && Double.parseDouble(from.getText()) <= Main.cir.time
+                            &&
+                            Double.parseDouble(to.getText()) >= 0 && Double.parseDouble(to.getText()) <= Main.cir.time) {
+                        if (Double.parseDouble(from.getText()) >= Double.parseDouble(to.getText())) {
+                            JOptionPane.showMessageDialog(
+                                    diagramFrame,
+                                    "your numbers are incorrect.\n[\"from\" should be less than \"to\".]",
+                                    "CAUTION",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            from.setText("");
+                            to.setText("");
+                        } else {
+                            Double dt = Main.cir.dt;
+                            container.removeAll();
+                            int firstIndex = 0;
+                            int lastIndex = 0;
+                            while (firstIndex * dt < Double.parseDouble(from.getText()))
+                                firstIndex++;
+                            lastIndex = firstIndex;
+                            while (lastIndex * dt <= Double.parseDouble(to.getText()))
+                                lastIndex++;
+                            lastIndex--;
+                            Double max = amount.get(firstIndex);
+                            Double min = amount.get(firstIndex);
+                            for (int i = firstIndex + 1; i <= lastIndex; i++) {
+                                if (amount.get(i) > max)
+                                    max = amount.get(i);
+                                if (amount.get(i) < min)
+                                    min = amount.get(i);
+                            }
+                            DiagramPanel diagramPanel = new DiagramPanel(amount, max, min, firstIndex, lastIndex);
+                            diagramPanel.setBounds(100, 20, 850, 650);
+                            container.add(diagramPanel);
+
+                            JLabel maxLabel = new JLabel(max.toString());
+                            maxLabel.setBounds(10, 5, 80, 30);
+                            maxLabel.setBackground(new Color(254, 254, 254));
+                            container.add(maxLabel);
+                            JLabel minLabel = new JLabel(min.toString());
+                            minLabel.setBounds(10, 500, 80, 30);
+                            minLabel.setBackground(new Color(254, 254, 254));
+                            if (max != min)
+                                container.add(minLabel);
+                            else {
+                                if (max > 0) {
+                                    minLabel.setText("0.0");
+                                    container.add(minLabel);
+                                }
+                            }
+                            JLabel timeLabel = new JLabel(Double.parseDouble(to.getText()) + " [s]");
+                            timeLabel.setBounds(920, 520, 80, 30);
+                            timeLabel.setBackground(new Color(254, 254, 254));
+                            container.add(timeLabel);
+                            JLabel timeLabel2 = new JLabel(Double.parseDouble(from.getText()) + " [s]");
+                            timeLabel2.setBounds(100, 520, 85, 30);
+                            timeLabel2.setBackground(new Color(254, 254, 254));
+                            container.add(timeLabel2);
+                            container.add(info1);
+                            container.add(info2);
+                            container.add(info3);
+                            container.add(from);
+                            container.add(to);
+                            container.add(set);
+                            to.setText("");
+                            from.setText("");
+                            container.add(diagramBachGroundPanel);
+                            diagramFrame.setVisible(false);
+                            diagramFrame.setVisible(true);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                diagramFrame,
+                                "your numbers are not in time analysis interval!\n[from 0 (s) to " + Main.cir.time + " (s).]",
+                                "CAUTION",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        from.setText("");
+                        to.setText("");
+                    }
+                }
+                catch (NumberFormatException ep){
+                    JOptionPane.showMessageDialog(
+                            diagramFrame,
+                            "your inputs don't follow the pattern.\n[Caution: use of extensions (m,u,n,...) is not allowed.]",
+                            "CAUTION",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    from.setText("");
+                    to.setText("");
+                }
+            }
+        });
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
