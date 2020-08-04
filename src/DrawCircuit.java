@@ -220,7 +220,7 @@ public class DrawCircuit {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static void draw() {
-        frame.setTitle("Graphic drawing of the circuit");
+        frame.setTitle("Solve & Drawing Circuits");
         frame.setSize(1700,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setIconImage(new ImageIcon("icon2.JPG").getImage());
