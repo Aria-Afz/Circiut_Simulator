@@ -1,16 +1,19 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 	static Circuit cir;
+	static File cirAnswers = new File("CircuitAnswers.txt");
 
-	public static void main (String[] arg) throws FileNotFoundException {
+	public static void main (String[] arg) throws IOException {
 		cir = new Circuit();
 		readFile(DrawCircuit.addressOfTextFile);
 		cir.errorCheck();
 		cir.run();
+		cir.printResult(cirAnswers);
 		DrawCircuit.element = new ArrayList<>(cir.allElements.values());
 		DrawCircuit.draw();
 		//consoleInput();

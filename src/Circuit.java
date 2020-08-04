@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.HashSet;
@@ -86,7 +89,6 @@ public class Circuit {
 			for (Element ele : allElements.values())
 				ele.update(i, dt);
 		}
-		printResult();
 	}
 
 	void solve(Union e, int cycle) {
@@ -105,29 +107,37 @@ public class Circuit {
 			for (Element ele : a.elementNeighbours)
 				if (!e.elements.contains(ele)) {
 					if (ele.positiveNode == a)
-						sum -= ele.getCurrent(cycle, dt);
-					else
 						sum += ele.getCurrent(cycle, dt);
+					else
+						sum -= ele.getCurrent(cycle, dt);
 				}
 		return sum;
 	}
 
-	void printResult() {
-		System.out.println("Node's Voltages :");
+	void printResult(File a) throws IOException {
+		FileWriter m = new FileWriter(a);
+		m.write("Node's Voltages :");
 		for (Node e : allNodes.values())
 			if (e.name != 0) {
-				System.out.print(e.name + " : ");
-				e.storedVoltages.forEach(x -> System.out.print(x + " "));
-				System.out.println();
+				m.write(e.name + " : ");
+				e.storedVoltages.forEach(x -> {
+					try {
+						m.write(x + " ");
+					} catch (IOException ioException) {
+						ioException.printStackTrace();
+					}
+				});
+				m.write("\n");
 			}
-		System.out.println("Element's (Voltages Currents Powers) :");
+		m.write("Element's (Voltages Currents Powers) :");
 		for (Element ele : allElements.values()) {
-			System.out.print(ele.name + " : ");
+			m.write(ele.name + " : ");
 			for (int i = 1; i <= time/dt; i++)
-				System.out.print("(" + ele.getVoltage(i, dt) + ", " + ele.getCurrent(i, dt) + ", "
+				m.write("(" + ele.getVoltage(i, dt) + ", " + ele.getCurrent(i, dt) + ", "
 						+ ele.getVoltage(i, dt) * ele.getCurrent(i, dt) + ") ");
-			System.out.println();
+			m.write("\n");
 		}
+		m.close();
 	}
 
 	static void exit(int n) {
