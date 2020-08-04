@@ -13,6 +13,6 @@ public class Node {
 		this.name = name;
 		union = name;
 	}
-	byte getName(){ return  name;}
+
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
 }

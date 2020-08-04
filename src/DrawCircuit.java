@@ -147,16 +147,16 @@ public class DrawCircuit {
                 else {
                     String[] strings = new String[element.size()];
                     for (int i = 0; i < element.size(); i++) {
-                        strings[i] = element.get(i).getName();
+                        strings[i] = element.get(i).name;
                     }
                     ImageIcon icon = new ImageIcon();
                     String nameOfElement;
                     nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose your desired element.", "Drawing Information",
-                            JOptionPane.QUESTION_MESSAGE, icon, strings, element.get(0).getName());
+                            JOptionPane.QUESTION_MESSAGE, icon, strings, element.get(0).name);
                     if(nameOfElement!=null){
                         int numberOfElement=-1;
                         for(int i=0;i<element.size()&&numberOfElement==-1;i++)
-                            if(element.get(i).getName().equals(nameOfElement))
+                            if(element.get(i).name.equals(nameOfElement))
                                 numberOfElement=i;
                         diagramDrawing(element.get(numberOfElement).storedVoltages,"V("+nameOfElement+")","V");
                         diagramDrawing(element.get(numberOfElement).storedCurrents,"I("+nameOfElement+")","A");
@@ -361,11 +361,11 @@ public class DrawCircuit {
         for(int i=1;i<element.size();i++){
             int neshangar=-1;
             for(int j=0;j<parallelElements.size()&&neshangar==-1;j++){
-                if((element.get(i).getPositiveNode().getName()==parallelElements.get(j).get(0).getPositiveNode().getName()&&
-                        element.get(i).getNegativeNode().getName()==parallelElements.get(j).get(0).getNegativeNode().getName())
+                if((element.get(i).positiveNode.name==parallelElements.get(j).get(0).positiveNode.name&&
+                        element.get(i).negativeNode.name==parallelElements.get(j).get(0).negativeNode.name)
                         ||
-                        (element.get(i).getNegativeNode().getName()==parallelElements.get(j).get(0).getPositiveNode().getName()&&
-                        element.get(i).getPositiveNode().getName()==parallelElements.get(j).get(0).getNegativeNode().getName()))
+                        (element.get(i).negativeNode.name==parallelElements.get(j).get(0).positiveNode.name&&
+                        element.get(i).positiveNode.name==parallelElements.get(j).get(0).negativeNode.name))
                     neshangar=j;
             }
             if(neshangar!=-1)
@@ -382,23 +382,23 @@ public class DrawCircuit {
             int numberOfElements = parallelElements.get(i).size();
             int distanceBetweenTwoPoints=1;
             String typeOfDrawing="up to down";
-            if(parallelElements.get(i).get(0).getPositiveNode().getName()==0){
-                Point point = new Point(parallelElements.get(i).get(0).getNegativeNode().getName());
+            if(parallelElements.get(i).get(0).positiveNode.name==0){
+                Point point = new Point(parallelElements.get(i).get(0).negativeNode.name);
                 xForDrawing = point.x;
                 yForDrawing = point.y;
                 distanceBetweenTwoPoints = 105+5*170-point.y;
                 typeOfDrawing = "up to down";
             }
-            else if(parallelElements.get(i).get(0).getNegativeNode().getName()==0){
-                Point point = new Point(parallelElements.get(i).get(0).getPositiveNode().getName());
+            else if(parallelElements.get(i).get(0).negativeNode.name==0){
+                Point point = new Point(parallelElements.get(i).get(0).positiveNode.name);
                 xForDrawing = point.x;
                 yForDrawing = point.y;
                 distanceBetweenTwoPoints = 105+5*170-point.y;
                 typeOfDrawing = "up to down";
             }
             else{
-                Point point1 = new Point(parallelElements.get(i).get(0).getNegativeNode().getName());
-                Point point2 = new Point(parallelElements.get(i).get(0).getPositiveNode().getName());
+                Point point1 = new Point(parallelElements.get(i).get(0).negativeNode.name);
+                Point point2 = new Point(parallelElements.get(i).get(0).positiveNode.name);
                 if(point1.x==point2.x){
                     typeOfDrawing = "up to down";
                     xForDrawing = point1.x;
@@ -427,7 +427,7 @@ public class DrawCircuit {
                     System.out.println("Error Error المان مورب");
             }
             if(numberOfElements==1){
-                String name = parallelElements.get(i).get(0).getName();
+                String name = parallelElements.get(i).get(0).name;
                 Information info = giveInformationForDrawing (xForDrawing,yForDrawing,
                         parallelElements.get(i).get(0),typeOfDrawing);
                 if(typeOfDrawing.equals("up to down"))
@@ -439,7 +439,7 @@ public class DrawCircuit {
             }
             if(numberOfElements==2){
                 for(int j=0;j<=1;j++){
-                    String name = parallelElements.get(i).get(j).getName();
+                    String name = parallelElements.get(i).get(j).name;
                     Information info = giveInformationForDrawing (xForDrawing,yForDrawing,
                             parallelElements.get(i).get(j),typeOfDrawing);
                     String typeOfParallel="";
@@ -463,7 +463,7 @@ public class DrawCircuit {
             }
             if(numberOfElements==3){
                 for(int j=0;j<=2;j++){
-                    String name = parallelElements.get(i).get(j).getName();
+                    String name = parallelElements.get(i).get(j).name;
                     Information info = giveInformationForDrawing (xForDrawing,yForDrawing,
                             parallelElements.get(i).get(j),typeOfDrawing);
                     String typeOfParallel="";
@@ -628,30 +628,30 @@ public class DrawCircuit {
     String value="";
     if(typeOfDrawing.equals("right to left")) {
         String rightToLeftOrLeftToRight;
-        Point positiveNode = new Point(element.getPositiveNode().getName());
+        Point positiveNode = new Point(element.positiveNode.name);
         if (positiveNode.x==xForDrawing)
             rightToLeftOrLeftToRight="+";
         else
             rightToLeftOrLeftToRight="-";
-        if (element.getName().charAt(0)=='R'){
+        if (element.name.charAt(0)=='R'){
             value=element.gValue;
             typeOfElementInGraphics = "right and left resistance";
         }
-        if (element.getName().charAt(0)=='L'){
+        if (element.name.charAt(0)=='L'){
             value=element.gValue;
             typeOfElementInGraphics = "right and left inductance";
         }
-        if (element.getName().charAt(0)=='C'){
+        if (element.name.charAt(0)=='C'){
             value=element.gValue;
             typeOfElementInGraphics = "right and left capacitance";
         }
-        if (element.getName().charAt(0)=='D'){
+        if (element.name.charAt(0)=='D'){
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right diode";
             if(rightToLeftOrLeftToRight.equals("-"))
                 typeOfElementInGraphics = "left diode";
         }
-        if (element.getName().charAt(0)=='V'){
+        if (element.name.charAt(0)=='V'){
             if(!element.isAC){
                 double d = element.v+element.u*Math.sin(element.phase);
                 int a = (int) (d / 0.01);
@@ -673,23 +673,23 @@ public class DrawCircuit {
                 typeOfElementInGraphics = "right and left ac source";
             }
         }
-        if (element.getName().charAt(0)=='E'){
-            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+        if (element.name.charAt(0)=='E'){
+            //value = element.k+"*(V("+element.nodeA.name+")-V("+element.nodeB.name+"))";
             value = (int)element.k+"*v";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled voltage source";
             if(rightToLeftOrLeftToRight.equals("-"))
                 typeOfElementInGraphics = "left controlled voltage source";
         }
-        if (element.getName().charAt(0)=='H'){
-            //value = element.k+"*I("+element.ele.getName()+")";
+        if (element.name.charAt(0)=='H'){
+            //value = element.k+"*I("+element.ele.name+")";
             value = (int)element.k+"*i";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled voltage source";
             if(rightToLeftOrLeftToRight.equals("-"))
                 typeOfElementInGraphics = "left controlled voltage source";
         }
-        if (element.getName().charAt(0)=='I'){
+        if (element.name.charAt(0)=='I'){
             if(!element.isAC){
                 double d = element.v+element.u*Math.sin(element.phase);
                 int a = (int) (d / 0.01);
@@ -711,16 +711,16 @@ public class DrawCircuit {
                 typeOfElementInGraphics = "right and left ac source";
             }
         }
-        if (element.getName().charAt(0)=='G'){
-            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+        if (element.name.charAt(0)=='G'){
+            //value = element.k+"*(V("+element.nodeA.name+")-V("+element.nodeB.name+"))";
             value = (int)element.k+"*v";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled current source";
             if(rightToLeftOrLeftToRight.equals("-"))
                 typeOfElementInGraphics = "left controlled current source";
         }
-        if (element.getName().charAt(0)=='F'){
-            //value = element.k+"*I("+element.ele.getName()+")";
+        if (element.name.charAt(0)=='F'){
+            //value = element.k+"*I("+element.ele.name+")";
             value = (int)element.k+"*i";
             if(rightToLeftOrLeftToRight.equals("+"))
                 typeOfElementInGraphics = "right controlled current source";
@@ -730,30 +730,30 @@ public class DrawCircuit {
     }
     if(typeOfDrawing.equals("up to down")) {
         String upToDownOrDownToUp;
-        Point positivePoint = new Point(element.getPositiveNode().getName());
+        Point positivePoint = new Point(element.positiveNode.name);
         if(positivePoint.y == yForDrawing)
             upToDownOrDownToUp="+";
         else
             upToDownOrDownToUp="-";
-        if (element.getName().charAt(0)=='R'){
+        if (element.name.charAt(0)=='R'){
             value=element.gValue;
             typeOfElementInGraphics = "up and down resistance";
         }
-        if (element.getName().charAt(0)=='L'){
+        if (element.name.charAt(0)=='L'){
             value=element.gValue;
             typeOfElementInGraphics = "up and down inductance";
         }
-        if (element.getName().charAt(0)=='C'){
+        if (element.name.charAt(0)=='C'){
             value=element.gValue;
             typeOfElementInGraphics = "up and down capacitance";
         }
-        if (element.getName().charAt(0)=='D'){
+        if (element.name.charAt(0)=='D'){
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up diode";
             if(upToDownOrDownToUp.equals("-"))
                 typeOfElementInGraphics = "down diode";
         }
-        if (element.getName().charAt(0)=='V'){
+        if (element.name.charAt(0)=='V'){
             if(!element.isAC){
                 double d = element.v+element.u*Math.sin(element.phase);
                 int a = (int) (d / 0.01);
@@ -775,23 +775,23 @@ public class DrawCircuit {
                 typeOfElementInGraphics = "up and down ac source";
             }
         }
-        if (element.getName().charAt(0)=='E'){
-            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+        if (element.name.charAt(0)=='E'){
+            //value = element.k+"*(V("+element.nodeA.name+")-V("+element.nodeB.name+"))";
             value = (int)element.k+"*v";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled voltage source";
             if(upToDownOrDownToUp.equals("-"))
                 typeOfElementInGraphics = "down controlled voltage source";
         }
-        if (element.getName().charAt(0)=='H'){
-            //value = element.k+"*I("+element.ele.getName()+")";
+        if (element.name.charAt(0)=='H'){
+            //value = element.k+"*I("+element.ele.name+")";
             value = (int)element.k+"*i";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled voltage source";
             if(upToDownOrDownToUp.equals("-"))
                 typeOfElementInGraphics = "down controlled voltage source";
         }
-        if (element.getName().charAt(0)=='I'){
+        if (element.name.charAt(0)=='I'){
             if(!element.isAC){
                 double d = element.v+element.u*Math.sin(element.phase);
                 int a = (int) (d / 0.01);
@@ -813,16 +813,16 @@ public class DrawCircuit {
                 typeOfElementInGraphics = "up and down ac source";
             }
         }
-        if (element.getName().charAt(0)=='G'){
-            //value = element.k+"*(V("+element.nodeA.getName()+")-V("+element.nodeB.getName()+"))";
+        if (element.name.charAt(0)=='G'){
+            //value = element.k+"*(V("+element.nodeA.name+")-V("+element.nodeB.name+"))";
             value = (int)element.k+"*v";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled current source";
             if(upToDownOrDownToUp.equals("-"))
                 typeOfElementInGraphics = "down controlled current source";
         }
-        if (element.getName().charAt(0)=='F'){
-            //value = element.k+"*I("+element.ele.getName()+")";
+        if (element.name.charAt(0)=='F'){
+            //value = element.k+"*I("+element.ele.name+")";
             value = (int)element.k+"*i";
             if(upToDownOrDownToUp.equals("+"))
                 typeOfElementInGraphics = "up controlled current source";
