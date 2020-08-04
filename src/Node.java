@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Node {
-	final private byte name;
+	final byte name;
 	boolean visited;
 	byte union;
 	ArrayList<Double> storedVoltages = new ArrayList<>();
@@ -14,19 +14,5 @@ public class Node {
 		union = name;
 	}
 
-	public byte getName() { return name; }
-
 	public double getVoltage(int cycle) { return storedVoltages.get(cycle); }
-
-//	public ArrayList<Element> getNeighbours() { return neighbours; }
-//
-//	public void setNeighbours(ArrayList<Element> neighbours) { this.neighbours = neighbours; }
-
-//	public ArrayList<Double> getStoredVoltage() { return storedVoltages; }
-//
-//	public ArrayList<Double> setStoredVoltage()
-
-//	public boolean getVisited() { return visited; }
-//
-//	public void setVisited(boolean visited) { this.visited = visited; }
 }

@@ -30,7 +30,7 @@ public class Main {
 							cir.setDv(nonZero(arr[1], numLine));
 							break;
 						case "dt":
-							cir.setDt(nonZero(arr[1], numLine));
+							cir.dt = nonZero(arr[1], numLine);
 							break;
 						case "di":
 							cir.setDi(nonZero(arr[1], numLine));
@@ -41,7 +41,7 @@ public class Main {
 					break;
 				case '.':
 					if (arr[0].equals(".tran")) {
-							cir.setTime(unitPrefix(arr[1], numLine));
+							cir.time = unitPrefix(arr[1], numLine);
 							return;
 					} else
 						exit(numLine);
@@ -148,7 +148,7 @@ public class Main {
 		} else
 			exit(numLine);
 		if (e != null)
-			cir.allElements.put(e.getName(), e);
+			cir.allElements.put(e.name, e);
 		a.nodeNeighbours.add(b);
 		a.elementNeighbours.add(e);
 		b.nodeNeighbours.add(a);
@@ -187,7 +187,7 @@ public class Main {
 				continue;
 			}
 			if (cir.allNodes.containsKey(e1) && cir.allNodes.containsKey(e2)
-					&& cir.getCycle(t) <= cir.getCycle(cir.getTime())) {
+					&& cir.getCycle(t) <= cir.getCycle(cir.time)) {
 				node1 = cir.allNodes.get(e1);
 				node2 = cir.allNodes.get(e2);
 			} else {

@@ -17,10 +17,10 @@ public class Union {
             for (Node e : nodes)
                 for (Element ele : e.elementNeighbours)
                     if (!elements.contains(ele)) {
-                        char k = ele.getName().charAt(0);
+                        char k = ele.name.charAt(0);
                         if (k == 'V' || k == 'E' || k == 'H') {
-                            Node e1 = ele.getNegativeNode();
-                            Node e2 = ele.getPositiveNode();
+                            Node e1 = ele.negativeNode;
+                            Node e2 = ele.positiveNode;
                             if ((e1 == e && nodes.contains(e2)) || (e2 == e && nodes.contains(e1)))
                                 elements.add(ele);
                         }
@@ -39,16 +39,16 @@ public class Union {
             for(Node e : updatedBackup)
                 for (Element ele : e.elementNeighbours)
                     if (elements.contains(ele)) {
-                        if (ele.getPositiveNode() == e) {
-                            if (!ele.getNegativeNode().visited) {
-                                Node a = ele.getNegativeNode();
+                        if (ele.positiveNode == e) {
+                            if (!ele.negativeNode.visited) {
+                                Node a = ele.negativeNode;
                                 a.storedVoltages.add(cycle, ele.getVoltage(cycle, dt) - e.getVoltage(cycle));
                                 updated.add(a);
                                 a.visited = true;
                             }
                         } else
-                            if (!ele.getPositiveNode().visited) {
-                                Node a = ele.getPositiveNode();
+                            if (!ele.positiveNode.visited) {
+                                Node a = ele.positiveNode;
                                 a.storedVoltages.add(cycle, ele.getVoltage(cycle, dt) + e.getVoltage(cycle));
                                 updated.add(a);
                                 a.visited = true;

@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 class Element {
-	private final String name;
-	private final Node positiveNode;
-	private final Node negativeNode;
+	final String name;
+	final Node positiveNode;
+	final Node negativeNode;
 	private double value;
 	String gValue = "N.C";
 	ArrayList<Double> storedVoltages = new ArrayList<>();
@@ -91,7 +91,15 @@ class Element {
 				for(int j = 0; j < cycle; j++)
 					i += getVoltage(j, dt);
 				return i / value;
-			default: return 0;
+			default:
+				double sum = 0;
+				for (Element ele : this.positiveNode.elementNeighbours)
+					if (ele != this)
+						sum += ele.getCurrent(cycle, dt); //todo
+				for (Element ele : this.negativeNode.elementNeighbours)
+					if (ele != this)
+						sum -= ele.getCurrent(cycle, dt);
+				return sum;
 		}
 	}
 
@@ -99,14 +107,4 @@ class Element {
 		storedVoltages.add(getVoltage(cycle, dt));
 		storedCurrents.add(getCurrent(cycle, dt));
 	}
-
-	public String getName() { return name;}
-
-	public Node getPositiveNode() { return positiveNode; }
-
-	public Node getNegativeNode() { return negativeNode; }
-
-	//public ArrayList<Double> getStoredVoltages() { return storedVoltages; }
-
-	//public ArrayList<Double> getStoredCurrents() { return storedCurrents; }
 }

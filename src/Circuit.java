@@ -51,12 +51,12 @@ public class Circuit {
 					visited.add(j);
 				}
 				for (Element ele : i.elementNeighbours) {
-					char k = ele.getName().charAt(0);
+					char k = ele.name.charAt(0);
 					if (k == 'V' || k == 'E' || k == 'H') {
-						if (ele.getPositiveNode() == i)
-							ele.getNegativeNode().union = i.union;
+						if (ele.positiveNode == i)
+							ele.negativeNode.union = i.union;
 						else
-							ele.getPositiveNode().union = i.union;
+							ele.positiveNode.union = i.union;
 					}
 				}
 			}
@@ -104,7 +104,7 @@ public class Circuit {
 		for (Node a : e.nodes)
 			for (Element ele : a.elementNeighbours)
 				if (!e.elements.contains(ele)) {
-					if (ele.getPositiveNode() == a)
+					if (ele.positiveNode == a)
 						sum -= ele.getCurrent(cycle, dt);
 					else
 						sum += ele.getCurrent(cycle, dt);
@@ -115,14 +115,14 @@ public class Circuit {
 	void printResult() {
 		System.out.println("Node's Voltages :");
 		for (Node e : allNodes.values())
-			if (e.getName() != 0) {
-				System.out.print(e.getName() + " : ");
+			if (e.name != 0) {
+				System.out.print(e.name + " : ");
 				e.storedVoltages.forEach(x -> System.out.print(x + " "));
 				System.out.println();
 			}
 		System.out.println("Element's (Voltages Currents Powers) :");
 		for (Element ele : allElements.values()) {
-			System.out.print(ele.getName() + " : ");
+			System.out.print(ele.name + " : ");
 			for (int i = 1; i <= time/dt; i++)
 				System.out.print("(" + ele.getVoltage(i, dt) + ", " + ele.getCurrent(i, dt) + ", "
 						+ ele.getVoltage(i, dt) * ele.getCurrent(i, dt) + ") ");
@@ -135,12 +135,8 @@ public class Circuit {
 		System.exit(0);
 	}
 
-	public void setTime(double time) { this.time = time; }
-
-	public double getTime() { return time; }
-
-	public void setDt(double dt) {
-		this.dt = dt;
+	public int getCycle(double t) {
+		return (int) Math.round(t/dt);
 	}
 
 	public void setDv(double dv) {
@@ -149,9 +145,5 @@ public class Circuit {
 
 	public void setDi(double di) {
 		this.di = di;
-	}
-
-	public int getCycle(double t) {
-		return (int) Math.round(t/dt);
 	}
 }
