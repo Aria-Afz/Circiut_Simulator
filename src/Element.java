@@ -8,6 +8,9 @@ class Element {
 	String gValue = "N.C";
 	ArrayList<Double> storedVoltages = new ArrayList<>();
 	ArrayList<Double> storedCurrents = new ArrayList<>();
+	String getName (){ return name; }
+	Node getPositiveNode (){ return positiveNode; }
+	Node getNegativeNode (){ return negativeNode; }
 
 	// for controlled sources
 	Element ele;
