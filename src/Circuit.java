@@ -116,7 +116,7 @@ public class Circuit {
 
 	void printResult(File a) throws IOException {
 		FileWriter m = new FileWriter(a);
-		m.write("Node's Voltages :");
+		m.write("Node's Voltages :\n");
 		for (Node e : allNodes.values())
 			if (e.name != 0) {
 				m.write(e.name + " : ");
@@ -129,7 +129,7 @@ public class Circuit {
 				});
 				m.write("\n");
 			}
-		m.write("Element's (Voltages Currents Powers) :");
+		m.write("Element's (Voltages Currents Powers) :\n");
 		for (Element ele : allElements.values()) {
 			m.write(ele.name + " : ");
 			for (int i = 1; i <= time/dt; i++)
