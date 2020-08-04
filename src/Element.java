@@ -11,20 +11,17 @@ class Element {
 	String getName (){ return name; }
 	Node getPositiveNode (){ return positiveNode; }
 	Node getNegativeNode (){ return negativeNode; }
-
 	// for controlled sources
 	Element ele;
 	double k;
 	Node nodeA;
 	Node nodeB;
-
 	// for ac sources
 	double v=0;
 	double u = 0;
 	double frequency;
 	double phase = 0;
 	boolean isAC = true;
-
 	// for RLC, Diode
 	Element(String name, Node positiveNode, Node negativeNode, double value) {
 		this.name = name;
@@ -34,7 +31,6 @@ class Element {
 		storedCurrents.add(0.0d);
 		storedVoltages.add(0.0d);
 	}
-
 	// for current controlled sources (F)(H)
 	Element(String name, Node positiveNode, Node negativeNode, Element ele, double k) {
 		this.name = name;
@@ -45,7 +41,6 @@ class Element {
 		storedCurrents.add(0.0d);
 		storedVoltages.add(0.0d);
 	}
-
 	// for voltage controlled sources (G)(E)
 	Element(String name, Node positiveNode, Node negativeNode, Node nodeA, Node nodeB, double k) {
 		this.name = name;
@@ -57,7 +52,6 @@ class Element {
 		storedCurrents.add(0.0d);
 		storedVoltages.add(0.0d);
 	}
-
 	// for ac sources (I)(V)
 	Element(String name, Node positiveNode, Node negativeNode, double v, double u, double frequency, double phase) {
 		this.name = name;
@@ -85,9 +79,9 @@ class Element {
 	public double getCurrent(int cycle, double dt) {
 		switch (name.charAt(0)) {
 			case 'R':	return getVoltage(cycle, dt) / value;
-			case 'F': 	return k * ele.getCurrent(cycle, dt);
-			case 'G': 	return k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle));
-			case 'I': 	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
+			case 'F': 	return -(k * ele.getCurrent(cycle, dt));
+			case 'G': 	return -(k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle)));
+			case 'I': 	return -(v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase));
 			case 'C': 	return value * (getVoltage(cycle, dt) - getVoltage(cycle - 1, dt)) / dt;
 			case 'L':
 				double i = 0;
@@ -95,14 +89,15 @@ class Element {
 					i += getVoltage(j, dt);
 				return i / value;
 			default:
-				double sum = 0;
+				double current = 0;
 				for (Element ele : this.positiveNode.elementNeighbours)
-					if (ele != this)
-						sum += ele.getCurrent(cycle, dt); //todo
-				for (Element ele : this.negativeNode.elementNeighbours)
-					if (ele != this)
-						sum -= ele.getCurrent(cycle, dt);
-				return sum;
+					if (ele != this) {
+						if (ele.positiveNode == this.positiveNode)
+							current -= ele.getCurrent(cycle, dt);
+						else
+							current += ele.getCurrent(cycle, dt);
+					}
+				return current;
 		}
 	}
 

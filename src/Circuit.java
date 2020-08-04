@@ -97,7 +97,7 @@ public class Circuit {
 		e.storedVoltages.add(cycle, v + dv);
 		e.update(cycle, dt);
 		double kcl2 = kclCalculate(e, cycle);
-		e.storedVoltages.add(cycle, v + (Math.abs(kcl1) - Math.abs(kcl2)) * dv / di);
+		e.storedVoltages.add(cycle, v + (kcl1 - kcl2) * dv / di);
 		e.update(cycle, dt);
 	}
 
@@ -111,7 +111,7 @@ public class Circuit {
 					else
 						sum -= ele.getCurrent(cycle, dt);
 				}
-		return sum;
+		return Math.abs(sum);
 	}
 
 	void printResult(File a) throws IOException {
