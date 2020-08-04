@@ -193,15 +193,15 @@ public class DrawCircuit {
         container.setBackground(new Color(254,254, 254));
         diagramFrame.setVisible(true);
         diagramFrame.setLayout(null);
-        Double max=amount.get(0);
-        Double min=amount.get(0);
-        for(int i=1;i<amount.size();i++){
+        Double max=amount.get(1);
+        Double min=amount.get(1);
+        for(int i=2;i<amount.size();i++){
             if(amount.get(i)>max)
                 max=amount.get(i);
             if(amount.get(i)<min)
                 min=amount.get(i);
         }
-        DiagramPanel diagramPanel = new DiagramPanel(amount,max,min,0,amount.size()-1);
+        DiagramPanel diagramPanel = new DiagramPanel(amount,max,min,1,amount.size()-1);
         diagramPanel.setBounds(100,20,850,650);
         container.add(diagramPanel);
         DiagramBachGroundPanel diagramBachGroundPanel = new DiagramBachGroundPanel();
@@ -292,15 +292,15 @@ public class DrawCircuit {
                             while (lastIndex * dt <= Double.parseDouble(to.getText()))
                                 lastIndex++;
                             lastIndex--;
-                            Double max = amount.get(firstIndex);
-                            Double min = amount.get(firstIndex);
-                            for (int i = firstIndex + 1; i <= lastIndex; i++) {
+                            Double max = amount.get(firstIndex+1);
+                            Double min = amount.get(firstIndex+1);
+                            for (int i = firstIndex + 2; i <= lastIndex; i++) {
                                 if (amount.get(i) > max)
                                     max = amount.get(i);
                                 if (amount.get(i) < min)
                                     min = amount.get(i);
                             }
-                            DiagramPanel diagramPanel = new DiagramPanel(amount, max, min, firstIndex, lastIndex);
+                            DiagramPanel diagramPanel = new DiagramPanel(amount, max, min, firstIndex+1, lastIndex);
                             diagramPanel.setBounds(100, 20, 850, 650);
                             container.add(diagramPanel);
 
