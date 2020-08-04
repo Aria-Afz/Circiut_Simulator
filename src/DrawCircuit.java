@@ -49,10 +49,10 @@ public class DrawCircuit {
     static MyJPanel myJPanel = new MyJPanel();
     static int isLoadPressed = 0;
     public static void main (String[] args) throws FileNotFoundException {
-        frame.setTitle("Graphic drawing of the circuit");
+        frame.setTitle("Solve & Drawing Circuits");
         frame.setSize(1700,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setIconImage(new ImageIcon("icon.png").getImage());
+        frame.setIconImage(new ImageIcon("icon2.JPG").getImage());
         Container container = frame.getContentPane();
         frame.setLayout(null);
         frame.setVisible(true);
@@ -223,7 +223,7 @@ public class DrawCircuit {
         frame.setTitle("Graphic drawing of the circuit");
         frame.setSize(1700,1033);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setIconImage(new ImageIcon("icon.png").getImage());
+        frame.setIconImage(new ImageIcon("icon2.JPG").getImage());
         Container container = frame.getContentPane();
         myJPanel.setBounds(0,0,1100,1000);
         container.setBackground(new Color(247, 247, 247));

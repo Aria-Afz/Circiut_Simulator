@@ -25,13 +25,13 @@ public class DiagramPanel extends JPanel {
         graphics2D.setStroke(stroke);
         if((max-min)!=0)
             for(int i=0;i<amount.size()-1;i++){
-                graphics2D.drawLine((int)(i*dt*850/time),(int)(500-500*(amount.get(i)-min)/(max-min)),
-                        (int)((i+1)*dt*850/time),(int)(500-500*(amount.get(i+1)-min)/(max-min)));
+                graphics2D.drawLine((int)(i*dt*850/time),(int)(500-498*(amount.get(i)-min)/(max-min)),
+                        (int)((i+1)*dt*850/time),(int)(500-498*(amount.get(i+1)-min)/(max-min)));
             }
         else
             for(int i=0;i<amount.size()-1;i++){
-                graphics2D.drawLine((int)(i*dt*850/time),5,
-                        (int)((i+1)*dt*850/time),5);
+                graphics2D.drawLine((int)(i*dt*850/time),2,
+                        (int)((i+1)*dt*850/time),2);
             }
     }
 }
