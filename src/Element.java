@@ -66,8 +66,16 @@ class Element {
 
 	public double getVoltage(int cycle, double dt) {
 		switch (name.charAt(0)) {
-			case 'H': 	return k * ele.getCurrent(cycle, dt);
-			case 'E':	return k * (nodeA.getVoltage(cycle) - nodeB.getVoltage(cycle));
+			case 'H':
+				if (cycle >= 1)
+					return k * ele.getCurrent(cycle - 1, dt);
+				else
+					return 0;
+			case 'E':
+				if (cycle >= 1)
+					return k * (nodeA.getVoltage(cycle - 1) - nodeB.getVoltage(cycle - 1));
+				else
+					return 0;
 			case 'V':	return v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase);
 			default:	return positiveNode.getVoltage(cycle) - negativeNode.getVoltage(cycle);
 		}
