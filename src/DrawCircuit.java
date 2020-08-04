@@ -116,15 +116,14 @@ public class DrawCircuit {
                     container.add(draw);
                     container.add(textArea);
                     container.add(myJPanel);
-                    frame.setVisible(false);
-                    frame.setVisible(true);
                     try {
                         FileWriter fileWriter = new FileWriter(addressOfTextFile);
                         fileWriter.write(textArea.getText());
                         fileWriter.close();
                         Main.main(args);
-
                     } catch (IOException ex) { }
+                    frame.setVisible(false);
+                    frame.setVisible(true);
                 }
                 else{
                     JOptionPane.showMessageDialog(
