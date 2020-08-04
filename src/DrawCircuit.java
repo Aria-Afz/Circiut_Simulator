@@ -110,20 +110,31 @@ public class DrawCircuit {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(isLoadPressed == 1) {
-                    container.removeAll();
-                    container.add(load);
-                    container.add(run);
-                    container.add(draw);
-                    container.add(textArea);
-                    container.add(myJPanel);
-                    try {
-                        FileWriter fileWriter = new FileWriter(addressOfTextFile);
-                        fileWriter.write(textArea.getText());
-                        fileWriter.close();
-                        Main.main(args);
-                    } catch (IOException ex) { }
-                    frame.setVisible(false);
-                    frame.setVisible(true);
+                    FileSystemView fsv;
+                    fsv = FileSystemView.getFileSystemView();
+                    File fileO = new File("CircuitAnswers.txt");
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter("text files", "txt");
+                    JFileChooser fileChooser = new JFileChooser(fileO,fsv);
+                    fileChooser.setFileFilter(filter);
+                    int response = fileChooser.showOpenDialog(frame);
+                    if (response == JFileChooser.APPROVE_OPTION) {
+                        Main.cirAnswers = fileChooser.getSelectedFile();
+                        container.removeAll();
+                        container.add(load);
+                        container.add(run);
+                        container.add(draw);
+                        container.add(textArea);
+                        container.add(myJPanel);
+                        try {
+                            FileWriter fileWriter = new FileWriter(addressOfTextFile);
+                            fileWriter.write(textArea.getText());
+                            fileWriter.close();
+                            Main.main(args);
+                        } catch (IOException ex) {
+                        }
+                        frame.setVisible(false);
+                        frame.setVisible(true);
+                    }
                 }
                 else{
                     JOptionPane.showMessageDialog(
