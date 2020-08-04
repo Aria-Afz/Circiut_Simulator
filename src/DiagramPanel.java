@@ -46,7 +46,7 @@ class DiagramBachGroundPanel extends JPanel{
     }
     @Override
     public void paint(Graphics g) {
-        g.drawImage(image,0,0,850,505,this);
+        g.drawImage(image,0,0,857,503,this);
     }
 }
 

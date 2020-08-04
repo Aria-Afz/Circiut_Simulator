@@ -205,21 +205,25 @@ public class DrawCircuit {
         diagramPanel.setBounds(100,20,850,650);
         container.add(diagramPanel);
         DiagramBachGroundPanel diagramBachGroundPanel = new DiagramBachGroundPanel();
-        diagramBachGroundPanel.setBounds(100,20,850,650);
+        diagramBachGroundPanel.setBounds(98,20,860,650);
         container.add(diagramBachGroundPanel);
         JLabel maxLabel = new JLabel(max.toString());
-        maxLabel.setBounds(10,5,80,30);
+        maxLabel.setBounds(10,0,80,30);
         maxLabel.setBackground(new Color(254,254, 254));
         container.add(maxLabel);
+        if(max==min&&max>0)
+            min = 0.0;
         JLabel minLabel = new JLabel(min.toString());
         minLabel.setBounds(10,500,80,30);
         minLabel.setBackground(new Color(254,254, 254));
-        if(max!=min)
+        if(max!=min) {
             container.add(minLabel);
-        else {
-            if (max > 0) {
-                minLabel.setText("0.0");
-                container.add(minLabel);
+            for(int i=1;i<=4;i++){
+                Double d = min+(((max-min)*i)/5);
+                JLabel otherLabel = new JLabel(d.toString());
+                otherLabel.setBounds(10,500-100*i,80,30);
+                otherLabel.setBackground(new Color(254,254, 254));
+                container.add(otherLabel);
             }
         }
         Double d = Main.cir.time;
@@ -227,10 +231,17 @@ public class DrawCircuit {
         timeLabel.setBounds(920,520,80,30);
         timeLabel.setBackground(new Color(254,254, 254));
         container.add(timeLabel);
-        JLabel timeLabel2 = new JLabel("0 [s]");
-        timeLabel2.setBounds(100,520,85,30);
+        JLabel timeLabel2 = new JLabel("0.0");
+        timeLabel2.setBounds(100,520,80,30);
         timeLabel2.setBackground(new Color(254,254, 254));
         container.add(timeLabel2);
+        for(int i=1;i<=4;i++){
+            Double dou = i*Main.cir.time/5;
+            JLabel otherLabel = new JLabel(dou.toString());
+            otherLabel.setBounds(100+850*i/5,520,40,30);
+            otherLabel.setBackground(new Color(254,254, 254));
+            container.add(otherLabel);
+        }
         JLabel info1 = new JLabel("Draw from:");
         info1.setBounds(10,555,65,30);
         info1.setBackground(new Color(254,254, 254));
@@ -297,25 +308,36 @@ public class DrawCircuit {
                             maxLabel.setBounds(10, 5, 80, 30);
                             maxLabel.setBackground(new Color(254, 254, 254));
                             container.add(maxLabel);
+                            if(max==min&&max>0)
+                                min=0.0;
                             JLabel minLabel = new JLabel(min.toString());
                             minLabel.setBounds(10, 500, 80, 30);
                             minLabel.setBackground(new Color(254, 254, 254));
-                            if (max != min)
+                            if(max!=min) {
                                 container.add(minLabel);
-                            else {
-                                if (max > 0) {
-                                    minLabel.setText("0.0");
-                                    container.add(minLabel);
+                                for(int i=1;i<=4;i++){
+                                    Double d = min+(((max-min)*i)/5);
+                                    JLabel otherLabel = new JLabel(d.toString());
+                                    otherLabel.setBounds(10,500-100*i,80,30);
+                                    otherLabel.setBackground(new Color(254,254, 254));
+                                    container.add(otherLabel);
                                 }
                             }
                             JLabel timeLabel = new JLabel(Double.parseDouble(to.getText()) + " [s]");
                             timeLabel.setBounds(920, 520, 80, 30);
                             timeLabel.setBackground(new Color(254, 254, 254));
                             container.add(timeLabel);
-                            JLabel timeLabel2 = new JLabel(Double.parseDouble(from.getText()) + " [s]");
+                            JLabel timeLabel2 = new JLabel(from.getText());
                             timeLabel2.setBounds(100, 520, 85, 30);
                             timeLabel2.setBackground(new Color(254, 254, 254));
                             container.add(timeLabel2);
+                            for(int i=1;i<=4;i++){
+                                Double dou = Double.parseDouble(from.getText()) + (Double.parseDouble(to.getText())-Double.parseDouble(from.getText()))*i/5;
+                                JLabel otherLabel = new JLabel(dou.toString());
+                                otherLabel.setBounds(100+850*i/5,520,40,30);
+                                otherLabel.setBackground(new Color(254,254, 254));
+                                container.add(otherLabel);
+                            }
                             container.add(info1);
                             container.add(info2);
                             container.add(info3);
