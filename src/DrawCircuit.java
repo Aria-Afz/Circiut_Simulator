@@ -412,6 +412,8 @@ public class DrawCircuit {
             b/=1000;
         if(b%100==0)
             b/=100;
+        if(b%10==0)
+            b/=10;
         sum+=b;
         return sum;
     }
