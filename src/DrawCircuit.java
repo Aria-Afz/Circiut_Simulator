@@ -78,7 +78,6 @@ public class DrawCircuit {
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                isLoadPressed=1;
                 FileSystemView fsv;
                 fsv = FileSystemView.getFileSystemView();
                 File fileO = new File("C:");
@@ -87,6 +86,7 @@ public class DrawCircuit {
                 fileChooser.setFileFilter(filter);
                 int response = fileChooser.showOpenDialog(frame);
                 if (response == JFileChooser.APPROVE_OPTION){
+                    isLoadPressed=1;
                     addressOfTextFile = fileChooser.getSelectedFile();
                     File file = fileChooser.getSelectedFile();
                     String text = "";
