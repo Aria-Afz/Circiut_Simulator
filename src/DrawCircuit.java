@@ -156,26 +156,39 @@ public class DrawCircuit {
                             JOptionPane.INFORMATION_MESSAGE);
                 }
                 else {
-                    String[] strings = new String[element.size()];
+                    ArrayList<Node> nodes = new ArrayList<Node>(Main.cir.allNodes.values());
+                    String[] strings = new String[element.size()+nodes.size()-1];
                     for (int i = 0; i < element.size(); i++) {
                         strings[i] = element.get(i).name;
                     }
+                    for (int i = element.size(); i < element.size()+nodes.size()-1; i++) {
+                        strings[i] = "Node " + nodes.get(i-element.size()+1).name;
+                    }
                     ImageIcon icon = new ImageIcon();
                     String nameOfElement;
-                    nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose your desired element.", "Drawing Information",
+                    nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose your desired element/Node.", "Drawing Information",
                             JOptionPane.QUESTION_MESSAGE, icon, strings, element.get(0).name);
                     if(nameOfElement!=null){
-                        int numberOfElement=-1;
-                        for(int i=0;i<element.size()&&numberOfElement==-1;i++)
-                            if(element.get(i).name.equals(nameOfElement))
-                                numberOfElement=i;
-                        diagramDrawing(element.get(numberOfElement).storedVoltages,"V("+nameOfElement+")","V");
-                        diagramDrawing(element.get(numberOfElement).storedCurrents,"I("+nameOfElement+")","A");
-                        ArrayList<Double> power = new ArrayList<>();
-                        for(int i=0;i<element.get(numberOfElement).storedVoltages.size();i++)
-                            power.add(element.get(numberOfElement).storedVoltages.get(i)
-                                    *element.get(numberOfElement).storedCurrents.get(i));
-                        diagramDrawing(power,"P("+nameOfElement+")","W");
+                        if (nameOfElement.charAt(0) == 'N') {
+                            int numberOfNode = -1;
+                            for (int i = 0; i < nodes.size() && numberOfNode == -1; i++)
+                                if (("Node "+nodes.get(i).name).equals((nameOfElement)))
+                                    numberOfNode = i;
+                            diagramDrawing(nodes.get(numberOfNode).storedVoltages, "V("+nameOfElement + ")", "V");
+                        }
+                        else {
+                            int numberOfElement = -1;
+                            for (int i = 0; i < element.size() && numberOfElement == -1; i++)
+                                if (element.get(i).name.equals(nameOfElement))
+                                    numberOfElement = i;
+                            diagramDrawing(element.get(numberOfElement).storedVoltages, "V(" + nameOfElement + ")", "V");
+                            diagramDrawing(element.get(numberOfElement).storedCurrents, "I(" + nameOfElement + ")", "A");
+                            ArrayList<Double> power = new ArrayList<>();
+                            for (int i = 0; i < element.get(numberOfElement).storedVoltages.size(); i++)
+                                power.add(element.get(numberOfElement).storedVoltages.get(i)
+                                        * element.get(numberOfElement).storedCurrents.get(i));
+                            diagramDrawing(power, "P(" + nameOfElement + ")", "W");
+                        }
                     }
                 }
             }
