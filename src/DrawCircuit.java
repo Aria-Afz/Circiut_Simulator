@@ -227,7 +227,7 @@ public class DrawCircuit {
             }
         }
         Double d = Main.cir.time;
-        JLabel timeLabel = new JLabel(toStringForDouble(d)+" [s]");
+        JLabel timeLabel = new JLabel(Double.toString(d)+" [s]");
         timeLabel.setBounds(920,520,90,30);
         timeLabel.setBackground(new Color(254,254, 254));
         container.add(timeLabel);
@@ -323,19 +323,11 @@ public class DrawCircuit {
                                     container.add(otherLabel);
                                 }
                             }
-                            JLabel timeLabel;
-                            if(to.getText().length()!=1)
-                                timeLabel = new JLabel(to.getText() + " [s]");
-                            else
-                                timeLabel = new JLabel(to.getText() + ".0 [s]");
+                            JLabel timeLabel = new JLabel(Double.toString(Double.parseDouble(to.getText())) + " [s]");
                             timeLabel.setBounds(920, 520, 90, 30);
                             timeLabel.setBackground(new Color(254, 254, 254));
                             container.add(timeLabel);
-                            JLabel timeLabel2;
-                            if(from.getText().length()!=1)
-                                timeLabel2 = new JLabel(from.getText());
-                            else
-                                timeLabel2 = new JLabel(from.getText()+".0");
+                            JLabel timeLabel2 = new JLabel(Double.toString(Double.parseDouble(from.getText())));
                             timeLabel2.setBounds(100, 520, 80, 30);
                             timeLabel2.setBackground(new Color(254, 254, 254));
                             container.add(timeLabel2);
