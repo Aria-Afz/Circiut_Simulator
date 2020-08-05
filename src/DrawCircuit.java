@@ -531,7 +531,7 @@ public class DrawCircuit {
                     }
                 }
             }
-            if(numberOfElements==3){
+            if(numberOfElements>=3){
                 for(int j=0;j<=2;j++){
                     String name = parallelElements.get(i).get(j).name;
                     Information info = giveInformationForDrawing (xForDrawing,yForDrawing,
