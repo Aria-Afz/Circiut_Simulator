@@ -91,7 +91,7 @@ class Element {
 			case 'L':
 				double i = 0;
 				for(int j = 0; j < cycle; j++)
-					i += getVoltage(j, dt);
+					i += getVoltage(j, dt)*dt;
 				return i / value;
 			default:
 				double current = 0;
