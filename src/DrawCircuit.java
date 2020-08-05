@@ -323,11 +323,19 @@ public class DrawCircuit {
                                     container.add(otherLabel);
                                 }
                             }
-                            JLabel timeLabel = new JLabel(to.getText() + " [s]");
+                            JLabel timeLabel;
+                            if(to.getText().length()!=1)
+                                timeLabel = new JLabel(to.getText() + " [s]");
+                            else
+                                timeLabel = new JLabel(to.getText() + ".0 [s]");
                             timeLabel.setBounds(920, 520, 90, 30);
                             timeLabel.setBackground(new Color(254, 254, 254));
                             container.add(timeLabel);
-                            JLabel timeLabel2 = new JLabel(from.getText());
+                            JLabel timeLabel2;
+                            if(from.getText().length()!=1)
+                                timeLabel2 = new JLabel(from.getText());
+                            else
+                                timeLabel2 = new JLabel(from.getText()+".0");
                             timeLabel2.setBounds(100, 520, 80, 30);
                             timeLabel2.setBackground(new Color(254, 254, 254));
                             container.add(timeLabel2);
@@ -392,9 +400,19 @@ public class DrawCircuit {
             sum+="0000";
         else if (b>10)
             sum+="00000";
-        else
+        else if (b>0)
             sum+="000000";
-        sum+=(int)Math.abs((10000000*d-10000000*a)/1);
+        if(b%1000000==0)
+            b/=1000000;
+        if(b%100000==0)
+            b/=100000;
+        if(b%10000==0)
+            b/=10000;
+        if(b%1000==0)
+            b/=1000;
+        if(b%100==0)
+            b/=100;
+        sum+=b;
         return sum;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
