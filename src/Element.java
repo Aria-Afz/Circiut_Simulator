@@ -69,6 +69,8 @@ class Element {
 			case 'H':
 				if (cycle == 0)
 					return 0;
+				else if (ele.getCurrent(cycle - 1, dt) == 0)
+					return 6;
 				else
 					return k * ele.getCurrent(cycle - 1, dt);
 			case 'E':
