@@ -214,7 +214,7 @@ public class DrawCircuit {
             if(amount.get(i)<min)
                 min=amount.get(i);
         }
-        DiagramPanel diagramPanel = new DiagramPanel(amount,max,min,1,amount.size()-1);
+        DiagramPanel diagramPanel = new DiagramPanel(amount,max,min,1,(int)(Main.cir.time/Main.cir.dt)-1);
         diagramPanel.setBounds(100,20,850,650);
         container.add(diagramPanel);
         DiagramBachGroundPanel diagramBachGroundPanel = new DiagramBachGroundPanel();
