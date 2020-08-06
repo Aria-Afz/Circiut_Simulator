@@ -120,13 +120,13 @@ public class Circuit {
 		for (Node e : allNodes.values())
 			if (e.name != 0) {
 				m.write(e.name + " : ");
-				e.storedVoltages.forEach(x -> {
+				for (int i = 1; i < time/dt; i++) {
 					try {
-						m.write(x + " ");
-					} catch (IOException ioException) {
-						ioException.printStackTrace();
+						m.write(e.storedVoltages.get(i) + " ");
+					} catch (IOException ex) {
+						ex.printStackTrace();
 					}
-				});
+				}
 				m.write("\n");
 			}
 		m.write("Element's (Voltages Currents Powers) :\n");
