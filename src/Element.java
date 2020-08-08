@@ -8,6 +8,8 @@ class Element {
 	String gValue = "N.C";
 	ArrayList<Double> storedVoltages = new ArrayList<>();
 	ArrayList<Double> storedCurrents = new ArrayList<>();
+	//for Inductors
+	double previousVoltage = 0;
 	// for controlled sources
 	Element ele;
 	double k;
@@ -91,10 +93,8 @@ class Element {
 			case 'I': 	return -(v + u * Math.sin(2 * Math.PI * frequency * cycle * dt + phase));
 			case 'C': 	return value * (getVoltage(cycle, dt) - getVoltage(cycle - 1, dt)) / dt;
 			case 'L':
-				double i = 0;
-				for(int j = 0; j < cycle; j++)
-					i += getVoltage(j, dt) * dt;
-				return i / value;
+				previousVoltage += getVoltage(cycle, dt) * dt;
+				return previousVoltage / value;
 			default:
 				double current = 0;
 				for (Element ele : this.positiveNode.elementNeighbours)
