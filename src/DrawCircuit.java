@@ -166,7 +166,7 @@ public class DrawCircuit {
                     }
                     ImageIcon icon = new ImageIcon();
                     String nameOfElement;
-                    nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose your desired element/Node.", "Drawing Information",
+                    nameOfElement = (String) JOptionPane.showInputDialog(frame, "choose your desired element / Node.", "Drawing Information",
                             JOptionPane.QUESTION_MESSAGE, icon, strings, element.get(0).name);
                     if(nameOfElement!=null){
                         if (nameOfElement.charAt(0) == 'N') {
